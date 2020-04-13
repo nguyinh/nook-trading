@@ -5,9 +5,10 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 
 // const cors = require('cors');
+const routes = require('./routes');
 const app = express();
 // const server = require('http').Server(app);
-const { logger, redirectSecure } = require("./middlewares");
+const { logger, redirectSecure,errorHandler } = require("./middlewares");
 
 require("dotenv").config();
 
@@ -44,7 +45,8 @@ const mongoURL =
 mongoose.connect(mongoURL, {
   useNewUrlParser: true,
   bufferCommands: false,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 });
 
 const db = mongoose.connection;
@@ -55,16 +57,22 @@ db.once("open", () => {
   logger.info(`[MongoDB] Connected to ${mongoURL}`);
 });
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, "front/build")));
-
 // Enable API REST
-// app.use('/api/seasons', seasonsRoute);
+
+// app.use('/users', require('./routes/users'));
+
+// Serve static files from the React app
+// app.use(express.static(path.join(__dirname, "front/build")));
+
+
+routes(app);
 
 // Put all API endpoints under '/api'
 app.get('/api/*', (req, res) => {
   res.json(`Welcome to Animal trading API, your request is wrong 🐙`);
 });
+
+app.use(errorHandler);
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
