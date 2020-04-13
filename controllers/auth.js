@@ -35,7 +35,7 @@ exports.connect = async (req, res, next) => {
     //   // secure: true,
     // });
 
-    return res.send({ users: { _id, email, pseudo, islandName } });
+    return res.send({ user: { _id, email, pseudo, islandName } });
   } catch (err) {
     return next(err);
   }
@@ -68,15 +68,16 @@ exports.login = async (req, res, next) => {
       process.env.JWT_SECRET,
       { expiresIn: "1y" }
     );
-    res.clearCookie('token');
+    // res.clearCookie('token');
     const oneYear = 65 * 24 * 60 * 60 * 1000;
     res.cookie("token", JWTToken, {
       maxAge: oneYear,
       httpOnly: true,
-      // secure: true,
+      // sameSite: 'none'
+      // secure: true
     });
-
-    return res.send({ users: { _id, email, pseudo, islandName } });
+    console.log('ok')
+    return res.send({ user: { _id, email, pseudo, islandName } });
   } catch (err) {
     return next(err);
   }
@@ -104,7 +105,7 @@ exports.signin = async (req, res, next) => {
       process.env.JWT_SECRET,
       { expiresIn: "1y" }
     );
-    res.clearCookie('token');
+    // res.clearCookie('token');
     const oneYear = 65 * 24 * 60 * 60 * 1000;
     res.cookie("token", JWTToken, {
       maxAge: oneYear,

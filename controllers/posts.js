@@ -2,25 +2,17 @@ const { logger } = require("../middlewares");
 const { posts } = require("../services");
 const Boom = require("@hapi/boom");
 
-// exports.getById = async (req, res, next) => {
-//   const { userId } = req.params;
+exports.getAll = async (req, res, next) => {
+  logger.info(`[CONTROLLERS | posts] getAll`);
 
-//   if (!userId) return next(Boom.badRequest("userId is required"));
+  try {
+    const fetchedPosts = await posts.findAll();
 
-//   logger.info(`[CONTROLLERS | users] getById | ${userId}`);
-
-//   try {
-//     const fetchedUser = await users.findById(userId);
-
-//     if (!fetchedUser)
-//       return next(Boom.notFound("No user found with this userId"));
-
-//     const { pseudo, islandName } = fetchedUser;
-//     return res.send({ user: { pseudo, islandName } });
-//   } catch (err) {
-//     return next(err);
-//   }
-// };
+    return res.send({posts: fetchedPosts});
+  } catch (err) {
+    return next(err);
+  }
+};
 
 exports.create = async (req, res, next) => {
   const { shopPicture, articles } = req.body;
