@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const { users } = require('../controllers');
+const { verifyJWT } = require('../middlewares');
 
 router
   .route('/users')
-  .get(users.getAll)
-  .post(users.create);
+  .get(verifyJWT, users.getAll);
+  // .post(users.create);
 
 router
   .route('/users/:userId')
-  .get(users.getById);
+  .get(verifyJWT, users.getById);
 
 module.exports = router;

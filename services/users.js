@@ -5,8 +5,12 @@ exports.findAll = () => {
   return User.find({});
 };
 
-exports.find = id => {
-  return User.findOne({id});
+exports.findById = _id => {
+  return User.findOne({_id});
+};
+
+exports.findByEmail = email => {
+  return User.findOne({email});
 };
 
 exports.add = (email, hash, pseudo, islandName) => {

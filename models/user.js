@@ -15,6 +15,10 @@ const userScheme = mongoose.Schema({
     type: String,
     unique : true
   },
+  friendCode: {
+    type: String,
+    unique : true
+  },
   islandName: {
     type: String,
   },
