@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const userScheme = mongoose.Schema({
+const postScheme = mongoose.Schema({
   _id: ObjectId,
   author: {
     type: ObjectId,
@@ -12,6 +12,9 @@ const userScheme = mongoose.Schema({
     data: Buffer,
     contentType: String
   },
+  articles: {
+    type: Array
+  },
   createdAt: {
     type: Date,
   },
@@ -20,4 +23,4 @@ const userScheme = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('User', userScheme);;
+module.exports = mongoose.model('Post', postScheme);
