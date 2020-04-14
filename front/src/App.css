@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+.profile-container {
+  padding: 2rem;
+}
+
+.profile-form-input {
+  padding: 0.5rem 0px !important;
+}
+
+.profile-header {
+  margin: 0px -0.5em;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}

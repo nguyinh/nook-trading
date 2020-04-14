@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.withCredentials = true;
-console.log(axios.defaults.baseURL);
 axios.defaults.baseURL = "http://172.20.10.4:2020";
 // TODO: handle PROD env
 

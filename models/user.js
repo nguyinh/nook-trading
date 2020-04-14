@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -6,25 +6,27 @@ const userScheme = mongoose.Schema({
   _id: ObjectId,
   email: {
     type: String,
-    unique : true
+    unique: true,
   },
   password: {
     type: String,
   },
   pseudo: {
     type: String,
-    unique : true
+    unique: true,
   },
-  friendCode: {
-    type: String,
-    unique : true
-  },
+  // friendCode: {
+  //   type: String,
+  //   unique: true,
+  //   partialFilterExpression: { name: { $exists: true } },
+  // },
+  // TODO: handle null duplicates
   islandName: {
     type: String,
   },
   avatar: {
     data: Buffer,
-    contentType: String
+    contentType: String,
   },
   createdAt: {
     type: Date,
@@ -33,14 +35,14 @@ const userScheme = mongoose.Schema({
     type: Date,
   },
   lastConnectionAt: {
-    type: Date
-  }
+    type: Date,
+  },
 });
 
-const User = mongoose.model('User', userScheme);
+const User = mongoose.model("User", userScheme);
 
 User.init().then(() => {
-  console.log('Users collection created')
+  console.log("Users collection created");
 });
 
 module.exports = User;

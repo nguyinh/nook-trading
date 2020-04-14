@@ -115,6 +115,7 @@ exports.signin = async (req, res, next) => {
 
     return res.status(201).send({ user: { _id, email, pseudo, islandName } });
   } catch (err) {
+    console.log(err);
     if (err.code === 11000)
       return next(Boom.conflict("Email or pseudo already taken"));
     return next(err);
