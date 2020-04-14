@@ -73,10 +73,9 @@ exports.login = async (req, res, next) => {
     res.cookie("token", JWTToken, {
       maxAge: oneYear,
       httpOnly: true,
-      // sameSite: 'none'
       // secure: true
     });
-    console.log('ok')
+
     return res.send({ user: { _id, email, pseudo, islandName } });
   } catch (err) {
     return next(err);

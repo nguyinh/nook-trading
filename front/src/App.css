@@ -53,3 +53,8 @@
   align-items: baseline;
   justify-content: space-between;
 }
+
+.profile-container .ui.loading.form:before {
+  width: 105% !important;
+  margin: 0px -0.5em !important;
+}

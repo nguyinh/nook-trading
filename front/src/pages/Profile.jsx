@@ -1,12 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
-import { Redirect } from "react-router-dom";
-import { AppContext } from "./AppContext";
+import { AppContext } from "../contexts";
+import { signUpUser, logInUser } from "../services";
 // import { AuthContext } from "./AuthContext";
-import { Button, Grid, Form, Header } from "semantic-ui-react";
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://172.20.10.4:2020";
-// TODO: handle PROD env
+import { Button, Form, Header } from "semantic-ui-react";
 
 const Profile = () => {
   const {
@@ -25,15 +21,8 @@ const Profile = () => {
     try {
       setIsConnecting(true);
 
-      const {
-        data: { user },
-      } = await axios.post("/api/auth/signin", {
-        email,
-        password,
-        pseudo,
-        islandName,
-      });
-
+      const user = await signUpUser(email, password, pseudo, islandName);
+      console.log(user);
       dispatch({ type: "SET_USER", user });
 
       setIsConnecting(false);
@@ -47,12 +36,7 @@ const Profile = () => {
     setIsConnecting(true);
 
     try {
-      const {
-        data: { user },
-      } = await axios.post("/api/auth/login", {
-        email,
-        password,
-      });
+      const user = await logInUser(email, password);
 
       dispatch({ type: "SET_USER", user });
 
@@ -68,13 +52,15 @@ const Profile = () => {
       {currentUser ? (
         <>
           <Header as="h2">Hello {currentUser && currentUser.pseudo} 👋</Header>
-          <Button color='red' onClick={() => dispatch({ type: "LOG_OUT" })}>Log out</Button>
+          <Button color="red" onClick={() => dispatch({ type: "LOG_OUT" })}>
+            Log out
+          </Button>
         </>
       ) : (
         <>
           {signType === "SIGN_UP" ? (
             <Form loading={isConnecting}>
-              <div className='profile-header'>
+              <div className="profile-header">
                 <Header as="h2">Sign up</Header>
                 <Button
                   content="Go to log in"
@@ -132,13 +118,12 @@ const Profile = () => {
             </Form>
           ) : (
             <Form loading={isConnecting}>
-              
-              <div className='profile-header'>
+              <div className="profile-header">
                 <Header as="h2">Log in</Header>
                 <Button
-                content="Go to sign up"
-                onClick={() => setSignType("SIGN_UP")}
-              />
+                  content="Go to sign up"
+                  onClick={() => setSignType("SIGN_UP")}
+                />
               </div>
 
               <Form.Group>

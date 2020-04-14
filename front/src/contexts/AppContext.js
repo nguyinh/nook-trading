@@ -1,8 +1,5 @@
 import React, { useReducer, useEffect } from "react";
-import axios from "axios";
-
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://172.20.10.4:2020";
+import { connectUser, logOutUser } from '../services';
 
 let reducer = (state, action) => {
   // const { some } = state;
@@ -28,7 +25,7 @@ const setUser = (state, user) => {
 };
 
 const logout = async (state) => {
-  await axios.post("/api/auth/logout");
+  await logOutUser();
 
   return {
     ...state,
@@ -49,9 +46,7 @@ function AppProvider(props) {
   useEffect(() => {
     try {
       async function connect() {
-        const {
-          data: { user },
-        } = await axios.post("/api/auth/connect");
+        const user = await connectUser();
         dispatch({ type: "SET_USER", user });
         dispatch({ type: "DISABLE_LOADING" });
       }
