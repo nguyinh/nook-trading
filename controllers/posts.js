@@ -15,16 +15,16 @@ exports.getAll = async (req, res, next) => {
 };
 
 exports.create = async (req, res, next) => {
-  const { shopPicture, articles } = req.body;
+  const { shopPicture, items } = req.body;
   const { _id: authorId } = req.user;
 
-  if (!articles)
+  if (!items)
     return next(Boom.badRequest("Missing parameter in request body"));
 
   logger.info(`[CONTROLLERS | posts] create`);
 
   try {
-    const createdPost = await posts.add(authorId, shopPicture, articles);
+    const createdPost = await posts.add(authorId, shopPicture, items);
 
     return res.send(createdPost);
   } catch (err) {

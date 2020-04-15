@@ -38,6 +38,16 @@
 }
 
 
+.navigation-bar {
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
+
+
 
 .profile-container {
   padding: 2rem;
@@ -57,4 +67,70 @@
 .profile-container .ui.loading.form:before {
   width: 105% !important;
   margin: 0px -0.5em !important;
+}
+
+
+
+.market--post-creator {
+  padding: 1rem;
+}
+
+.shop-picture {
+  max-height: 25vh;
+}
+
+.shop-picture--input {
+  max-height: 25vh;
+  height: 18rem;
+  min-height: 0px !important;
+}
+
+.market-items--input {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0;
+  justify-content: space-between;
+}
+
+.market-items--input .input {
+  min-width: 0;
+}
+
+.market-items--input > * {
+  padding: 0% 2%;
+}
+
+.market-items--input > button {
+  margin: 0 !important;
+}
+
+.market-items--input .input:first-child {
+  padding-left: 0px;
+}
+
+.market-items--input .input:last-child {
+  padding-right: 0px;
+}
+
+.market-items--price-input {
+  max-width: 35%;
+}
+
+.market-items--creator--item {
+  align-self: center;
+  font-size: 16px;
+  margin-left: 0.5rem;
+}
+
+.market-items--creator--item-name {
+  font-weight: 700;
+  margin-right: 1rem;
+}
+
+.market-items--creator--item-price {
+  font-weight: 400;
+}
+
+.market-items--publish {
+  margin-top: 2rem !important;
 }

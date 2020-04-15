@@ -1,40 +1,45 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 import { AppProvider } from "./contexts";
+import Navigation from "./Navigation";
 // import { AuthProvider } from "./contexts/AuthContext";
 
-import { Profile, Home } from "./pages";
+import { Profile, PostCreator } from "./pages";
 
 function App() {
   return (
     <AppProvider>
-      {/* <AuthProvider> */}
       <Router>
         <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-            </ul>
-          </nav>
+          <Navigation />
 
           <Switch>
             <Route path="/profile">
               <Profile />
             </Route>
-            <Route path="/">
-              <Home />
+            <Route path="/navet-trend">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  height: "90vh",
+                  margin: "40vh 0",
+                }}
+              >
+                <span style={{fontSize: 'x-large'}}>Work in progress 👨‍💻🔥</span>
+              </div>
+            </Route>
+            <Route path="/market">
+              <PostCreator />
             </Route>
           </Switch>
         </div>
       </Router>
-      {/* </AuthProvider> */}
     </AppProvider>
   );
 }

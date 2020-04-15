@@ -12,7 +12,7 @@ const postScheme = mongoose.Schema({
     data: Buffer,
     contentType: String
   },
-  articles: {
+  items: {
     type: Array
   },
   createdAt: {
