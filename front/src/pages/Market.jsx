@@ -159,9 +159,13 @@ const Market = () => {
           ) : (
             <>
               {!!posts.length ? (
-                posts.map(({_id, author, items, shopPictureSrc}) => (
+                posts.map(({ _id, author, items, shopPictureSrc }) => (
                   <div className="market-post" key={_id}>
-                    <Header as="h3">{author.pseudo}</Header>
+                    <Header as="h3">
+                      {author.pseudo === currentUser.pseudo
+                        ? "Ton shop"
+                        : `${author.pseudo} propose`}
+                    </Header>
 
                     <div className="market--post--shop-picture">
                       <img src={shopPictureSrc} className="shop-picture" />
@@ -178,28 +182,32 @@ const Market = () => {
                               <span className="market-items--creator--item-price">{`${price}$`}</span>
                             )}
                           </div>
-                          {bookings.some(
-                            (booking) => booking.author === currentUser._id
-                          ) ? (
-                            <Button
-                              color="orange"
-                              compact
-                              loading={itemLoading === _id}
-                              disabled={itemLoading === _id}
-                              onClick={() => handleItemUnbooking(_id)}
-                            >
-                              ❌ Annuler
-                            </Button>
-                          ) : (
-                            <Button
-                              color="teal"
-                              compact
-                              loading={itemLoading === _id}
-                              disabled={itemLoading === _id}
-                              onClick={() => handleItemBooking(_id)}
-                            >
-                              👈 I want it
-                            </Button>
+                          {author._id !== currentUser._id && (
+                            <>
+                              {bookings.some(
+                                (booking) => booking.author === currentUser._id
+                              ) ? (
+                                <Button
+                                  color="orange"
+                                  compact
+                                  loading={itemLoading === _id}
+                                  disabled={itemLoading === _id}
+                                  onClick={() => handleItemUnbooking(_id)}
+                                >
+                                  ❌ Annuler
+                                </Button>
+                              ) : (
+                                <Button
+                                  color="teal"
+                                  compact
+                                  loading={itemLoading === _id}
+                                  disabled={itemLoading === _id}
+                                  onClick={() => handleItemBooking(_id)}
+                                >
+                                  👈 I want it
+                                </Button>
+                              )}
+                            </>
                           )}
                         </div>
                       ))
