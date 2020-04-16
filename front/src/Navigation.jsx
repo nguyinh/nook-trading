@@ -7,14 +7,14 @@ const Navigation = () => {
   return (
     <nav className="navigation-bar">
       <Menu widths={3}>
-        <Menu.Item name="home" active={pathname === "/"}>
+        <Menu.Item name="market" active={pathname === "/"}>
           <Link to="/market">
-            <Icon name="home" />
-            Home
+            <Icon name="bullhorn" />
+            Market
           </Link>
         </Menu.Item>
         <Menu.Item name="messages" active={pathname === "/navet-trend"}>
-          <Link to="/navet-trend">
+          <Link to="/turnip-trend">
             <Icon name="leaf" />
             Cours Navet
           </Link>
@@ -22,7 +22,7 @@ const Navigation = () => {
         <Menu.Item name="messages" active={pathname === "/profile"}>
           <Link to="/profile">
             <Icon name="user" />
-            Profile
+            Profil
           </Link>
         </Menu.Item>
       </Menu>

@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const { Post } = require("../models");
+const { Post, Item } = require("../models");
 
 exports.findAll = () => {
-  return Post.find().populate("author");
+  return Post.find().populate("author items");
 };
 
 exports.findAllDaily = () => {
@@ -10,16 +10,33 @@ exports.findAllDaily = () => {
 
   return Post.find({
     createdAt: {
-      $gte: todayMidnight
+      $gte: todayMidnight,
     },
-  }).populate("author");
+  }).populate("author items");
 };
 
-exports.add = (author, shopPicture, items) => {
+exports.findById = (_id, includeAuthor) => {
+  return Post.find({
+    _id,
+  }).populate(`${includeAuthor && "author"} item`);
+};
+
+exports.add = async (author, shopPicture, items) => {
+  const itemPromises = items.map(item => Item.create({
+    _id: new mongoose.Types.ObjectId(),
+    ...item,
+  }));
+  const createdItems = await Promise.all(itemPromises);
+
   return Post.create({
     _id: new mongoose.Types.ObjectId(),
     author,
     shopPicture,
-    items
+    items: createdItems.map(item => item._id)
   });
+};
+
+exports.update = (postId, options) => {
+  console.log(postId, options['$set'].items.map(i => i.bookings))
+  return Post.findByIdAndUpdate(postId, options);
 };

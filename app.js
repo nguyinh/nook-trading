@@ -12,7 +12,11 @@ const { logger, redirectSecure, errorHandler } = require("./middlewares");
 require("dotenv").config();
 
 // CORS handle
-const whitelist = ["http://172.20.10.4:3000", "http://localhost:3000", "http://localhost:2020"];
+const whitelist = [
+  "http://172.20.10.4:3000",
+  "http://localhost:3000",
+  "http://localhost:2020",
+];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -23,7 +27,7 @@ const corsOptions = {
   },
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
-  exposedHeaders: ["x-auth-token", "Set-Cookie"]
+  exposedHeaders: ["x-auth-token", "Set-Cookie"],
 };
 app.use(cors(corsOptions));
 
@@ -58,6 +62,7 @@ mongoose.connect(mongoURL, {
   bufferCommands: false,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false,
 });
 
 const db = mongoose.connection;

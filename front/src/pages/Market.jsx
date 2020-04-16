@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../contexts";
-import { getDailyPosts } from "../services";
+import { getDailyPosts, bookItem, unbookItem } from "../services";
 import {
   Button,
   Form,
@@ -38,21 +38,72 @@ const months = new Array(
 );
 
 const Market = () => {
+  const {
+    state: { currentUser },
+  } = useContext(AppContext);
+
   const [isCreating, setIsCreating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [itemLoading, setItemLoading] = useState(null);
+
   const [posts, setPosts] = useState([]);
 
   const fetchPosts = async () => {
     setIsLoading(true);
-    let posts = await getDailyPosts();
+    try {
+      let posts = await getDailyPosts();
 
-    posts = posts.map((post) => ({
-      ...post,
-      shopPictureSrc: Buffer.from(post.shopPicture.data, "base64"),
-    }));
+      posts = posts.map((post) => ({
+        ...post,
+        shopPictureSrc: Buffer.from(post.shopPicture.data, "base64"),
+      }));
 
-    setPosts(posts);
-    setIsLoading(false);
+      setPosts(posts);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleItemBooking = async (itemId) => {
+    setItemLoading(itemId);
+    try {
+      const updatedItem = await bookItem(itemId);
+
+      setPosts(
+        posts.map((post) => ({
+          ...post,
+          items: post.items.map((item) =>
+            item._id === itemId ? updatedItem : item
+          ),
+        }))
+      );
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setItemLoading(null);
+    }
+  };
+
+  const handleItemUnbooking = async (itemId) => {
+    setItemLoading(itemId);
+    try {
+      const updatedItem = await unbookItem(itemId);
+
+      setPosts(
+        posts.map((post) => ({
+          ...post,
+          items: post.items.map((item) =>
+            item._id === itemId ? updatedItem : item
+          ),
+        }))
+      );
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setItemLoading(null);
+    }
   };
 
   const formatDate = (date) => {
@@ -108,17 +159,17 @@ const Market = () => {
           ) : (
             <>
               {!!posts.length ? (
-                posts.map((post) => (
-                  <div className="market-post">
-                    <Header as="h3">{post.author.pseudo}</Header>
+                posts.map(({_id, author, items, shopPictureSrc}) => (
+                  <div className="market-post" key={_id}>
+                    <Header as="h3">{author.pseudo}</Header>
 
                     <div className="market--post--shop-picture">
-                      <img src={post.shopPictureSrc} className="shop-picture" />
+                      <img src={shopPictureSrc} className="shop-picture" />
                     </div>
 
-                    {post.items.length ? (
-                      post.items.map(({ name, price }) => (
-                        <div className="market-items--input">
+                    {items.length ? (
+                      items.map(({ _id, name, price, bookings }) => (
+                        <div className="market-items--input" key={_id}>
                           <div className="market-items--post--item">
                             <span className="market-items--creator--item-name">
                               {name}
@@ -127,14 +178,39 @@ const Market = () => {
                               <span className="market-items--creator--item-price">{`${price}$`}</span>
                             )}
                           </div>
-                          <Button color="teal" compact onClick={null}>
-                            👈 I want it
-                          </Button>
+                          {bookings.some(
+                            (booking) => booking.author === currentUser._id
+                          ) ? (
+                            <Button
+                              color="orange"
+                              compact
+                              loading={itemLoading === _id}
+                              disabled={itemLoading === _id}
+                              onClick={() => handleItemUnbooking(_id)}
+                            >
+                              ❌ Annuler
+                            </Button>
+                          ) : (
+                            <Button
+                              color="teal"
+                              compact
+                              loading={itemLoading === _id}
+                              disabled={itemLoading === _id}
+                              onClick={() => handleItemBooking(_id)}
+                            >
+                              👈 I want it
+                            </Button>
+                          )}
                         </div>
                       ))
                     ) : (
-                      <div className='market-items--no-item'>
-                        <Button color="teal" compact size='large' onClick={null}>
+                      <div className="market-items--no-item">
+                        <Button
+                          color="teal"
+                          compact
+                          size="large"
+                          onClick={null}
+                        >
                           I want something 🙏
                         </Button>
                       </div>
