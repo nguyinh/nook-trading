@@ -3,7 +3,7 @@ import { createPost } from "../services";
 import { Button, Segment, Header, Icon, Input, Label } from "semantic-ui-react";
 import { Redirect } from "react-router-dom";
 
-const PostCreator = ({ setIsCreating }) => {
+const PostCreator = ({ backFromCreator }) => {
   const [shopPicture, setShopPicture] = useState(null);
   const [items, setItems] = useState([]);
   const [itemName, setItemName] = useState("");
@@ -48,7 +48,7 @@ const PostCreator = ({ setIsCreating }) => {
     setIsPublishing(false);
     setIsPublished(true);
 
-    setTimeout(() => setIsCreating(false), 1000);
+    setTimeout(() => backFromCreator(), 1000);
   };
 
   const simulateInputClick = () => {

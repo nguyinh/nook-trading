@@ -5,10 +5,14 @@ const Boom = require("@hapi/boom");
 exports.getAll = async (req, res, next) => {
   logger.info(`[CONTROLLERS | posts] getAll`);
 
-  try {
-    const fetchedPosts = await posts.findAll();
+  const { onlyDaily } = req.query;
 
-    const formattedPosts = fetchedPosts.map(post => ({
+  try {
+    let fetchedPosts;
+    if (onlyDaily) fetchedPosts = await posts.findAllDaily();
+    else fetchedPosts = await posts.findAll();
+
+    const formattedPosts = fetchedPosts.map((post) => ({
       _id: post._id,
       shopPicture: post.shopPicture,
       items: post.items,

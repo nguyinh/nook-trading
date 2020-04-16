@@ -49,6 +49,15 @@
 
 
 
+.no-data {
+  text-align: center;
+  opacity: 0.5;
+  margin: 5rem 2rem;
+  line-height: 1.5;
+}
+
+
+
 .profile-container {
   padding: 2rem;
 }
@@ -83,6 +92,40 @@
   justify-content: space-between;
 }
 
+.market--header--container {
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.market--header--post-count {
+  border-radius: 20px;
+  background: #d22525;
+  color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  display: inline-block;
+  text-align: center;
+  font-size: 14px;
+  margin-left: 0.5rem;
+  line-height: 1.5;
+  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+            animation: fadein 1s;
+}
+
+
+.market-post {
+  -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 0.5s; /* Firefox < 16 */
+   -ms-animation: fadein 0.5s; /* Internet Explorer */
+    -o-animation: fadein 0.5s; /* Opera < 12.1 */
+       animation: fadein 0.5s;
+}
+
 .market--post--author {
   font-size: 20px;
   font-weight: 700;
@@ -102,6 +145,10 @@
   margin-left: 0.5rem;
 }
 
+.market-items--no-item {
+  margin-top: 1rem;
+  text-align: center;
+}
 
 
 .market--post-creator {
@@ -172,4 +219,36 @@
 
 .market-items--publish {
   margin-top: 2rem !important;
+}
+
+
+
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

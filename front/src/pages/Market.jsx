@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../contexts";
-import { getPosts } from "../services";
+import { getDailyPosts } from "../services";
 import {
   Button,
   Form,
@@ -44,7 +44,7 @@ const Market = () => {
 
   const fetchPosts = async () => {
     setIsLoading(true);
-    let posts = await getPosts();
+    let posts = await getDailyPosts();
 
     posts = posts.map((post) => ({
       ...post,
@@ -61,6 +61,11 @@ const Market = () => {
     } `;
   };
 
+  const backFromCreator = () => {
+    fetchPosts();
+    setIsCreating(false);
+  };
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -69,12 +74,19 @@ const Market = () => {
     <>
       {" "}
       {isCreating ? (
-        <PostCreator setIsCreating={setIsCreating} />
+        <PostCreator backFromCreator={backFromCreator} />
       ) : (
         <div className="market">
           <div className="market--header">
-            <Header as="h2" style={{ margin: 0 }}>
+            <Header
+              as="h2"
+              style={{ margin: 0 }}
+              className="market--header--container"
+            >
               {formatDate(new Date())}
+              {!!posts.length && (
+                <div className="market--header--post-count">{posts.length}</div>
+              )}
             </Header>
             <Button
               size="mini"
@@ -95,33 +107,46 @@ const Market = () => {
             </Loader>
           ) : (
             <>
-              {!!posts.length &&
+              {!!posts.length ? (
                 posts.map((post) => (
-                  <>
+                  <div className="market-post">
                     <Header as="h3">{post.author.pseudo}</Header>
 
                     <div className="market--post--shop-picture">
                       <img src={post.shopPictureSrc} className="shop-picture" />
                     </div>
 
-                    {post.items.map(({ name, price }) => (
-                      <div className="market-items--input">
-                        <div className="market-items--post--item">
-                          <span className="market-items--creator--item-name">
-                            {name}
-                          </span>
-                          {price && (
-                            <span className="market-items--creator--item-price">{`${price}$`}</span>
-                          )}
+                    {post.items.length ? (
+                      post.items.map(({ name, price }) => (
+                        <div className="market-items--input">
+                          <div className="market-items--post--item">
+                            <span className="market-items--creator--item-name">
+                              {name}
+                            </span>
+                            {price && (
+                              <span className="market-items--creator--item-price">{`${price}$`}</span>
+                            )}
+                          </div>
+                          <Button color="teal" compact onClick={null}>
+                            👈 I want it
+                          </Button>
                         </div>
-                        <Button color="teal" compact onClick={null}>
-                          👈 I want it
+                      ))
+                    ) : (
+                      <div className='market-items--no-item'>
+                        <Button color="teal" compact size='large' onClick={null}>
+                          I want something 🙏
                         </Button>
                       </div>
-                    ))}
+                    )}
                     <Divider style={{ margin: "3rem 3rem 2rem" }} />
-                  </>
-                ))}
+                  </div>
+                ))
+              ) : (
+                <div className="no-data">
+                  Pas d'annonce pour le moment, créé en une 👆
+                </div>
+              )}
             </>
           )}
         </div>

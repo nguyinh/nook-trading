@@ -19,9 +19,6 @@ exports.add = (email, hash, pseudo, islandName) => {
     email,
     password: hash,
     pseudo,
-    islandName,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    lastConnectionAt: Date.now()
+    islandName
   });
 };

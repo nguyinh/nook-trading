@@ -42,10 +42,10 @@ const logOutUser = async () => {
   return;
 };
 
-const getPosts = async (items, shopPicture) => {
+const getDailyPosts = async (items, shopPicture) => {
   const {
     data: { posts },
-  } = await axios.get("/api/posts");
+  } = await axios.get("/api/posts", { params: { onlyDaily: 'true' } });
 
   return posts;
 };
@@ -57,4 +57,4 @@ const createPost = (items, shopPicture) => {
   });
 };
 
-export { signUpUser, logInUser, connectUser, logOutUser, createPost, getPosts };
+export { signUpUser, logInUser, connectUser, logOutUser, createPost, getDailyPosts };

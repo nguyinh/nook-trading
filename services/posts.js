@@ -1,8 +1,18 @@
 const mongoose = require("mongoose");
-const { Post } = require('../models');
+const { Post } = require("../models");
 
-exports.findAll = (includeAuthor) => {
-  return Post.find().populate('author');
+exports.findAll = () => {
+  return Post.find().populate("author");
+};
+
+exports.findAllDaily = () => {
+  const todayMidnight = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
+
+  return Post.find({
+    createdAt: {
+      $gte: todayMidnight
+    },
+  }).populate("author");
 };
 
 exports.add = (author, shopPicture, items) => {
@@ -10,8 +20,6 @@ exports.add = (author, shopPicture, items) => {
     _id: new mongoose.Types.ObjectId(),
     author,
     shopPicture,
-    items,
-    createdAt: Date.now(),
-    updatedAt: Date.now()
+    items
   });
 };
