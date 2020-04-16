@@ -5,7 +5,9 @@ axios.defaults.baseURL = "http://172.20.10.3:2020";
 // TODO: handle PROD env
 
 const signUpUser = async (email, password, pseudo, islandName) => {
-  const { data: user } = await axios.post("/api/auth/signin", {
+  const {
+    data: { user },
+  } = await axios.post("/api/auth/signin", {
     email,
     password,
     pseudo,
@@ -16,7 +18,9 @@ const signUpUser = async (email, password, pseudo, islandName) => {
 };
 
 const logInUser = async (email, password) => {
-  const { data: user } = await axios.post("/api/auth/login", {
+  const {
+    data: { user },
+  } = await axios.post("/api/auth/login", {
     email,
     password,
   });
@@ -25,7 +29,9 @@ const logInUser = async (email, password) => {
 };
 
 const connectUser = async () => {
-  const { data: user } = await axios.post("/api/auth/connect");
+  const {
+    data: { user },
+  } = await axios.post("/api/auth/connect");
 
   return user;
 };

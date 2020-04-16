@@ -47,6 +47,7 @@ function AppProvider(props) {
     try {
       async function connect() {
         const user = await connectUser();
+        console.log(user);
         dispatch({ type: "SET_USER", user });
         dispatch({ type: "DISABLE_LOADING" });
       }
