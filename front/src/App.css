@@ -121,7 +121,7 @@
 .market-items--input {
   display: flex;
   flex-direction: row;
-  margin: 1rem 0;
+  margin-top: 1rem;
   justify-content: space-between;
 }
 
@@ -147,6 +147,12 @@
 
 .market-items--price-input {
   max-width: 35%;
+}
+
+.market-items--input-with-error span {
+  font-size: 11px;
+  color: #e23939;
+  margin-bottom: 1rem;
 }
 
 .market-items--creator--item {
