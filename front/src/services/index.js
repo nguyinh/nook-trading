@@ -1,7 +1,7 @@
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://172.20.10.5:2020";
+axios.defaults.baseURL = "http://172.20.10.3:2020";
 // TODO: handle PROD env
 
 const signUpUser = async (email, password, pseudo, islandName) => {
@@ -36,14 +36,19 @@ const logOutUser = async () => {
   return;
 };
 
-const createPost = async (items, shopPicture) => {
-  console.log('coucou');
-  await axios.post("/api/posts", {
+const getPosts = async (items, shopPicture) => {
+  const {
+    data: { posts },
+  } = await axios.get("/api/posts");
+
+  return posts;
+};
+
+const createPost = (items, shopPicture) => {
+  return axios.post("/api/posts", {
     items,
     shopPicture,
   });
-  console.log('allez 2');
-  return;
 };
 
-export { signUpUser, logInUser, connectUser, logOutUser, createPost };
+export { signUpUser, logInUser, connectUser, logOutUser, createPost, getPosts };

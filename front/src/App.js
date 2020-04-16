@@ -9,7 +9,7 @@ import { AppProvider } from "./contexts";
 import Navigation from "./Navigation";
 // import { AuthProvider } from "./contexts/AuthContext";
 
-import { Profile, PostCreator } from "./pages";
+import { Profile, Market,PostCreator } from "./pages";
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
               </div>
             </Route>
             <Route path="/market">
-              <PostCreator />
+              <Market />
             </Route>
           </Switch>
         </div>

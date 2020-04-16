@@ -71,6 +71,39 @@
 
 
 
+.market {
+  padding: 1rem;
+}
+
+.market--header {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.market--post--author {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+}
+
+.market--post--shop-picture {
+  text-align: center;
+  background-color: #f2f1f2;
+  margin: 0 -1rem;
+}
+
+.market-items--post--item {
+  align-self: center;
+  font-size: 13px;
+  margin-left: 0.5rem;
+}
+
+
+
 .market--post-creator {
   padding: 1rem;
 }

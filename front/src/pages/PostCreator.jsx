@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { AppContext } from "../contexts";
-import { createPost } from "../services";
+import { createPost, getPosts } from "../services";
 import { Button, Segment, Header, Icon, Input, Label } from "semantic-ui-react";
 
 const PostCreator = () => {
@@ -9,6 +9,7 @@ const PostCreator = () => {
   const [itemName, setItemName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const inputRef = useRef(null);
+
 
   const addItemToList = () => {
     setItems([...items, { name: itemName, price: itemPrice }]);
@@ -19,10 +20,7 @@ const PostCreator = () => {
   const publish = async () => {
     if (itemName && itemPrice) addItemToList();
 
-    console.log(new Buffer(shopPicture, "utf8"));
-    console.log(items);
     await createPost(items, new Buffer(shopPicture, "utf8"));
-    console.log('allez');
   };
 
   const simulateInputClick = () => {

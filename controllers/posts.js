@@ -8,7 +8,17 @@ exports.getAll = async (req, res, next) => {
   try {
     const fetchedPosts = await posts.findAll();
 
-    return res.send({posts: fetchedPosts});
+    const formattedPosts = fetchedPosts.map(post => ({
+      _id: post._id,
+      shopPicture: post.shopPicture,
+      items: post.items,
+      author: {
+        _id: post.author._id,
+        pseudo: post.author.pseudo,
+      },
+    }));
+
+    return res.send({ posts: formattedPosts });
   } catch (err) {
     return next(err);
   }
@@ -18,8 +28,7 @@ exports.create = async (req, res, next) => {
   const { shopPicture, items } = req.body;
   const { _id: authorId } = req.user;
 
-  if (!items)
-    return next(Boom.badRequest("Missing parameter in request body"));
+  if (!items) return next(Boom.badRequest("Missing parameter in request body"));
 
   logger.info(`[CONTROLLERS | posts] create`);
 
