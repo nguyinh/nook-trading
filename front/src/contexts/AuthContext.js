@@ -20,11 +20,11 @@ let reducer = (state, action) => {
   }
 };
 
-const login = (state, { email, password }) => {
+const login = (state, { pseudo, password }) => {
   console.log("connecting");
   axios
     .post("/api/auth/login", {
-      email,
+      pseudo,
       password,
     })
     .then((data) => console.log(data))
@@ -37,14 +37,13 @@ const login = (state, { email, password }) => {
   };
 };
 
-const signup = async (state, { email, password, pseudo, islandName }) => {
+const signup = async (state, { pseudo, password, islandName }) => {
   // try {
   console.log("connecting");
   axios
     .post("/api/auth/signin", {
-      email,
-      password,
       pseudo,
+      password,
       islandName,
     })
     .then((data) => {

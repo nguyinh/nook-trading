@@ -11,9 +11,9 @@ module.exports = async (req, res, next) => {
 
     if (!user) return next(Boom.notFound('User not found'));
 
-    const { email, pseudo, islandName } = user;
+    const { pseudo, islandName } = user;
 
-    req.user = { _id, email, pseudo, islandName };
+    req.user = { _id, pseudo, islandName };
 
     return next();
   } catch (err) {

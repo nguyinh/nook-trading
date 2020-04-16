@@ -9,14 +9,13 @@ exports.findById = _id => {
   return User.findOne({_id});
 };
 
-exports.findByEmail = email => {
-  return User.findOne({email});
+exports.findByPseudo = pseudo => {
+  return User.findOne({pseudo});
 };
 
-exports.add = (email, hash, pseudo, islandName) => {
+exports.add = (hash, pseudo, islandName) => {
   return User.create({
     _id: new mongoose.Types.ObjectId(),
-    email,
     password: hash,
     pseudo,
     islandName

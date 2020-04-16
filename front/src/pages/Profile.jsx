@@ -12,7 +12,6 @@ const Profile = () => {
 
   const [isConnecting, setIsConnecting] = useState(false);
   const [signType, setSignType] = useState("SIGN_UP");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pseudo, setPseudo] = useState("");
   const [islandName, setIslandName] = useState("");
@@ -21,8 +20,8 @@ const Profile = () => {
     try {
       setIsConnecting(true);
 
-      const user = await signUpUser(email, password, pseudo, islandName);
-      console.log(user);
+      const user = await signUpUser(pseudo, password, islandName);
+
       dispatch({ type: "SET_USER", user });
 
       setIsConnecting(false);
@@ -36,7 +35,7 @@ const Profile = () => {
     setIsConnecting(true);
 
     try {
-      const user = await logInUser(email, password);
+      const user = await logInUser(pseudo, password);
 
       dispatch({ type: "SET_USER", user });
 
@@ -70,14 +69,13 @@ const Profile = () => {
 
               <Form.Group>
                 <Form.Input
-                  label="Email"
+                  label="Pseudo IG"
                   className="profile-form-input"
                   width={12}
-                  placeholder="Email"
-                  name="email"
-                  value={email}
-                  type="email"
-                  onChange={(_, { value }) => setEmail(value)}
+                  placeholder="Pseudo"
+                  name="pseudo"
+                  value={pseudo}
+                  onChange={(_, { value }) => setPseudo(value)}
                 />
                 <Form.Input
                   label="Password"
@@ -88,15 +86,6 @@ const Profile = () => {
                   value={password}
                   type="password"
                   onChange={(_, { value }) => setPassword(value)}
-                />
-                <Form.Input
-                  label="Pseudo IG"
-                  className="profile-form-input"
-                  width={12}
-                  placeholder="Pseudo"
-                  name="pseudo"
-                  value={pseudo}
-                  onChange={(_, { value }) => setPseudo(value)}
                 />
                 <Form.Input
                   label="Island name"
@@ -128,14 +117,13 @@ const Profile = () => {
 
               <Form.Group>
                 <Form.Input
-                  label="Email"
+                  label="Pseudo IG"
                   className="profile-form-input"
                   width={12}
-                  placeholder="Email"
-                  name="email"
-                  value={email}
-                  type="email"
-                  onChange={(_, { value }) => setEmail(value)}
+                  placeholder="Pseudo"
+                  name="pseudo"
+                  value={pseudo}
+                  onChange={(_, { value }) => setPseudo(value)}
                 />
                 <Form.Input
                   label="Password"

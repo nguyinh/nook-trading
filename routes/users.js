@@ -6,7 +6,6 @@ const { verifyJWT } = require('../middlewares');
 router
   .route('/users')
   .get(verifyJWT, users.getAll);
-  // .post(users.create);
 
 router
   .route('/users/:userId')

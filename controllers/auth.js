@@ -18,7 +18,7 @@ exports.connect = async (req, res, next) => {
 
     if (!fetchedUser) {res.clearCookie('token');return next(Boom.unauthorized('User deleted'));}
 
-    const { email, pseudo, islandName } = fetchedUser;
+    const { pseudo, islandName } = fetchedUser;
 
     // TODO: refresh token
     // const JWTToken = jwt.sign(
@@ -35,27 +35,27 @@ exports.connect = async (req, res, next) => {
     //   // secure: true,
     // });
 
-    return res.send({ user: { _id, email, pseudo, islandName } });
+    return res.send({ user: { _id, pseudo, islandName } });
   } catch (err) {
     return next(err);
   }
 };
 
 exports.login = async (req, res, next) => {
-  const { email, password, pseudo } = req.body;
+  const { pseudo, password } = req.body;
 
-  if ((!email && !pseudo) || !password)
+  if (!pseudo || !password)
     return next(Boom.badRequest("Missing parameter in request body"));
 
   logger.info("[CONTROLLERS | auth] login");
 
   try {
-    const fetchedUser = await users.findByEmail(
-      email
+    const fetchedUser = await users.findByPseudo(
+      pseudo
     );
-    if (!fetchedUser) return next(Boom.unauthorized('Wrong email/pseudo'));
+    if (!fetchedUser) return next(Boom.unauthorized('Wrong pseudo'));
 
-    const { _id, pseudo, islandName, password: hash } = fetchedUser;
+    const { _id, islandName, password: hash } = fetchedUser;
 
     const isPasswordCorrect = await bcrypt.compare(password, hash);
 
@@ -76,26 +76,26 @@ exports.login = async (req, res, next) => {
       // secure: true
     });
 
-    return res.send({ user: { _id, email, pseudo, islandName } });
+    return res.send({ user: { _id, pseudo, islandName } });
   } catch (err) {
     return next(err);
   }
 };
 
 exports.signin = async (req, res, next) => {
-  const { email, password, pseudo, islandName } = req.body;
+  const { password, pseudo, islandName } = req.body;
 
-  if (!email || !password || !pseudo || !islandName)
+  if (!password || !pseudo || !islandName)
     return next(Boom.badRequest("Missing parameter in request body"));
 
   logger.info(
-    `[CONTROLLERS | auth] signin | ${email} as ${pseudo} in island ${islandName}`
+    `[CONTROLLERS | auth] signin | ${pseudo} in island ${islandName}`
   );
 
   try {
     const hash = await bcrypt.hash(password, 10);
 
-    const { _id } = await users.add(email, hash, pseudo, islandName);
+    const { _id } = await users.add(hash, pseudo, islandName);
 
     const JWTToken = jwt.sign(
       {
@@ -112,11 +112,11 @@ exports.signin = async (req, res, next) => {
       // secure: true,
     });
 
-    return res.status(201).send({ user: { _id, email, pseudo, islandName } });
+    return res.status(201).send({ user: { _id, pseudo, islandName } });
   } catch (err) {
     console.log(err);
     if (err.code === 11000)
-      return next(Boom.conflict("Email or pseudo already taken"));
+      return next(Boom.conflict("Pseudo already taken"));
     return next(err);
   }
 };

@@ -22,7 +22,7 @@ function App() {
             <Route path="/profile">
               <Profile />
             </Route>
-            <Route path="/navet-trend">
+            <Route path="/turnip-trend">
               <div
                 style={{
                   display: "flex",
