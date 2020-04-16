@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../contexts";
-import { getDailyPosts, bookItem, unbookItem } from "../services";
+import {
+  getDailyPosts,
+  bookItem,
+  unbookItem,
+  bookPost,
+  unbookPost,
+} from "../services";
 import {
   Button,
-  Form,
   Header,
   Divider,
-  Segment,
-  Dimmer,
   Loader,
-  Image,
 } from "semantic-ui-react";
 import PostCreator from "./PostCreator";
 
@@ -45,6 +47,7 @@ const Market = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [itemLoading, setItemLoading] = useState(null);
+  const [postLoading, setPostLoading] = useState(null);
 
   const [posts, setPosts] = useState([]);
 
@@ -106,6 +109,34 @@ const Market = () => {
     }
   };
 
+  const handlePostBooking = async (postId) => {
+    setPostLoading(postId);
+    try {
+      const updatedPost = await bookPost(postId);
+
+      setPosts(posts.map((post) => post._id === postId ? { ...post, ...updatedPost } : post));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setPostLoading(null);
+    }
+  };
+
+  const handlePostUnbooking = async (postId) => {
+    setPostLoading(postId);
+    try {
+      const updatedPost = await unbookPost(postId);
+
+      setPosts(
+        posts.map((post) => post._id === postId ? { ...post, ...updatedPost } : post)
+      );
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setPostLoading(null);
+    }
+  };
+
   const formatDate = (date) => {
     return `${days[date.getDay()]} ${date.getDate()} ${
       months[date.getMonth()]
@@ -154,45 +185,85 @@ const Market = () => {
               size="big"
               style={{ marginTop: "5rem" }}
             >
-              Chargement des annonces...
+              Chargement des annonces ✋
             </Loader>
           ) : (
             <>
               {!!posts.length ? (
-                posts.map(({ _id, author, items, shopPictureSrc }) => (
-                  <div className="market-post" key={_id}>
-                    <Header as="h3">
-                      {author.pseudo === currentUser.pseudo
-                        ? "Ton shop"
-                        : `${author.pseudo} propose`}
-                    </Header>
+                posts.map(
+                  ({
+                    _id: postId,
+                    author,
+                    items,
+                    shopPictureSrc,
+                    bookings: postBookings,
+                  }) => (
+                    <div className="market-post" key={postId}>
+                      <Header as="h3">
+                        {author.pseudo === currentUser.pseudo
+                          ? "Ton shop"
+                          : `${author.pseudo} propose`}
+                      </Header>
 
-                    <div className="market--post--shop-picture">
-                      <img src={shopPictureSrc} className="shop-picture" />
-                    </div>
+                      <div className="market--post--shop-picture">
+                        <img src={shopPictureSrc} className="shop-picture" />
+                      </div>
 
-                    {items.length ? (
-                      items.map(({ _id, name, price, bookings }) => (
-                        <div className="market-items--input" key={_id}>
-                          <div className="market-items--post--item">
-                            <span className="market-items--creator--item-name">
-                              {name}
-                            </span>
-                            {price && (
-                              <span className="market-items--creator--item-price">{`${price}$`}</span>
+                      {items.length ? (
+                        items.map(({ _id, name, price, bookings }) => (
+                          <div className="market-items--input" key={_id}>
+                            <div className="market-items--post--item">
+                              <span className="market-items--creator--item-name">
+                                {name}
+                              </span>
+                              {price && (
+                                <span className="market-items--creator--item-price">{`${price}$`}</span>
+                              )}
+                            </div>
+                            {author._id !== currentUser._id && (
+                              <>
+                                {bookings.some(
+                                  (booking) =>
+                                    booking.author === currentUser._id
+                                ) ? (
+                                  <Button
+                                    color="orange"
+                                    compact
+                                    loading={itemLoading === _id}
+                                    disabled={itemLoading === _id}
+                                    onClick={() => handleItemUnbooking(_id)}
+                                  >
+                                    ❌ Annuler
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    color="teal"
+                                    compact
+                                    loading={itemLoading === _id}
+                                    disabled={itemLoading === _id}
+                                    onClick={() => handleItemBooking(_id)}
+                                  >
+                                    👈 I want it
+                                  </Button>
+                                )}
+                              </>
                             )}
                           </div>
+                        ))
+                      ) : (
+                        <div className="market-items--no-item">
                           {author._id !== currentUser._id && (
                             <>
-                              {bookings.some(
+                              {postBookings.some(
                                 (booking) => booking.author === currentUser._id
                               ) ? (
                                 <Button
                                   color="orange"
                                   compact
-                                  loading={itemLoading === _id}
-                                  disabled={itemLoading === _id}
-                                  onClick={() => handleItemUnbooking(_id)}
+                                  size="large"
+                                  loading={postLoading === postId}
+                                  disabled={postLoading === postId}
+                                  onClick={() => handlePostUnbooking(postId)}
                                 >
                                   ❌ Annuler
                                 </Button>
@@ -200,32 +271,22 @@ const Market = () => {
                                 <Button
                                   color="teal"
                                   compact
-                                  loading={itemLoading === _id}
-                                  disabled={itemLoading === _id}
-                                  onClick={() => handleItemBooking(_id)}
+                                  size="large"
+                                  loading={postLoading === postId}
+                                  disabled={postLoading === postId}
+                                  onClick={() => handlePostBooking(postId)}
                                 >
-                                  👈 I want it
+                                  I want something 🙏
                                 </Button>
                               )}
                             </>
                           )}
                         </div>
-                      ))
-                    ) : (
-                      <div className="market-items--no-item">
-                        <Button
-                          color="teal"
-                          compact
-                          size="large"
-                          onClick={null}
-                        >
-                          I want something 🙏
-                        </Button>
-                      </div>
-                    )}
-                    <Divider style={{ margin: "3rem 3rem 2rem" }} />
-                  </div>
-                ))
+                      )}
+                      <Divider style={{ margin: "3rem 3rem 2rem" }} />
+                    </div>
+                  )
+                )
               ) : (
                 <div className="no-data">
                   Pas d'annonce pour le moment, créé en une 👆

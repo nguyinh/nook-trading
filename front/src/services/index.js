@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true;
 axios.defaults.baseURL = "http://172.20.10.5:2020";
 // TODO: handle PROD env
 
-const signUpUser = async ( pseudo, password, islandName) => {
+const signUpUser = async (pseudo, password, islandName) => {
   const {
     data: { user },
   } = await axios.post("/api/auth/signin", {
@@ -45,7 +45,7 @@ const getDailyPosts = async (items, shopPicture) => {
   const {
     data: { posts },
   } = await axios.get("/api/posts", { params: { onlyDaily: "true" } });
-  console.log(posts);
+
   return posts;
 };
 
@@ -59,7 +59,7 @@ const createPost = (items, shopPicture) => {
 const bookItem = async (itemId) => {
   const {
     data: { item },
-  } = await axios.post("/api/bookings", null, { params: { itemId } });
+  } = await axios.post(`/api/items/${itemId}/bookings`);
 
   return item;
 };
@@ -67,9 +67,25 @@ const bookItem = async (itemId) => {
 const unbookItem = async (itemId) => {
   const {
     data: { item },
-  } = await axios.delete("/api/bookings", { params: { itemId } });
+  } = await axios.delete(`/api/items/${itemId}/bookings`);
 
   return item;
+};
+
+const bookPost = async (postId) => {
+  const {
+    data: { post },
+  } = await axios.post(`/api/posts/${postId}/bookings`);
+
+  return post;
+};
+
+const unbookPost = async (postId) => {
+  const {
+    data: { post },
+  } = await axios.delete(`/api/posts/${postId}/bookings`);
+
+  return post;
 };
 
 export {
@@ -80,5 +96,7 @@ export {
   createPost,
   getDailyPosts,
   bookItem,
-  unbookItem
+  unbookItem,
+  bookPost,
+  unbookPost,
 };

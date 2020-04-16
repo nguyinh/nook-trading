@@ -1,5 +1,5 @@
 const { logger } = require("../middlewares");
-const { posts } = require("../services");
+const { posts, bookings } = require("../services");
 const Boom = require("@hapi/boom");
 
 exports.getAll = async (req, res, next) => {
@@ -16,6 +16,7 @@ exports.getAll = async (req, res, next) => {
       _id: post._id,
       shopPicture: post.shopPicture,
       items: post.items,
+      bookings: post.bookings,
       author: {
         _id: post.author._id,
         pseudo: post.author.pseudo,
@@ -40,6 +41,44 @@ exports.create = async (req, res, next) => {
     const createdPost = await posts.add(authorId, shopPicture, items);
 
     return res.send(createdPost);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.createBooking = async (req, res, next) => {
+  const { postId } = req.params;
+  const { _id: authorId } = req.user;
+
+  if (!postId) return next(Boom.badRequest("Missing postId in request query"));
+
+  logger.info(
+    `[CONTROLLERS | bookings] create | ${authorId} ${postId}`
+  );
+
+  try {
+    const update = await bookings.add(postId, authorId, "post");
+
+    return res.send({ post: update });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.deleteBooking = async (req, res, next) => {
+  const { postId } = req.params;
+  const { _id: authorId } = req.user;
+
+  if (!postId) return next(Boom.badRequest("Missing postId in request query"));
+
+  logger.info(
+    `[CONTROLLERS | bookings] delete | ${authorId} ${postId}`
+  );
+
+  try {
+    const update = await bookings.remove(postId, authorId, "post");
+
+    return res.send({ post: update });
   } catch (err) {
     return next(err);
   }

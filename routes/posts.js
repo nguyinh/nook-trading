@@ -8,4 +8,9 @@ router
   .get(verifyJWT, posts.getAll)
   .post(verifyJWT, findUser, posts.create);
 
+router
+  .route('/posts/:postId/bookings')
+  .post(verifyJWT, findUser, posts.createBooking)
+  .delete(verifyJWT, findUser, posts.deleteBooking);
+
 module.exports = router;

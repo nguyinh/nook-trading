@@ -35,8 +35,3 @@ exports.add = async (author, shopPicture, items) => {
     items: createdItems.map(item => item._id)
   });
 };
-
-exports.update = (postId, options) => {
-  console.log(postId, options['$set'].items.map(i => i.bookings))
-  return Post.findByIdAndUpdate(postId, options);
-};
