@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../contexts";
 import { signUpUser, logInUser } from "../services";
-// import { AuthContext } from "./AuthContext";
-import { Button, Form, Header } from "semantic-ui-react";
+import { Button, Form, Header, Loader } from "semantic-ui-react";
+import ATNH from '../res/images/animal-trading-banner.png';
 
 const Profile = () => {
   const {
-    state: { currentUser },
+    state: { currentUser, isAutoConnecting },
     dispatch,
   } = useContext(AppContext);
 
@@ -46,6 +46,13 @@ const Profile = () => {
     }
   };
 
+  if (isAutoConnecting)
+    return (
+      <Loader active inline="centered" size="big" style={{ marginTop: "5rem" }}>
+        Chargement de l'app ✋
+      </Loader>
+    );
+
   return (
     <div className="profile-container">
       {currentUser ? (
@@ -57,12 +64,13 @@ const Profile = () => {
         </>
       ) : (
         <>
+          <img src={ATNH} style={{width: '100%', marginBottom: '2rem'}}></img>
           {signType === "SIGN_UP" ? (
             <Form loading={isConnecting}>
               <div className="profile-header">
-                <Header as="h2">Sign up</Header>
+                <Header as="h2">Inscription</Header>
                 <Button
-                  content="Go to log in"
+                  content="Se connecter"
                   onClick={() => setSignType("LOG_IN")}
                 />
               </div>
@@ -98,7 +106,7 @@ const Profile = () => {
                 />
                 <Button
                   width={12}
-                  content="Submit"
+                  content="C'est tipar 🔥"
                   color="blue"
                   fluid
                   onClick={signUp}
@@ -108,9 +116,9 @@ const Profile = () => {
           ) : (
             <Form loading={isConnecting}>
               <div className="profile-header">
-                <Header as="h2">Log in</Header>
+                <Header as="h2">Connection</Header>
                 <Button
-                  content="Go to sign up"
+                  content="S'inscrire"
                   onClick={() => setSignType("SIGN_UP")}
                 />
               </div>
@@ -137,7 +145,7 @@ const Profile = () => {
                 />
                 <Button
                   width={12}
-                  content="Submit"
+                  content="Let's go"
                   color="blue"
                   fluid
                   onClick={logIn}

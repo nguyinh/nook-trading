@@ -1,7 +1,7 @@
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://172.20.10.5:2020";
+axios.defaults.baseURL = "http://172.20.10.3:2020";
 // TODO: handle PROD env
 
 const signUpUser = async (pseudo, password, islandName) => {

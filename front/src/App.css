@@ -102,14 +102,14 @@
   border-radius: 20px;
   background: #d22525;
   color: white;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.3rem;
+  height: 1.3rem;
   margin: 0;
   display: inline-block;
   text-align: center;
-  font-size: 14px;
+  font-size: 0.8rem;
   margin-left: 0.5rem;
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 1s; /* Firefox < 16 */
         -ms-animation: fadein 1s; /* Internet Explorer */
@@ -124,6 +124,7 @@
    -ms-animation: fadein 0.5s; /* Internet Explorer */
     -o-animation: fadein 0.5s; /* Opera < 12.1 */
        animation: fadein 0.5s;
+  margin-bottom: 3rem;
 }
 
 .market--post--author {
@@ -136,7 +137,7 @@
 .market--post--shop-picture {
   text-align: center;
   background-color: #f2f1f2;
-  margin: 0 -1rem;
+  margin: 0 -1rem 2rem;
 }
 
 .market-items--post--item {

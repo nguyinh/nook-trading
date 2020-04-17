@@ -36,6 +36,7 @@ const logout = async (state) => {
 
 const initialState = {
   currentUser: null,
+  isAutoConnecting: true
 };
 
 const AppContext = React.createContext(initialState);
@@ -55,6 +56,8 @@ function AppProvider(props) {
       connect();
     } catch (err) {
       console.log(err);
+      dispatch({ type: "DISABLE_LOADING" });
+    } finally {
       dispatch({ type: "DISABLE_LOADING" });
     }
   }, []);

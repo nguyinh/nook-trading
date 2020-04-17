@@ -7,13 +7,9 @@ import {
   bookPost,
   unbookPost,
 } from "../services";
-import {
-  Button,
-  Header,
-  Divider,
-  Loader,
-} from "semantic-ui-react";
+import { Button, Header, Divider, Loader } from "semantic-ui-react";
 import PostCreator from "./PostCreator";
+import { Redirect } from "react-router-dom";
 
 const days = new Array(
   "Dimanche",
@@ -41,7 +37,7 @@ const months = new Array(
 
 const Market = () => {
   const {
-    state: { currentUser },
+    state: { currentUser, isAutoConnecting },
   } = useContext(AppContext);
 
   const [isCreating, setIsCreating] = useState(false);
@@ -114,7 +110,11 @@ const Market = () => {
     try {
       const updatedPost = await bookPost(postId);
 
-      setPosts(posts.map((post) => post._id === postId ? { ...post, ...updatedPost } : post));
+      setPosts(
+        posts.map((post) =>
+          post._id === postId ? { ...post, ...updatedPost } : post
+        )
+      );
     } catch (err) {
       console.log(err);
     } finally {
@@ -128,7 +128,9 @@ const Market = () => {
       const updatedPost = await unbookPost(postId);
 
       setPosts(
-        posts.map((post) => post._id === postId ? { ...post, ...updatedPost } : post)
+        posts.map((post) =>
+          post._id === postId ? { ...post, ...updatedPost } : post
+        )
       );
     } catch (err) {
       console.log(err);
@@ -152,6 +154,16 @@ const Market = () => {
     fetchPosts();
   }, []);
 
+  const isLastPost = (index) => index + 1 !== posts.length;
+
+  if (isAutoConnecting)
+    return (
+      <Loader active inline="centered" size="big" style={{ marginTop: "5rem" }}>
+        Chargement de l'app ✋
+      </Loader>
+    );
+  else if (!currentUser) return <Redirect to="/profile" />;
+
   return (
     <>
       {" "}
@@ -170,6 +182,9 @@ const Market = () => {
                 <div className="market--header--post-count">{posts.length}</div>
               )}
             </Header>
+            {/* TODO: handle update post
+            {!isLoading &&
+              !posts.some((post) => post.author._id === currentUser._id) && ( */}
             <Button
               size="mini"
               color="olive"
@@ -177,6 +192,7 @@ const Market = () => {
             >
               + Créer annonce
             </Button>
+            {/* )} */}
           </div>
           {isLoading ? (
             <Loader
@@ -191,13 +207,16 @@ const Market = () => {
             <>
               {!!posts.length ? (
                 posts.map(
-                  ({
-                    _id: postId,
-                    author,
-                    items,
-                    shopPictureSrc,
-                    bookings: postBookings,
-                  }) => (
+                  (
+                    {
+                      _id: postId,
+                      author,
+                      items,
+                      shopPictureSrc,
+                      bookings: postBookings,
+                    },
+                    i
+                  ) => (
                     <div className="market-post" key={postId}>
                       <Header as="h3">
                         {author.pseudo === currentUser.pseudo
@@ -210,8 +229,8 @@ const Market = () => {
                       </div>
 
                       {items.length ? (
-                        items.map(({ _id, name, price, bookings }) => (
-                          <div className="market-items--input" key={_id}>
+                        items.map(({ _id: itemId, name, price, bookings }) => (
+                          <div className="market-items--input" key={itemId}>
                             <div className="market-items--post--item">
                               <span className="market-items--creator--item-name">
                                 {name}
@@ -229,9 +248,9 @@ const Market = () => {
                                   <Button
                                     color="orange"
                                     compact
-                                    loading={itemLoading === _id}
-                                    disabled={itemLoading === _id}
-                                    onClick={() => handleItemUnbooking(_id)}
+                                    loading={itemLoading === itemId}
+                                    disabled={itemLoading === itemId}
+                                    onClick={() => handleItemUnbooking(itemId)}
                                   >
                                     ❌ Annuler
                                   </Button>
@@ -239,9 +258,9 @@ const Market = () => {
                                   <Button
                                     color="teal"
                                     compact
-                                    loading={itemLoading === _id}
-                                    disabled={itemLoading === _id}
-                                    onClick={() => handleItemBooking(_id)}
+                                    loading={itemLoading === itemId}
+                                    disabled={itemLoading === itemId}
+                                    onClick={() => handleItemBooking(itemId)}
                                   >
                                     👈 I want it
                                   </Button>
@@ -283,7 +302,9 @@ const Market = () => {
                           )}
                         </div>
                       )}
-                      <Divider style={{ margin: "3rem 3rem 2rem" }} />
+                      {isLastPost(i) && (
+                        <Divider style={{ margin: "3rem 3rem 0" }} />
+                      )}
                     </div>
                   )
                 )

@@ -13,6 +13,8 @@ const PostCreator = ({ backFromCreator }) => {
   const [isPublishing, setIsPublishing] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const inputRef = useRef(null);
+  const nameInputRef = useRef(null);
+  const priceInputRef = useRef(null);
 
   const addItemPrice = (price) => {
     const digitRegex = /^\d+$/;
@@ -26,14 +28,19 @@ const PostCreator = ({ backFromCreator }) => {
 
   const addItemToList = () => {
     if (itemName === "") {
-      setNameError("Frère tu forces, indique au moins le nom de l'article");
+      setNameError("Frère tu forces, indique au moins le nom de l'item");
+      return;
+    }
+    if (items.some(({name}) => name === itemName)) {
+      setNameError("T'as déjà rentré l'item frero");
       return;
     }
 
-    setItems([...items, { name: itemName, price: itemPrice }]);
+    setItems([...items, { name: itemName, price: parseInt(itemPrice) }]);
     setItemName("");
     setItemPrice("");
     setNameError("");
+    nameInputRef.current.focus();
   };
 
   const publish = async () => {
@@ -78,7 +85,9 @@ const PostCreator = ({ backFromCreator }) => {
       />
 
       {shopPicture ? (
-        <img src={shopPicture} className="shop-picture" />
+        <div className="market--post--shop-picture" onClick={simulateInputClick}>
+          <img src={shopPicture} className="shop-picture" />
+        </div>
       ) : (
         <Segment
           placeholder
@@ -94,7 +103,7 @@ const PostCreator = ({ backFromCreator }) => {
       )}
 
       <div className="market-items--creator">
-        <Header as="h3">Ajoute tes articles</Header>
+        <Header as="h3">Ajoute tes items</Header>
 
         {items.map(({ name, price }) => (
           <div className="market-items--input">
@@ -121,9 +130,12 @@ const PostCreator = ({ backFromCreator }) => {
             <Input
               icon="tag"
               iconPosition="left"
-              placeholder="Nom article"
+              placeholder="Nom item"
               value={itemName}
               error={nameError}
+              onFocus={() => setNameError('')}
+              onKeyDown={e => e.key === 'Enter' && priceInputRef.current.focus()}
+              ref={nameInputRef}
               onChange={(_, { value }) => setItemName(value)}
             />
             <Input
@@ -132,6 +144,8 @@ const PostCreator = ({ backFromCreator }) => {
               placeholder="Prix"
               className="market-items--price-input"
               value={itemPrice}
+              onKeyDown={e => e.key === 'Enter' && addItemToList()}
+              ref={priceInputRef}
               onChange={(_, { value }) => addItemPrice(value)}
             />
             <Button icon color="olive" onClick={addItemToList}>
