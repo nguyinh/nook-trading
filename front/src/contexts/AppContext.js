@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect } from "react";
-import { connectUser, logOutUser } from '../services';
+import { connectUser, logOutUser } from "../services";
 
 let reducer = (state, action) => {
   // const { some } = state;
@@ -36,7 +36,7 @@ const logout = async (state) => {
 
 const initialState = {
   currentUser: null,
-  isAutoConnecting: true
+  isAutoConnecting: true,
 };
 
 const AppContext = React.createContext(initialState);
@@ -45,21 +45,19 @@ function AppProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    try {
-      async function connect() {
+    async function connect() {
+      try {
         const user = await connectUser();
 
         dispatch({ type: "SET_USER", user });
+      } catch (err) {
+        console.log(err);
+      } finally {
         dispatch({ type: "DISABLE_LOADING" });
       }
-
-      connect();
-    } catch (err) {
-      console.log(err);
-      dispatch({ type: "DISABLE_LOADING" });
-    } finally {
-      dispatch({ type: "DISABLE_LOADING" });
     }
+
+    connect();
   }, []);
 
   return (

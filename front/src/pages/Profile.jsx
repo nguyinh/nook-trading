@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../contexts";
 import { signUpUser, logInUser } from "../services";
-import { Button, Form, Header, Loader } from "semantic-ui-react";
-import ATNH from '../res/images/animal-trading-banner.png';
+import { Button, Form, Header, Loader, Message } from "semantic-ui-react";
+import ATNH from "../res/images/animal-trading-banner.png";
 
 const Profile = () => {
   const {
@@ -12,38 +12,51 @@ const Profile = () => {
 
   const [isConnecting, setIsConnecting] = useState(false);
   const [signType, setSignType] = useState("SIGN_UP");
-  const [password, setPassword] = useState("");
   const [pseudo, setPseudo] = useState("");
+  const [pseudoError, setPseudoError] = useState(null);
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(null);
   const [islandName, setIslandName] = useState("");
 
   const signUp = async () => {
-    try {
-      setIsConnecting(true);
+    resetErrors();
+    setIsConnecting(true);
 
+    try {
       const user = await signUpUser(pseudo, password, islandName);
 
       dispatch({ type: "SET_USER", user });
-
-      setIsConnecting(false);
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data.error.message);
+      if (err.response.data.error.message === "Pseudo already taken")
+        setPseudoError("Ce pseudo est déjà utilisé ");
+    } finally {
       setIsConnecting(false);
     }
   };
 
   const logIn = async () => {
+    resetErrors();
     setIsConnecting(true);
 
     try {
       const user = await logInUser(pseudo, password);
 
       dispatch({ type: "SET_USER", user });
-
-      setIsConnecting(false);
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data.error.message);
+      if (err.response.data.error.message === "Wrong pseudo")
+        setPseudoError("Ce pseudo n'existe pas");
+      else if (err.response.data.error.message === "Wrong password")
+        setPasswordError("Mauvais mot de passe");
+    } finally {
       setIsConnecting(false);
     }
+  };
+
+  const resetErrors = () => {
+    setPseudoError(null);
+    setPasswordError(null);
   };
 
   if (isAutoConnecting)
@@ -64,7 +77,7 @@ const Profile = () => {
         </>
       ) : (
         <>
-          <img src={ATNH} style={{width: '100%', marginBottom: '2rem'}}></img>
+          <img src={ATNH} style={{ width: "100%", marginBottom: "2rem" }}></img>
           {signType === "SIGN_UP" ? (
             <Form loading={isConnecting}>
               <div className="profile-header">
@@ -131,6 +144,8 @@ const Profile = () => {
                   placeholder="Pseudo"
                   name="pseudo"
                   value={pseudo}
+                  error={pseudoError}
+                  onFocus={resetErrors}
                   onChange={(_, { value }) => setPseudo(value)}
                 />
                 <Form.Input
@@ -140,6 +155,8 @@ const Profile = () => {
                   placeholder="Password"
                   name="password"
                   value={password}
+                  error={passwordError}
+                  onFocus={resetErrors}
                   type="password"
                   onChange={(_, { value }) => setPassword(value)}
                 />
