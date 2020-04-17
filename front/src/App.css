@@ -143,13 +143,20 @@
 .market-items--post--item {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .market-items--post--item-label {
   display: flex;
   flex-direction: row;
-  align-self: center;
+  /* align-self: center; */
   font-size: 13px;
+  margin-left: 0.5rem;
+}
+
+.market-items--post--item-bookings {
+  font-size: 10px;
+  opacity: 0.5;
   margin-left: 0.5rem;
 }
 
@@ -165,6 +172,7 @@
 
 .shop-picture {
   max-height: 25vh;
+  max-width: 100%;
 }
 
 .shop-picture--input {

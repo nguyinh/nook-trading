@@ -156,6 +156,26 @@ const Market = () => {
 
   const isLastPost = (index) => index + 1 !== posts.length;
 
+  const BookingIndicator = ({ bookingAuthors }) => {
+    if (!bookingAuthors.length) return null;
+
+    if (bookingAuthors.length === 1) {
+      const isSelfAuthor = bookingAuthors[0]._id === currentUser._id;
+      if (isSelfAuthor) return <span>Tu es interréssé 👀</span>;
+      else return <span>{`${bookingAuthors[0].pseudo} est intéressé`}</span>;
+    } else {
+      const isSelfAuthor = (_id) => _id === currentUser._id;
+      const authorsList = bookingAuthors.map(({ pseudo, _id }, i) =>
+        isSelfAuthor(_id) ? `Toi` : pseudo
+      );
+      authorsList.sort((a, b) => (a === "Toi" ? -1 : 0));
+      if (isSelfAuthor)
+        return <span>{`${authorsList.join(", ")} êtes intéressés`}</span>;
+    }
+
+    return null;
+  };
+
   if (isAutoConnecting)
     return (
       <Loader active inline="centered" size="big" style={{ marginTop: "5rem" }}>
@@ -231,7 +251,7 @@ const Market = () => {
                       {items.length ? (
                         items.map(({ _id: itemId, name, price, bookings }) => (
                           <div className="market-items--input" key={itemId}>
-                            <div className='market-items--post--item'>
+                            <div className="market-items--post--item">
                               <div className="market-items--post--item-label">
                                 <span className="market-items--creator--item-name">
                                   {name}
@@ -240,9 +260,15 @@ const Market = () => {
                                   <span className="market-items--creator--item-price">{`${price}$`}</span>
                                 )}
                               </div>
-                              <div className="market-items--post--item-bookings">
-                                {bookings.map(booking => console.log(booking))}
-                              </div>
+                              {!!bookings.length && (
+                                <div className="market-items--post--item-bookings">
+                                  <BookingIndicator
+                                    bookingAuthors={bookings.map(
+                                      (booking) => booking.author
+                                    )}
+                                  />
+                                </div>
+                              )}
                             </div>
                             {author._id !== currentUser._id && (
                               <>
@@ -279,7 +305,8 @@ const Market = () => {
                           {author._id !== currentUser._id && (
                             <>
                               {postBookings.some(
-                                (booking) => booking.author._id === currentUser._id
+                                (booking) =>
+                                  booking.author._id === currentUser._id
                               ) ? (
                                 <Button
                                   color="orange"
@@ -304,6 +331,19 @@ const Market = () => {
                                 </Button>
                               )}
                             </>
+                          )}
+
+                          {!!postBookings.length && (
+                            <div
+                              className="market-items--post--item-bookings"
+                              style={{ marginTop: "0.5rem", marginLeft: 0 }}
+                            >
+                              <BookingIndicator
+                                bookingAuthors={postBookings.map(
+                                  (booking) => booking.author
+                                )}
+                              />
+                            </div>
                           )}
                         </div>
                       )}

@@ -13,7 +13,9 @@ require("dotenv").config();
 
 // CORS handle
 const whitelist = [
+  "http://172.20.10.3:3000",
   "http://172.20.10.4:3000",
+  "http://172.20.10.5:3000",
   "http://localhost:3000",
   "http://localhost:2020",
 ];

@@ -45,8 +45,8 @@ const getDailyPosts = async (items, shopPicture) => {
   const {
     data: { posts },
   } = await axios.get("/api/posts", { params: { onlyDaily: "true" } });
-  console.log(posts );
-  return posts;
+
+  return posts.reverse();
 };
 
 const createPost = (items, shopPicture) => {

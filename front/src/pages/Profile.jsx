@@ -27,9 +27,10 @@ const Profile = () => {
 
       dispatch({ type: "SET_USER", user });
     } catch (err) {
-      console.log(err.response.data.error.message);
-      if (err.response.data.error.message === "Pseudo already taken")
-        setPseudoError("Ce pseudo est déjà utilisé ");
+      if (err.response) {
+        if (err.response.data.error.message === "Pseudo already taken")
+          setPseudoError("Ce pseudo est déjà utilisé ");
+      }
     } finally {
       setIsConnecting(false);
     }
@@ -44,11 +45,12 @@ const Profile = () => {
 
       dispatch({ type: "SET_USER", user });
     } catch (err) {
-      console.log(err.response.data.error.message);
-      if (err.response.data.error.message === "Wrong pseudo")
-        setPseudoError("Ce pseudo n'existe pas");
-      else if (err.response.data.error.message === "Wrong password")
-        setPasswordError("Mauvais mot de passe");
+      if (err.response) {
+        if (err.response.data.error.message === "Wrong pseudo")
+          setPseudoError("Ce pseudo n'existe pas");
+        else if (err.response.data.error.message === "Wrong password")
+          setPasswordError("Mauvais mot de passe");
+      }
     } finally {
       setIsConnecting(false);
     }
