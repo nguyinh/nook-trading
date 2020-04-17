@@ -17,10 +17,7 @@ exports.getAll = async (req, res, next) => {
       shopPicture: post.shopPicture,
       items: post.items,
       bookings: post.bookings,
-      author: {
-        _id: post.author._id,
-        pseudo: post.author.pseudo,
-      },
+      author: post.author
     }));
 
     return res.send({ posts: formattedPosts });

@@ -231,19 +231,24 @@ const Market = () => {
                       {items.length ? (
                         items.map(({ _id: itemId, name, price, bookings }) => (
                           <div className="market-items--input" key={itemId}>
-                            <div className="market-items--post--item">
-                              <span className="market-items--creator--item-name">
-                                {name}
-                              </span>
-                              {price && (
-                                <span className="market-items--creator--item-price">{`${price}$`}</span>
-                              )}
+                            <div className='market-items--post--item'>
+                              <div className="market-items--post--item-label">
+                                <span className="market-items--creator--item-name">
+                                  {name}
+                                </span>
+                                {price && (
+                                  <span className="market-items--creator--item-price">{`${price}$`}</span>
+                                )}
+                              </div>
+                              <div className="market-items--post--item-bookings">
+                                {bookings.map(booking => console.log(booking))}
+                              </div>
                             </div>
                             {author._id !== currentUser._id && (
                               <>
                                 {bookings.some(
                                   (booking) =>
-                                    booking.author === currentUser._id
+                                    booking.author._id === currentUser._id
                                 ) ? (
                                   <Button
                                     color="orange"
@@ -274,7 +279,7 @@ const Market = () => {
                           {author._id !== currentUser._id && (
                             <>
                               {postBookings.some(
-                                (booking) => booking.author === currentUser._id
+                                (booking) => booking.author._id === currentUser._id
                               ) ? (
                                 <Button
                                   color="orange"

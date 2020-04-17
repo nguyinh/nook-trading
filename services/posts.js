@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Post, Item } = require("../models");
+const { Post, Item, User } = require("../models");
 
 exports.findAll = () => {
   return Post.find().populate("author items");
@@ -12,7 +12,24 @@ exports.findAllDaily = () => {
     createdAt: {
       $gte: todayMidnight,
     },
-  }).populate("author items");
+  })
+    .populate({
+      path: "author",
+      select: 'pseudo islandName'
+    })
+    .populate({
+      path: "bookings.author",
+      select: 'pseudo islandName'
+    })
+    .populate({
+      path: "items",
+      populate: [
+        {
+          path: "bookings.author",
+          select: 'pseudo islandName'
+        }
+      ],
+    });
 };
 
 exports.findById = (_id, includeAuthor) => {
@@ -22,16 +39,18 @@ exports.findById = (_id, includeAuthor) => {
 };
 
 exports.add = async (author, shopPicture, items) => {
-  const itemPromises = items.map(item => Item.create({
-    _id: new mongoose.Types.ObjectId(),
-    ...item,
-  }));
+  const itemPromises = items.map((item) =>
+    Item.create({
+      _id: new mongoose.Types.ObjectId(),
+      ...item,
+    })
+  );
   const createdItems = await Promise.all(itemPromises);
 
   return Post.create({
     _id: new mongoose.Types.ObjectId(),
     author,
     shopPicture,
-    items: createdItems.map(item => item._id)
+    items: createdItems.map((item) => item._id),
   });
 };

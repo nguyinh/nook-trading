@@ -8,14 +8,34 @@ exports.add = (_id, authorId, bookingType) => {
         {
           new: true,
         }
-      )
+      ).populate({
+        path: "bookings.author",
+        select: "pseudo islandName",
+      })
     : Post.findOneAndUpdate(
         { _id },
         { $addToSet: { bookings: [{ author: authorId }] } },
         {
           new: true,
         }
-      ).populate('author');
+      )
+        .populate({
+          path: "author",
+          select: "pseudo islandName",
+        })
+        .populate({
+          path: "bookings.author",
+          select: "pseudo islandName",
+        })
+        .populate({
+          path: "items",
+          populate: [
+            {
+              path: "bookings.author",
+              select: "pseudo islandName",
+            },
+          ],
+        });
 };
 
 exports.remove = (_id, authorId, bookingType) => {
@@ -26,12 +46,32 @@ exports.remove = (_id, authorId, bookingType) => {
         {
           new: true,
         }
-      )
+      ).populate({
+        path: "bookings.author",
+        select: "pseudo islandName",
+      })
     : Post.findOneAndUpdate(
         { _id },
         { $pull: { bookings: { author: authorId } } },
         {
           new: true,
         }
-      ).populate('author');
+      )
+        .populate({
+          path: "author",
+          select: "pseudo islandName",
+        })
+        .populate({
+          path: "bookings.author",
+          select: "pseudo islandName",
+        })
+        .populate({
+          path: "items",
+          populate: [
+            {
+              path: "bookings.author",
+              select: "pseudo islandName",
+            },
+          ],
+        });
 };

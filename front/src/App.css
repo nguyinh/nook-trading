@@ -141,6 +141,13 @@
 }
 
 .market-items--post--item {
+  display: flex;
+  flex-direction: column;
+}
+
+.market-items--post--item-label {
+  display: flex;
+  flex-direction: row;
   align-self: center;
   font-size: 13px;
   margin-left: 0.5rem;
