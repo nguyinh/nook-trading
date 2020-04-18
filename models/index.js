@@ -1,5 +1,7 @@
+const User = require("./User");
+console.log(User);
 module.exports = {
-  User: require('./User'),
-  Post: require('./Post'),
-  Item: require('./Item'),
-}
+  User,
+  Post: require("./Post"),
+  Item: require("./Item"),
+};

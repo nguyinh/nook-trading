@@ -9,7 +9,7 @@ const routes = require("./routes");
 const app = express();
 const { logger, redirectSecure, errorHandler } = require("./middlewares");
 const { User } = require('./models');
-
+console.log(User);
 require("dotenv").config();
 
 // CORS handle
