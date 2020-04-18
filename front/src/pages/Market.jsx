@@ -250,7 +250,7 @@ const Market = () => {
                       <Header as="h3" style={{ fontWeight: 400 }}>
                         {author.pseudo === currentUser.pseudo
                           ? "Ton shop ✨"
-                          : `${author.pseudo} propose`}
+                          : <><b>{author.pseudo}</b><span>{` propose`}</span></>}
                       </Header>
 
                       <div className="market--post--shop-picture">
