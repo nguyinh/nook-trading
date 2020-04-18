@@ -18,8 +18,8 @@ const whitelist = [
   "http://172.20.10.5:3000",
   "http://localhost:3000",
   "http://localhost:2020",
-  "http://nook-trading-acnh.herokuapp.com",
-  "https://nook-trading-acnh.herokuapp.com"
+  "http://nook-trading.herokuapp.com",
+  "https://nook-trading.herokuapp.com"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
