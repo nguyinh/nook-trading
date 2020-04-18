@@ -295,7 +295,7 @@ const Market = () => {
                                     color="orange"
                                     compact
                                     loading={itemLoading === itemId}
-                                    disabled={itemLoading/* === itemId*/}
+                                    disabled={itemLoading || postLoading/* === itemId*/}
                                     onClick={() => handleItemUnbooking(itemId)}
                                   >
                                     ❌ Annuler
@@ -305,7 +305,7 @@ const Market = () => {
                                     color="teal"
                                     compact
                                     loading={itemLoading === itemId}
-                                    disabled={itemLoading/* === itemId*/}
+                                    disabled={itemLoading || postLoading/* === itemId*/}
                                     onClick={() => handleItemBooking(itemId)}
                                   >
                                     👈 I want it
@@ -328,7 +328,7 @@ const Market = () => {
                                   compact
                                   size="large"
                                   loading={postLoading === postId}
-                                  disabled={postLoading/* === postId*/}
+                                  disabled={postLoading || itemLoading/* === postId*/}
                                   onClick={() => handlePostUnbooking(postId)}
                                 >
                                   ❌ Annuler
@@ -339,7 +339,7 @@ const Market = () => {
                                   compact
                                   size="large"
                                   loading={postLoading === postId}
-                                  disabled={postLoading/* === postId*/}
+                                  disabled={postLoading || itemLoading/* === postId*/}
                                   onClick={() => handlePostBooking(postId)}
                                 >
                                   I want something 🙏

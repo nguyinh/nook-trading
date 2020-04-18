@@ -4,7 +4,7 @@ import { Menu, Icon } from "semantic-ui-react";
 
 const Navigation = () => {
   let { pathname } = useLocation();
-  console.log(pathname)
+
   return (
     <nav className="navigation-bar">
       <Menu widths={3} className='navigation-bar--menu'>

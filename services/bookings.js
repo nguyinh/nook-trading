@@ -19,6 +19,7 @@ exports.add = (_id, authorId, bookingType) => {
           new: true,
         }
       )
+        .select("-shopPicture")
         .populate({
           path: "author",
           select: "pseudo islandName",
@@ -57,6 +58,7 @@ exports.remove = (_id, authorId, bookingType) => {
           new: true,
         }
       )
+        .select("-shopPicture")
         .populate({
           path: "author",
           select: "pseudo islandName",

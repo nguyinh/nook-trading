@@ -76,7 +76,7 @@ const bookPost = async (postId) => {
   const {
     data: { post },
   } = await axios.post(`/api/posts/${postId}/bookings`);
-
+  console.log(post);
   return post;
 };
 
