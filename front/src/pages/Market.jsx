@@ -270,10 +270,7 @@ const Market = () => {
                                     <span className="market-items--creator--item-price">{`${price}`}</span>
                                     <img
                                       src={bellsImage}
-                                      style={{
-                                        width: "16px",
-                                        marginLeft: "0.2rem",
-                                      }}
+                                      className='market-items--bell-image'
                                     />
                                   </>
                                 )}

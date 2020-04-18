@@ -117,10 +117,7 @@ const PostCreator = ({ backFromCreator }) => {
                   <span className="market-items--creator--item-price">{`${price}`}</span>
                   <img
                     src={bellsImage}
-                    style={{
-                      width: "17px",
-                      marginLeft: "0.2rem",
-                    }}
+                    className='market-items--bell-image'
                   />
                 </>
               )}

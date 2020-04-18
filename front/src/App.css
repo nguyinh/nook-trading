@@ -290,6 +290,12 @@
   font-weight: 400;
 }
 
+.market-items--bell-image {
+  width: 17px;
+  height: 1.5rem;
+  margin-left: 0.2rem;
+}
+
 .market-items--publish {
   margin-top: 2rem !important;
 }
