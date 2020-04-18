@@ -1,5 +1,3 @@
-const jwt = require("jsonwebtoken");
-const logger = require("./logger");
 const Boom = require("@hapi/boom");
 require("dotenv").config();
 const { users } = require('../services');
