@@ -8,6 +8,7 @@ const cors = require("cors");
 const routes = require("./routes");
 const app = express();
 const { logger, redirectSecure, errorHandler } = require("./middlewares");
+const { User } = require('./models');
 
 require("dotenv").config();
 
