@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { createPost } from "../services";
-import { Button, Segment, Header, Icon, Input, Label } from "semantic-ui-react";
-import { Redirect } from "react-router-dom";
+import { Button, Segment, Header, Icon, Input } from "semantic-ui-react";
 import bellsImage from "../res/images/bells.png";
 
 const PostCreator = ({ backFromCreator }) => {
@@ -37,7 +36,7 @@ const PostCreator = ({ backFromCreator }) => {
       return;
     }
 
-    setItems([...items, { name: itemName, price: parseInt(itemPrice) }]);
+    setItems([...items, { name: itemName, price: itemPrice && parseInt(itemPrice) }]);
     setItemName("");
     setItemPrice("");
     setNameError("");
@@ -45,7 +44,7 @@ const PostCreator = ({ backFromCreator }) => {
   };
 
   const publish = async () => {
-    if (itemName && itemPrice) addItemToList();
+    // if (itemName && itemPrice) addItemToList();
     if (!shopPicture) {
       setPublishError(true);
       return;

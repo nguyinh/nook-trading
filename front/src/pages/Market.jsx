@@ -163,7 +163,10 @@ const Market = () => {
     if (bookingAuthors.length === 1) {
       const isSelfAuthor = bookingAuthors[0]._id === currentUser._id;
       if (isSelfAuthor) return <span>Tu es interréssé 👀</span>;
-      else return <span>{`${bookingAuthors[0].pseudo} est intéressé`}</span>;
+      else return <>
+        <span style={{ fontWeight: 700 }}>{bookingAuthors[0].pseudo}</span>
+        <span>{` est intéressé`}</span>
+      </>
     } else {
       const isSelfAuthor = (_id) => _id === currentUser._id;
       const authorsList = bookingAuthors.map(({ pseudo, _id }, i) =>
@@ -171,7 +174,12 @@ const Market = () => {
       );
       authorsList.sort((a, b) => (a === "Toi" ? -1 : 0));
       if (isSelfAuthor)
-        return <span>{`${authorsList.join(", ")} êtes intéressés`}</span>;
+        return (
+          <>
+            <span style={{ fontWeight: 700 }}>{authorsList.join(", ")}</span>
+            <span>{` ${bookingAuthors.some(({_id}) => _id === currentUser._id) ? 'êtes' : 'sont'} intéressés`}</span>
+          </>
+        );
     }
 
     return null;
@@ -241,7 +249,7 @@ const Market = () => {
                     <div className="market-post" key={postId}>
                       <Header as="h3" style={{ fontWeight: 400 }}>
                         {author.pseudo === currentUser.pseudo
-                          ? "Ton shop"
+                          ? "Ton shop ✨"
                           : `${author.pseudo} propose`}
                       </Header>
 

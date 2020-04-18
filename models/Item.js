@@ -10,7 +10,7 @@ const bookingScheme = mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   }
 });
 
@@ -28,7 +28,7 @@ const itemScheme = mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   }
 });
 

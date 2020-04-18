@@ -1,15 +1,11 @@
 import React from "react";
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AppProvider } from "./contexts";
 import Navigation from "./Navigation";
 // import { AuthProvider } from "./contexts/AuthContext";
 
-import { Profile, Market,PostCreator } from "./pages";
+import { Profile, Market, PostCreator } from "./pages";
 
 function App() {
   return (
@@ -23,15 +19,11 @@ function App() {
               <Profile />
             </Route>
             <Route path="/turnip-trend">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  height: "90vh",
-                  margin: "40vh 0",
-                }}
-              >
-                <span style={{fontSize: 'x-large'}}>Work in progress 👨‍💻🔥</span>
+              <div className="wip">
+                <span className="wip-title">Work in progress 👨‍💻🔥</span>
+                <span className="wip-explanations">
+                  icitupourraspartagertoncoursdunavetavectesmeilleurspotosmatin&après-midimaischutc'estunsecret
+                </span>
               </div>
             </Route>
             <Route path="/market">
