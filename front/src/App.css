@@ -227,7 +227,7 @@
 }
 
 .shop-picture {
-  max-height: 25vh;
+  max-height: 35vh;
   max-width: 100%;
 }
 
@@ -291,8 +291,8 @@
 }
 
 .market-items--bell-image {
-  width: 17px;
-  height: 1.5rem;
+  width: 1.2em;
+  height: 1.5em;
   margin-left: 0.2rem;
 }
 

@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { createPost } from "../services";
 import { Button, Segment, Header, Icon, Input } from "semantic-ui-react";
 import bellsImage from "../res/images/bells.png";
+import Compressor from 'compressorjs';
 
 const PostCreator = ({ backFromCreator }) => {
   const [shopPicture, setShopPicture] = useState(null);
@@ -64,13 +65,25 @@ const PostCreator = ({ backFromCreator }) => {
 
   const onInputChange = async (evt) => {
     const file = evt.target.files[0];
-    const reader = new FileReader();
 
-    reader.onload = async () => {
-      setShopPicture(reader.result);
-    };
+    new Compressor(file, {
+      maxWidth: 500,
+      maxHeight: 500,
+      convertSize: 100000, // 100 kB
+      quality: 0.8,
+      success: blob => {
+        const reader = new FileReader();
 
-    reader.readAsDataURL(file);
+        reader.onload = async () => {
+          setShopPicture(reader.result);
+        };
+
+        reader.readAsDataURL(blob);
+      },
+      error: err => {
+        console.error(err.message);
+      }
+    });
   };
   return (
     <div className="market--post-creator">
