@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const { Post, Item, User } = require("../models");
+// const { Post, Item } = require("../models");
+const Item = require("../models/item");
+const Post = require("../models/post");
 
 exports.findAll = () => {
   return Post.find().populate("author items");

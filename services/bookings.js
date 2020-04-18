@@ -1,4 +1,6 @@
-const { Post, Item } = require("../models");
+// const { Post, Item } = require("../models");
+const Post = require("../models/post");
+const Item = require("../models/item");
 
 exports.add = (_id, authorId, bookingType) => {
   return bookingType === "item"

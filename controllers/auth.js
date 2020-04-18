@@ -4,8 +4,6 @@ const Boom = require("@hapi/boom");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { User } = require("../models");
-
 exports.connect = async (req, res, next) => {
   const { _id } = req.decoded;
 
