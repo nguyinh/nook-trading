@@ -5,7 +5,7 @@ import { AppProvider } from "./contexts";
 import Navigation from "./Navigation";
 // import { AuthProvider } from "./contexts/AuthContext";
 
-import { Profile, Market, PostCreator } from "./pages";
+import { Profile, Market, PostCreator, Home } from "./pages";
 
 function App() {
   return (
@@ -28,6 +28,10 @@ function App() {
             </Route>
             <Route path="/market">
               <Market />
+            </Route>
+
+            <Route path="/">
+              <Home />
             </Route>
           </Switch>
         </div>

@@ -5,8 +5,7 @@ import { AppContext } from "../contexts";
 const Home = () => {
 
   const {
-    state: { currentUser },
-    dispatch,
+    state: { currentUser }
   } = useContext(AppContext);
 
   return (
@@ -14,7 +13,7 @@ const Home = () => {
       {!currentUser ? (
         <Redirect to="/profile" />
       ) : (
-        <h3>Hello {currentUser && currentUser.pseudo}</h3>
+        <Redirect to="/market" />
       )}
     </div>
   );

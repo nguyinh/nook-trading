@@ -38,10 +38,10 @@ const userScheme = mongoose.Schema({
   },
 });
 
-// const User = mongoose.model("User", userScheme);
+const User = mongoose.model("User", userScheme);
 
-// User.init().then(() => {
-//   console.log("Users collection created");
-// });
+User.init().then(() => {
+  console.log("Users collection created");
+});
 
-module.exports = mongoose.model("User", userScheme);
+module.exports = User;

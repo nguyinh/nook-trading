@@ -88,6 +88,10 @@ app.get("/api/*", (req, res) => {
   res.json(`Welcome to Animal trading API, your request is wrong 🐙`);
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
+
 app.use(errorHandler);
 
 // The "catchall" handler: for any request that doesn't
