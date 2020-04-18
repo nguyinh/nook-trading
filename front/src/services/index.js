@@ -41,7 +41,7 @@ const logOutUser = async () => {
   return;
 };
 
-const getDailyPosts = async (items, shopPicture) => {
+const getDailyPosts = async () => {
   const {
     data: { posts },
   } = await axios.get("/api/posts", { params: { onlyDaily: "true" } });
@@ -76,7 +76,7 @@ const bookPost = async (postId) => {
   const {
     data: { post },
   } = await axios.post(`/api/posts/${postId}/bookings`);
-  console.log(post);
+
   return post;
 };
 
