@@ -18,8 +18,8 @@ const whitelist = [
   "http://172.20.10.5:3000",
   "http://localhost:3000",
   "http://localhost:2020",
-  "http://animal-trading-acnh.herokuapp.com",
-  "https://animal-trading-acnh.herokuapp.com"
+  "http://nook-trading-acnh.herokuapp.com",
+  "https://nook-trading-acnh.herokuapp.com"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
@@ -60,7 +60,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
 const mongoURL =
-  process.env.MONGODB_URI || "mongodb://localhost/animal-trading";
+  process.env.MONGODB_URI || "mongodb://localhost/nook-trading";
 mongoose.connect(mongoURL, {
   useNewUrlParser: true,
   bufferCommands: false,
@@ -85,7 +85,7 @@ routes(app);
 
 // Put all API endpoints under '/api'
 app.get("/api/*", (req, res) => {
-  res.json(`Welcome to Animal trading API, your request is wrong 🐙`);
+  res.json(`Welcome to Nook trading API, your request is wrong 🐙`);
 });
 
 app.get('*', (req, res) => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../contexts";
 import { signUpUser, logInUser } from "../services";
 import { Button, Form, Header, Loader, Message } from "semantic-ui-react";
-import ATNH from "../res/images/animal-trading-banner.png";
+import ATNH from "../res/images/nook-trading-banner.png";
 
 const Profile = () => {
   const {
