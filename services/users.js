@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const { User } = require('../models');
+// const { User } = require('../models');
+const User = require('../models/User');
 
 exports.findAll = () => {
   return User.find({});
