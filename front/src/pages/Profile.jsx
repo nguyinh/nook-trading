@@ -143,7 +143,7 @@ const Profile = () => {
                 <Button
                   width={12}
                   content="C'est tipar 🔥"
-                  color="blue"
+                  color="green"
                   fluid
                   onClick={signUp}
                 />
@@ -186,7 +186,7 @@ const Profile = () => {
                 <Button
                   width={12}
                   content="Let's go"
-                  color="blue"
+                  color="green"
                   fluid
                   onClick={logIn}
                 />
