@@ -10,7 +10,7 @@ const Navigation = () => {
       <Menu widths={3} className='navigation-bar--menu'>
         <Menu.Item name="market" className='navigation-bar--item' active={pathname === "/market"}>
           <Link to="/market"  style={{color: 'black'}}>
-            <Icon name="bullhorn" />
+            <Icon name="shopping basket" />
             Marché
           </Link>
         </Menu.Item>

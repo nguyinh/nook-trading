@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../contexts";
 import { signUpUser, logInUser } from "../services";
 import { Button, Form, Header, Loader, Message } from "semantic-ui-react";
-import ATNH from "../res/images/nook-trading-banner.png";
+import nookTradingBanner from "../res/images/nook-trading-banner.png";
 
 const Profile = () => {
   const {
@@ -87,14 +87,15 @@ const Profile = () => {
     <div className="profile-container">
       {currentUser ? (
         <>
+          <img src={nookTradingBanner} style={{ width: "100%" }}></img>
           <Header as="h2">Hello {currentUser && currentUser.pseudo} 👋</Header>
-          <Button color="red" onClick={() => dispatch({ type: "LOG_OUT" })}>
+          <Button color="red" style={{ marginTop: "3rem" }} onClick={() => dispatch({ type: "LOG_OUT" })}>
             Log out
           </Button>
         </>
       ) : (
         <>
-          <img src={ATNH} style={{ width: "100%", marginBottom: "2rem" }}></img>
+          <img src={nookTradingBanner} style={{ width: "100%", marginBottom: "2rem" }}></img>
           {signType === "SIGN_UP" ? (
             <Form loading={isConnecting}>
               <div className="profile-header">
