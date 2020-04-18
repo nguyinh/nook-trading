@@ -10,7 +10,7 @@ import {
 import { Button, Header, Divider, Loader } from "semantic-ui-react";
 import PostCreator from "./PostCreator";
 import { Redirect } from "react-router-dom";
-import bellsImage from "../res/images/bells.png";
+import bellsImage from "../res/images/bells-2.png";
 
 const days = new Array(
   "Dimanche",

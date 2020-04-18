@@ -4,6 +4,8 @@
   "description": "Full-stack app to share and exchange goods on Animal Crossing New Horizons",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "heroku-postbuild": "cd front && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Florent DUPONT",
