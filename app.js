@@ -18,7 +18,8 @@ const whitelist = [
   "http://172.20.10.5:3000",
   "http://localhost:3000",
   "http://localhost:2020",
-  "http://animal-crossing-acnh.herokuapp.com",
+  "http://animal-trading-acnh.herokuapp.com",
+  "https://animal-trading-acnh.herokuapp.com"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
