@@ -17,8 +17,16 @@ const Profile = () => {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(null);
   const [islandName, setIslandName] = useState("");
+  const [islandError, setIslandError] = useState(null);
 
   const signUp = async () => {
+    if (pseudo === "") setPseudoError("Rentre ton pseudo du jeu frero");
+
+    if (password === "") setPasswordError("Pas de password, pas de chocolat");
+
+    if (islandName === "") setIslandError("Rentre le nom de ton île frer");
+
+    if (pseudo === "" || password === "" || islandName === "") return;
     resetErrors();
     setIsConnecting(true);
 
@@ -37,6 +45,12 @@ const Profile = () => {
   };
 
   const logIn = async () => {
+    if (pseudo === "") setPseudoError("Rentre ton pseudo du jeu frero");
+
+    if (password === "") setPasswordError("Pas de password, pas de chocolat");
+
+    if (pseudo === "" || password === "") return;
+
     resetErrors();
     setIsConnecting(true);
 
@@ -59,6 +73,7 @@ const Profile = () => {
   const resetErrors = () => {
     setPseudoError(null);
     setPasswordError(null);
+    setIslandError(null);
   };
 
   if (isAutoConnecting)
@@ -98,6 +113,8 @@ const Profile = () => {
                   placeholder="Pseudo"
                   name="pseudo"
                   value={pseudo}
+                  error={pseudoError}
+                  onFocus={resetErrors}
                   onChange={(_, { value }) => setPseudo(value)}
                 />
                 <Form.Input
@@ -107,6 +124,8 @@ const Profile = () => {
                   placeholder="Password"
                   name="password"
                   value={password}
+                  error={passwordError}
+                  onFocus={resetErrors}
                   type="password"
                   onChange={(_, { value }) => setPassword(value)}
                 />
@@ -117,6 +136,8 @@ const Profile = () => {
                   placeholder="Island name"
                   name="islandName"
                   value={islandName}
+                  error={islandError}
+                  onFocus={resetErrors}
                   onChange={(_, { value }) => setIslandName(value)}
                 />
                 <Button

@@ -1,3 +1,7 @@
+:root {
+  --main-color: #f7f2e5;
+}
+
 .App {
   text-align: center;
 }
@@ -45,6 +49,7 @@
   display: flex;
   width: 100%;
   flex-direction: row;
+  z-index: 999999;
 }
 
 
@@ -60,6 +65,7 @@
 
 .profile-container {
   padding: 2rem;
+  padding-bottom: 4rem !important;
 }
 
 .profile-form-input {
@@ -136,7 +142,7 @@
 
 .market--post--shop-picture {
   text-align: center;
-  background-color: #f2f1f2;
+  background-color: #e6e0cd;
   margin: 0 -1rem 2rem;
 }
 
@@ -219,6 +225,7 @@
 }
 
 .market-items--creator--item {
+  display: flex;
   align-self: center;
   font-size: 16px;
   margin-left: 0.5rem;

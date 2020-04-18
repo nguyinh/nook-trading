@@ -10,6 +10,7 @@ import {
 import { Button, Header, Divider, Loader } from "semantic-ui-react";
 import PostCreator from "./PostCreator";
 import { Redirect } from "react-router-dom";
+import bellsImage from "../res/images/bells.png";
 
 const days = new Array(
   "Dimanche",
@@ -238,7 +239,7 @@ const Market = () => {
                     i
                   ) => (
                     <div className="market-post" key={postId}>
-                      <Header as="h3">
+                      <Header as="h3" style={{ fontWeight: 400 }}>
                         {author.pseudo === currentUser.pseudo
                           ? "Ton shop"
                           : `${author.pseudo} propose`}
@@ -257,7 +258,16 @@ const Market = () => {
                                   {name}
                                 </span>
                                 {price && (
-                                  <span className="market-items--creator--item-price">{`${price}$`}</span>
+                                  <>
+                                    <span className="market-items--creator--item-price">{`${price}`}</span>
+                                    <img
+                                      src={bellsImage}
+                                      style={{
+                                        width: "16px",
+                                        marginLeft: "0.2rem",
+                                      }}
+                                    />
+                                  </>
                                 )}
                               </div>
                               {!!bookings.length && (
@@ -355,7 +365,7 @@ const Market = () => {
                 )
               ) : (
                 <div className="no-data">
-                  Pas d'annonce pour le moment, créé en une 👆
+                  Pas d'annonce aujourd'hui, créé en une 👆
                 </div>
               )}
             </>

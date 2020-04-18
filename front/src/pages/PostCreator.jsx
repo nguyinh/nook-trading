@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { createPost } from "../services";
 import { Button, Segment, Header, Icon, Input, Label } from "semantic-ui-react";
 import { Redirect } from "react-router-dom";
+import bellsImage from "../res/images/bells.png";
 
 const PostCreator = ({ backFromCreator }) => {
   const [shopPicture, setShopPicture] = useState(null);
@@ -21,7 +22,7 @@ const PostCreator = ({ backFromCreator }) => {
 
     const value = price.trim();
 
-    if (!digitRegex.test(value) && value !== '') return;
+    if (!digitRegex.test(value) && value !== "") return;
 
     setItemPrice(value);
   };
@@ -31,7 +32,7 @@ const PostCreator = ({ backFromCreator }) => {
       setNameError("Frère tu forces, indique au moins le nom de l'item");
       return;
     }
-    if (items.some(({name}) => name === itemName)) {
+    if (items.some(({ name }) => name === itemName)) {
       setNameError("T'as déjà rentré l'item frero");
       return;
     }
@@ -85,7 +86,10 @@ const PostCreator = ({ backFromCreator }) => {
       />
 
       {shopPicture ? (
-        <div className="market--post--shop-picture" onClick={simulateInputClick}>
+        <div
+          className="market--post--shop-picture"
+          onClick={simulateInputClick}
+        >
           <img src={shopPicture} className="shop-picture" />
         </div>
       ) : (
@@ -110,7 +114,16 @@ const PostCreator = ({ backFromCreator }) => {
             <div className="market-items--creator--item">
               <span className="market-items--creator--item-name">{name}</span>
               {price && (
-                <span className="market-items--creator--item-price">{`${price}$`}</span>
+                <>
+                  <span className="market-items--creator--item-price">{`${price}`}</span>
+                  <img
+                    src={bellsImage}
+                    style={{
+                      width: "17px",
+                      marginLeft: "0.2rem",
+                    }}
+                  />
+                </>
               )}
             </div>
             <Button
@@ -133,8 +146,10 @@ const PostCreator = ({ backFromCreator }) => {
               placeholder="Nom item"
               value={itemName}
               error={nameError}
-              onFocus={() => setNameError('')}
-              onKeyDown={e => e.key === 'Enter' && priceInputRef.current.focus()}
+              onFocus={() => setNameError("")}
+              onKeyDown={(e) =>
+                e.key === "Enter" && priceInputRef.current.focus()
+              }
               ref={nameInputRef}
               onChange={(_, { value }) => setItemName(value)}
             />
@@ -144,7 +159,7 @@ const PostCreator = ({ backFromCreator }) => {
               placeholder="Prix"
               className="market-items--price-input"
               value={itemPrice}
-              onKeyDown={e => e.key === 'Enter' && addItemToList()}
+              onKeyDown={(e) => e.key === "Enter" && addItemToList()}
               ref={priceInputRef}
               onChange={(_, { value }) => addItemPrice(value)}
             />
