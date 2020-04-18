@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { createPost } from "../services";
 import { Button, Segment, Header, Icon, Input } from "semantic-ui-react";
-import bellsImage from "../res/images/bells.png";
+import bellsImage from "../res/images/bells-2.png";
 import Compressor from 'compressorjs';
 
 const PostCreator = ({ backFromCreator }) => {
