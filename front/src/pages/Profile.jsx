@@ -119,10 +119,10 @@ const Profile = () => {
                   onChange={(_, { value }) => setPseudo(value)}
                 />
                 <Form.Input
-                  label="Password"
+                  label="Mot de passe"
                   className="profile-form-input"
                   width={12}
-                  placeholder="Password"
+                  placeholder="Mot de passe"
                   name="password"
                   value={password}
                   error={passwordError}
@@ -131,10 +131,10 @@ const Profile = () => {
                   onChange={(_, { value }) => setPassword(value)}
                 />
                 <Form.Input
-                  label="Island name"
+                  label="Nom de ton île"
                   className="profile-form-input"
                   width={12}
-                  placeholder="Island name"
+                  placeholder="Nom de ton île"
                   name="islandName"
                   value={islandName}
                   error={islandError}

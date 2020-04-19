@@ -1,5 +1,7 @@
 *.code-workspace
 
+/resources
+
 ### macOS ###
 *.DS_Store
 .AppleDouble
