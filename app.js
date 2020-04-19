@@ -88,22 +88,17 @@ app.get("/api/*", (req, res) => {
   res.json(`Welcome to Nook trading API, your request is wrong 🐙`);
 });
 
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  res.sendFile(path.join(__dirname + '/front/build/index.html'));
 });
 
 app.use(errorHandler);
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname + '/client/build/index.html'));
-// });
-
 const port = process.env.PORT || 2020;
 
 if (process.env.ENV === "dev") app.listen(port, "0.0.0.0");
-// app.listen(port, '0.0.0.0');
 else app.listen(port);
 
 logger.info(`[Express] Server listening on http://localhost:${port}`);
