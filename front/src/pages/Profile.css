@@ -5,8 +5,9 @@
 }
 
 
-.login-form {
+.login-form-container {
   flex: 5;
+  position: relative;
 }
 
 .app-presentation {
@@ -19,6 +20,7 @@
   flex-direction: column;
   position: relative;
   justify-content: baseline;
+  overflow: hidden;
 }
 
 .banner-container {
@@ -47,6 +49,42 @@
   }
 
   #atnh-banner {
-    /* max-width: 50%; */
+    max-width: 50%; 
   }
+}
+
+
+.profile-content-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10%;
+  height: 100%;
+  max-height: 500px;
+}
+
+.nook-input > input {
+  border-radius: 60px !important;
+  background-color: #F7F3E8 !important;
+}
+
+ /* TODO: fix this */
+.nook-input > input:not(.error) {
+  border: none ;
+  /* !important */
+}
+
+.next-button {
+  align-self: center;
+  transition: all 200ms ease;
+  filter: drop-shadow(0px 4px 6px #0002);
+  margin: 1rem;
+}
+
+.next-button:hover {
+  transform: scale(1.15);
+  opacity: 0.9;
+}
+
+.error-message {
+  color: #e85e5e;
 }

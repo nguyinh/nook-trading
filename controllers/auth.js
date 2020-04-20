@@ -83,7 +83,7 @@ exports.login = async (req, res, next) => {
 exports.signin = async (req, res, next) => {
   const { password, pseudo, islandName } = req.body;
 
-  if (!password || !pseudo || !islandName)
+  if (!password || !pseudo /*|| !islandName*/)
     return next(Boom.badRequest("Missing parameter in request body"));
 
   logger.info(

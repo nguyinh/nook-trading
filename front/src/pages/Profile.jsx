@@ -4,6 +4,7 @@ import { signUpUser, logInUser } from "../services";
 import { Button, Form, Header, Loader, Message } from "semantic-ui-react";
 import nookTradingBanner from "../res/images/nook-trading-banner.png";
 import "./Profile.css";
+import { ProfileContent } from "../components/profile";
 
 const Profile = () => {
   const {
@@ -86,15 +87,15 @@ const Profile = () => {
 
   return (<>
     <div className='profile-container-2'>
-      <div className='login-form'>
-        
+      <div className='login-form-container'>
+        <ProfileContent/>
       </div>
 
-      <div className='app-presentation'>
+      {!currentUser && <div className='app-presentation'>
         <div className='banner-container'>
           <img src={nookTradingBanner} id='atnh-banner'></img>
         </div>
-      </div>
+      </div>}
     </div>
 
 

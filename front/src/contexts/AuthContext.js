@@ -1,9 +1,5 @@
 import React, { useReducer, useContext, useEffect } from "react";
 import axios from "axios";
-import { AppContext } from "./AppContext";
-
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://172.20.10.4:2020";
 
 let reducer = (state, action) => {
   // const { some } = state;
