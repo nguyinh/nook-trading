@@ -78,11 +78,17 @@
   transition: all 200ms ease;
   filter: drop-shadow(0px 4px 6px #0002);
   margin: 1rem;
+  overflow: visible;
 }
 
-.next-button:hover {
-  transform: scale(1.15);
-  opacity: 0.9;
+/* For desktop only (hover enabled) */
+@media not all and (hover: none) {
+  .next-button:hover {
+    transform: scale(1.15);
+    -webkit-transform: scale(1.15);
+    opacity: 0.9;
+    overflow: visible;
+  }
 }
 
 .error-message {
