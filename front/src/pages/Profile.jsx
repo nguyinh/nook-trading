@@ -3,6 +3,7 @@ import { AppContext } from "../contexts";
 import { signUpUser, logInUser } from "../services";
 import { Button, Form, Header, Loader, Message } from "semantic-ui-react";
 import nookTradingBanner from "../res/images/nook-trading-banner.png";
+import "./Profile.css";
 
 const Profile = () => {
   const {
@@ -83,8 +84,22 @@ const Profile = () => {
       </Loader>
     );
 
-  return (
-    <div className="profile-container">
+  return (<>
+    <div className='profile-container-2'>
+      <div className='login-form'>
+        
+      </div>
+
+      <div className='app-presentation'>
+        <div className='banner-container'>
+          <img src={nookTradingBanner} id='atnh-banner'></img>
+        </div>
+      </div>
+    </div>
+
+
+
+    {false && <div className="profile-container">
       {currentUser ? (
         <>
           <img src={nookTradingBanner} style={{ width: "100%" }}></img>
@@ -196,7 +211,7 @@ const Profile = () => {
           )}
         </>
       )}
-    </div>
+    </div>}</>
   );
 };
 

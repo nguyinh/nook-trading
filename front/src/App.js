@@ -10,7 +10,7 @@ function App() {
   return (
     <AppProvider>
       <Router>
-        <div>
+        <>
           <Navigation />
 
           <Switch>
@@ -33,7 +33,7 @@ function App() {
               <Home />
             </Route>
           </Switch>
-        </div>
+        </>
       </Router>
     </AppProvider>
   );

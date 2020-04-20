@@ -2,6 +2,12 @@
   --main-color: #f7f2e5;
 }
 
+#root {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
 .App {
   text-align: center;
 }
