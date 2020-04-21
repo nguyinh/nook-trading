@@ -99,8 +99,8 @@ const Profile = () => {
           </div>
         </div>
       ) : (
-        <>
-          Logged user
+        <div className='logged-profile-container'>
+          Salut {currentUser.pseudo} 👋
           <Button
             color="red"
             style={{ marginTop: "3rem" }}
@@ -108,7 +108,7 @@ const Profile = () => {
           >
             Déconnexion 👋
           </Button>
-        </>
+          </div>
       )}
     </>
   );

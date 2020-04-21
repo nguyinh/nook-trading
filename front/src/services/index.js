@@ -1,16 +1,35 @@
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' && "http://172.20.10.4:2020";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
 // TODO: handle PROD env
 
-const signUpUser = async (pseudo, password, islandName) => {
+const checkAvailability = async (pseudo) => {
+  const {
+    data: { isAvailable },
+  } = await axios.get(`/api/auth/checkAvailability/${pseudo}`);
+
+  return isAvailable;
+};
+
+const signUpUser = async (
+  pseudo,
+  password,
+  hemisphere,
+  nativeFruit,
+  islandName,
+  friendCode
+) => {
   const {
     data: { user },
   } = await axios.post("/api/auth/signin", {
     pseudo,
     password,
+    hemisphere,
+    nativeFruit,
     islandName,
+    friendCode,
   });
 
   return user;
@@ -76,7 +95,7 @@ const bookPost = async (postId) => {
   const {
     data: { post },
   } = await axios.post(`/api/posts/${postId}/bookings`);
-  console.log(post);
+
   return post;
 };
 
@@ -99,4 +118,5 @@ export {
   unbookItem,
   bookPost,
   unbookPost,
+  checkAvailability,
 };

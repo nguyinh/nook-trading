@@ -12,6 +12,10 @@ router
   .post(auth.login);
   
 router
+  .route('/auth/checkAvailability/:pseudo')
+  .get(auth.checkForUser);
+
+router
   .route('/auth/signin')
   .post(auth.signin);
 

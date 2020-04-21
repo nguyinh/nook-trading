@@ -1,3 +1,5 @@
+/* AUTHENTIFICATION */
+
 .profile-container-2 {
   flex-grow: 1;
   display: flex;
@@ -267,4 +269,12 @@
     opacity: 0.9;
     transform: scale(1.1);
   }
+}
+
+
+/* LOGGED */
+.logged-profile-container {
+  padding: 10%;
+  display: flex;
+  flex-direction: column;
 }

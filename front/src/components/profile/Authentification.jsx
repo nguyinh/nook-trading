@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../contexts";
-import { signUpUser, logInUser } from "../../services";
+import { signUpUser, logInUser, checkAvailability } from "../../services";
 import { Button, Dimmer, Header, Loader, Input } from "semantic-ui-react";
 import { CSSTransition } from "react-transition-group";
 
@@ -42,9 +42,7 @@ const SignUp = ({
   const [friendCode, setFriendCode] = useFriendCode;
   const [hemisphere, setHemisphere] = useHemisphere;
   const [nativeFruit, setNativefruit] = useNativeFruit;
-console.log(pseudoError,
-  passwordError,
-  passwordConfirmationError)
+
   return (
     <>
       <div className="sign-up-root-container">
@@ -94,10 +92,7 @@ console.log(pseudoError,
 
             {error && <span className="error-message">{error}</span>}
 
-            <NextButton
-              className="next-button"
-              onClick={goToComplementary}
-            />
+            <NextButton className="next-button" onClick={goToComplementary} />
 
             <div>
               <span>Déjà un compte ?</span>
@@ -121,7 +116,7 @@ console.log(pseudoError,
         >
           <div className="sign-up-complementary-absolute">
             <div className="sign-up-complementary-container">
-              <Header as="h2">...hop hop pas si vite</Header>
+              <Header as="h2">{`...hop hop ${pseudo} pas si vite`}</Header>
 
               <span className="nook-input-label">Nom de ton île</span>
               <Input
@@ -304,7 +299,7 @@ const Authentification = () => {
   const [islandError, setIslandError] = useState(null);
   const [friendCode, setFriendCode] = useState(null);
 
-  const goToComplementary = () => {
+  const goToComplementary = async () => {
     if (pseudo === "") setPseudoError("Rentre ton pseudo du jeu frero");
 
     if (password === "") setPasswordError("Pas de password, pas de chocolat");
@@ -324,23 +319,28 @@ const Authentification = () => {
       return;
 
     resetErrors();
+
+    const isAvailable = await checkAvailability(pseudo);
+
+    if (!isAvailable) {
+      setError("Ce pseudo est déjà pris");
+      return;
+    }
     setIsAskingComplementary(true);
   };
 
   const handleSignUp = async () => {
-    // if (islandName === "") setIslandError("Rentre le nom de ton île frer");
-    console.log(
-      pseudo,
-      password,
-      hemisphere,
-      nativeFruit,
-      islandName,
-      friendCode);
-      return;
     setIsConnecting(true);
 
     try {
-      const user = await signUpUser(pseudo, password, islandName);
+      const user = await signUpUser(
+        pseudo,
+        password,
+        hemisphere,
+        nativeFruit,
+        islandName,
+        friendCode
+      );
 
       dispatch({ type: "SET_USER", user });
     } catch (err) {

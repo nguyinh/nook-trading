@@ -10,11 +10,12 @@ exports.connect = async (req, res, next) => {
   logger.info("[CONTROLLERS | auth] connect");
 
   try {
-    const fetchedUser = await users.findById(
-      _id
-    );
+    const fetchedUser = await users.findById(_id);
 
-    if (!fetchedUser) {res.clearCookie('token');return next(Boom.unauthorized('User deleted'));}
+    if (!fetchedUser) {
+      res.clearCookie("token");
+      return next(Boom.unauthorized("User deleted"));
+    }
 
     const { pseudo, islandName } = fetchedUser;
 
@@ -48,10 +49,8 @@ exports.login = async (req, res, next) => {
   logger.info("[CONTROLLERS | auth] login");
 
   try {
-    const fetchedUser = await users.findByPseudo(
-      pseudo
-    );
-    if (!fetchedUser) return next(Boom.unauthorized('Wrong pseudo'));
+    const fetchedUser = await users.findByPseudo(pseudo);
+    if (!fetchedUser) return next(Boom.unauthorized("Wrong pseudo"));
 
     const { _id, islandName, password: hash } = fetchedUser;
 
@@ -61,7 +60,7 @@ exports.login = async (req, res, next) => {
 
     const JWTToken = jwt.sign(
       {
-        _id
+        _id,
       },
       process.env.JWT_SECRET,
       { expiresIn: "1y" }
@@ -81,23 +80,35 @@ exports.login = async (req, res, next) => {
 };
 
 exports.signin = async (req, res, next) => {
-  const { password, pseudo, islandName } = req.body;
+  const {
+    pseudo,
+    password,
+    islandName,
+    hemisphere,
+    nativeFruit,
+    friendCode,
+  } = req.body;
 
-  if (!password || !pseudo /*|| !islandName*/)
-    return next(Boom.badRequest("Missing parameter in request body"));
+  if (!password || !pseudo)
+    return next(Boom.badRequest("Missing pseudo or password in request body"));
 
-  logger.info(
-    `[CONTROLLERS | auth] signin | ${pseudo} in island ${islandName}`
-  );
+  logger.info(`[CONTROLLERS | auth] signin | Welcome ${pseudo}`);
 
   try {
     const hash = await bcrypt.hash(password, 10);
 
-    const { _id } = await users.add(hash, pseudo, islandName);
+    const { _id } = await users.add(
+      hash,
+      pseudo,
+      islandName,
+      hemisphere,
+      nativeFruit,
+      friendCode
+    );
 
     const JWTToken = jwt.sign(
       {
-        _id
+        _id,
       },
       process.env.JWT_SECRET,
       { expiresIn: "1y" }
@@ -113,8 +124,7 @@ exports.signin = async (req, res, next) => {
     return res.status(201).send({ user: { _id, pseudo, islandName } });
   } catch (err) {
     console.log(err);
-    if (err.code === 11000)
-      return next(Boom.conflict("Pseudo already taken"));
+    if (err.code === 11000) return next(Boom.conflict("Pseudo already taken"));
     return next(err);
   }
 };
@@ -123,9 +133,23 @@ exports.logout = async (req, res, next) => {
   logger.info("[CONTROLLERS | auth] logout");
 
   try {
-    res.clearCookie('token');
+    res.clearCookie("token");
 
-    return res.send('Disconnect successful');
+    return res.send("Disconnect successful");
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.checkForUser = async (req, res, next) => {
+  const { pseudo } = req.params;
+  logger.info(`[CONTROLLERS | auth] checkForUser ${pseudo}`);
+
+  try {
+    const user = await users.findByPseudo(pseudo);
+    const isAvailable = !user;
+    
+    return res.send({ isAvailable });
   } catch (err) {
     return next(err);
   }

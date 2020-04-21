@@ -5,19 +5,29 @@ exports.findAll = () => {
   return User.find({});
 };
 
-exports.findById = _id => {
-  return User.findOne({_id});
+exports.findById = (_id) => {
+  return User.findOne({ _id });
 };
 
-exports.findByPseudo = pseudo => {
-  return User.findOne({pseudo});
+exports.findByPseudo = (pseudo) => {
+  return User.findOne({ pseudo });
 };
 
-exports.add = (hash, pseudo, islandName) => {
+exports.add = (
+  hash,
+  pseudo,
+  islandName,
+  hemisphere,
+  nativeFruit,
+  friendCode
+) => {
   return User.create({
     _id: new mongoose.Types.ObjectId(),
     password: hash,
     pseudo,
-    islandName
+    islandName,
+    hemisphere,
+    nativeFruit,
+    friendCode
   });
 };
