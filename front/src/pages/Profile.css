@@ -79,6 +79,7 @@
   filter: drop-shadow(0px 4px 6px #0002);
   margin: 1rem;
   overflow: visible;
+  min-height: 50px;
 }
 
 /* For desktop only (hover enabled) */
@@ -94,3 +95,153 @@
 .error-message {
   color: #e85e5e;
 }
+
+
+
+
+
+.sign-up-root-container {
+  position: relative;
+  height: 100%;
+}
+
+
+
+
+
+.sign-up-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+
+.sign-up-anim-enter {
+  opacity: 0;
+  visibility: visible;
+  z-index: 0;
+  transform: translateX(-100%);
+  transition: all 0.3s ease;
+}
+
+.sign-up-anim-enter-active {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+.sign-up-anim-enter-done {
+  opacity: 1;
+}
+
+.sign-up-anim-exit {
+  opacity: 1;
+  transform: translateX(0%);
+  transition: all 0.3s ease;
+}
+
+.sign-up-anim-exit-active {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.sign-up-anim-exit-done {
+  opacity: 0;
+  visibility: hidden;
+  z-index: -99999;
+}
+
+
+
+.sign-up-complementary-absolute {
+/* Setup at same Y */
+  position: absolute;
+  top: 0;
+  width: 100%;
+  /* height: 300px; */
+}
+
+.sign-up-complementary-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+  
+}
+
+
+.sign-up-complementary-anim-enter {
+  opacity: 0;
+  transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+}
+
+.sign-up-complementary-anim-enter-active {
+  transform: translateX(0%);
+  -webkit-transform: translateX(0%);
+  opacity: 1;
+}
+
+.sign-up-complementary-anim-exit {
+  opacity: 1;
+  transform: translateX(0%);
+  -webkit-transform: translateX(0%);
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+}
+
+.sign-up-complementary-anim-exit-active {
+  transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  opacity: 0;
+}
+
+
+
+
+.nook-input-label {
+  background: #E2AE65;
+  width: fit-content;
+  padding: 2px 13px;
+  border-radius: 40px;
+  color: #6E341D;
+  font-size: 0.75rem;
+  font-weight: bold;
+  font-family: Arial;
+  margin-top: 1rem;
+}
+
+.hemisphere-buttons {
+  display: flex;
+  flex-direction: row;
+  padding: 0.5rem 0;
+}
+
+.hemisphere-buttons > button {
+  background: #f8f3e8;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  margin-right: 1rem;
+  border: none;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, .1);
+  border: solid 3px transparent;
+  outline: none;
+  transition: all 200ms ease;
+  opacity: 0.8;
+}
+
+/* For desktop only (hover enabled) */
+@media not all and (hover: none) {
+  .hemisphere-buttons > button:hover {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+}
+
+.hemisphere-buttons > button:active {
+  opacity: 0.9;
+  transform: scale(1);
+}
+

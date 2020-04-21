@@ -1,1 +1,1 @@
-export { default as ProfileContent } from './ProfileContent';
+export { default as Authentification } from './Authentification';

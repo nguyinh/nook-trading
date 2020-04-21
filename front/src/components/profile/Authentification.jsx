@@ -3,12 +3,14 @@ import { AppContext } from "../../contexts";
 import { signUpUser, logInUser } from "../../services";
 import { Button, Dimmer, Header, Loader, Input } from "semantic-ui-react";
 import { ReactComponent as NextButton } from "../../res/images/arrow-button-next.svg";
+import { CSSTransition } from "react-transition-group";
 
 const SignUp = ({
   setSignType,
   usePseudo,
   usePassword,
   usePasswordConfirmation,
+  useIslandName,
   pseudoError,
   passwordError,
   passwordConfirmationError,
@@ -16,6 +18,7 @@ const SignUp = ({
   error,
   signUp,
 }) => {
+  const [isAskingComplementary, setIsAskingComplementary] = useState(false);
   const [pseudo, setPseudo] = usePseudo;
   const [password, setPassword] = usePassword;
   const [
@@ -23,59 +26,173 @@ const SignUp = ({
     setPasswordConfirmation,
   ] = usePasswordConfirmation;
 
+  const [islandName, setIslandName] = useIslandName;
+  const [hemisphere, setHemisphere] = useState(null);
+  const [nativeFruit, setNativefruit] = useState(null);
+  const [friendCode, setFriendCode] = useState(null);
+
   return (
     <>
-      <Header as="h2">Inscription</Header>
-
-      <Input
-        className="profile-form-input nook-input"
-        width={12}
-        placeholder="Pseudo"
-        name="pseudo"
-        value={pseudo}
-        error={!!pseudoError}
-        onFocus={resetErrors}
-        onChange={(_, { value }) => setPseudo(value)}
-      />
-
-      <Input
-        className="profile-form-input nook-input"
-        width={12}
-        placeholder="Mot de passe"
-        name="password"
-        value={password}
-        error={!!passwordError}
-        onFocus={resetErrors}
-        type="password"
-        onChange={(_, { value }) => setPassword(value)}
-      />
-
-      <Input
-        className="profile-form-input nook-input"
-        width={12}
-        placeholder="Mot de passe (confirmation)"
-        name="password"
-        value={passwordConfirmation}
-        error={!!passwordConfirmationError}
-        onFocus={resetErrors}
-        type="password"
-        onChange={(_, { value }) => setPasswordConfirmation(value)}
-      />
-
-      {error && <span className="error-message">{error}</span>}
-
-      <NextButton className="next-button" onClick={signUp} />
-
-      <div>
-        <span>Déjà un compte ?</span>
-        <a
-          onClick={() => {
-            resetErrors();
-            setSignType("LOG_IN");
-          }}
+      <div className="sign-up-root-container">
+        <CSSTransition
+          in={!isAskingComplementary}
+          // unmountOnExit
+          timeout={300}
+          classNames="sign-up-anim"
         >
-          &nbsp;Connexion
-        </a>
+          <div className="sign-up-container">
+            <Header as="h2">Inscription</Header>
+
+            <Input
+              className="profile-form-input nook-input"
+              width={12}
+              placeholder="Pseudo"
+              name="pseudo"
+              value={pseudo}
+              error={!!pseudoError}
+              onFocus={resetErrors}
+              onChange={(_, { value }) => setPseudo(value)}
+            />
+
+            <Input
+              className="profile-form-input nook-input"
+              width={12}
+              placeholder="Mot de passe"
+              name="password"
+              value={password}
+              error={!!passwordError}
+              onFocus={resetErrors}
+              type="password"
+              onChange={(_, { value }) => setPassword(value)}
+            />
+
+            <Input
+              className="profile-form-input nook-input"
+              width={12}
+              placeholder="Mot de passe (confirmation)"
+              name="password"
+              value={passwordConfirmation}
+              error={!!passwordConfirmationError}
+              onFocus={resetErrors}
+              type="password"
+              onChange={(_, { value }) => setPasswordConfirmation(value)}
+            />
+
+            {error && <span className="error-message">{error}</span>}
+
+            <NextButton
+              className="next-button"
+              onClick={() => setIsAskingComplementary(!isAskingComplementary)}
+            />
+
+            <div>
+              <span>Déjà un compte ?</span>
+              <a
+                onClick={() => {
+                  resetErrors();
+                  setSignType("LOG_IN");
+                }}
+              >
+                &nbsp;Connexion
+              </a>
+            </div>
+          </div>
+        </CSSTransition>
+
+        <CSSTransition
+          in={isAskingComplementary}
+          unmountOnExit
+          timeout={300}
+          classNames="sign-up-complementary-anim"
+        >
+          <div className="sign-up-complementary-absolute">
+            <div className="sign-up-complementary-container">
+              <Header as="h2">...hep pas si vite</Header>
+
+              <span className="nook-input-label">Nom de ton île</span>
+              <Input
+                className="profile-form-input nook-input"
+                width={12}
+                placeholder="Île des pirates"
+                name="island"
+                value={islandName}
+                onChange={(_, { value }) => setIslandName(value)}
+              />
+
+              <span className="nook-input-label">Hémisphère</span>
+              <div className="hemisphere-buttons">
+                <button
+                  style={
+                    hemisphere === "NORTH"
+                      ? { border: "solid 3px #E2AE65", opacity: 1 }
+                      : null
+                  }
+                  onClick={() => setHemisphere("NORTH")}
+                >
+                  Nord
+                </button>
+                <button
+                  style={
+                    hemisphere === "SOUTH"
+                      ? { border: "solid 3px #E2AE65", opacity: 1 }
+                      : null
+                  }
+                  onClick={() => setHemisphere("SOUTH")}
+                >
+                  Sud
+                </button>
+              </div>
+
+              <span className="nook-input-label">Fruit natif de ton île</span>
+              <Input
+                className="profile-form-input nook-input"
+                width={12}
+                placeholder="Mot de passe (confirmation)"
+                name="password"
+                value={passwordConfirmation}
+                error={!!passwordConfirmationError}
+                onFocus={resetErrors}
+                type="password"
+                onChange={(_, { value }) => setPasswordConfirmation(value)}
+              />
+
+              <span className="nook-input-label">Code ami Switch</span>
+              <Input
+                className="profile-form-input nook-input"
+                width={12}
+                placeholder="Mot de passe (confirmation)"
+                name="password"
+                value={passwordConfirmation}
+                error={!!passwordConfirmationError}
+                onFocus={resetErrors}
+                type="password"
+                onChange={(_, { value }) => setPasswordConfirmation(value)}
+              />
+
+              {error && <span className="error-message">{error}</span>}
+
+              <NextButton
+                className="next-button"
+                onClick={() => setIsAskingComplementary(!isAskingComplementary)}
+              />
+
+              <div>
+                <span>Déjà un compte ?</span>
+                <a
+                  onClick={
+                    () =>
+                      null /*{
+                    resetErrors();
+                    setSignType("LOG_IN");
+                  }*/
+                  }
+                >
+                  &nbsp;Connexion
+                </a>
+              </div>
+            </div>
+          </div>
+        </CSSTransition>
       </div>
     </>
   );
@@ -140,7 +257,7 @@ const LogIn = ({
   );
 };
 
-const ProfileContent = () => {
+const Authentification = () => {
   const {
     state: { currentUser, isAutoConnecting },
     dispatch,
@@ -161,7 +278,6 @@ const ProfileContent = () => {
   const [islandError, setIslandError] = useState(null);
 
   const handleSignUp = async () => {
-    console.log("test");
     if (pseudo === "") setPseudoError("Rentre ton pseudo du jeu frero");
 
     if (password === "") setPasswordError("Pas de password, pas de chocolat");
@@ -241,22 +357,11 @@ const ProfileContent = () => {
     );
 
   return (
-    <div className="profile-content-container">
-      <Dimmer inverted active={isConnecting}>
-        <Loader></Loader>
-      </Dimmer>
-      {currentUser ? (
-        <>
-          Logged user
-          <Button
-            color="red"
-            style={{ marginTop: "3rem" }}
-            onClick={() => dispatch({ type: "LOG_OUT" })}
-          >
-            Déconnexion 👋
-          </Button>
-        </>
-      ) : (
+    <div className="login-form-container">
+      <div className="profile-content-container">
+        <Dimmer inverted active={isConnecting}>
+          <Loader></Loader>
+        </Dimmer>
         <div
           style={{
             display: "flex",
@@ -274,6 +379,7 @@ const ProfileContent = () => {
                 passwordConfirmation,
                 setPasswordConfirmation,
               ]}
+              useIslandName={[islandName, setIslandName]}
               pseudoError={pseudoError}
               passwordError={passwordError}
               passwordConfirmationError={passwordConfirmationError}
@@ -294,9 +400,9 @@ const ProfileContent = () => {
             />
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default ProfileContent;
+export default Authentification;
