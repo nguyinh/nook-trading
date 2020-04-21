@@ -11,14 +11,22 @@ const userScheme = mongoose.Schema({
     type: String,
     unique: true,
   },
-  // friendCode: {
-  //   type: String,
-  //   unique: true,
-  //   partialFilterExpression: { name: { $exists: true } },
-  // },
+  friendCode: {
+    type: String,
+    // unique: true,
+    // partialFilterExpression: { name: { $exists: true } },
+  },
   // TODO: handle null duplicates
   islandName: {
     type: String,
+  },
+  nativeFruit: {
+    type: String,
+    enum: ['APPLE', 'ORANGE', 'CHERRY', 'PEACH', 'PEAR'],
+  },
+  hemisphere: {
+    type: String,
+    enum: ['NORTH', 'SOUTH']
   },
   avatar: {
     data: Buffer,
