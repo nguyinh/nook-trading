@@ -229,7 +229,31 @@
   border: solid 3px transparent;
   outline: none;
   transition: all 200ms ease;
-  opacity: 0.8;
+  opacity: 0.6;
+}
+
+.hemisphere-buttons > button:active {
+  opacity: 0.9;
+  transform: scale(1);
+}
+
+
+
+.fruits-buttons {
+  display: flex;
+  flex-direction: row;
+  padding: 0.5rem 0;
+  justify-content: space-around;
+}
+
+.fruits-buttons > svg {
+  filter: drop-shadow(0px 4px 6px rgb(0,0,0,0.2));
+  transition: all 200ms ease;
+}
+
+.active-fruit circle {
+  fill: #f0c683;
+  transition: all 100ms ease;
 }
 
 /* For desktop only (hover enabled) */
@@ -238,10 +262,9 @@
     opacity: 0.9;
     transform: scale(1.1);
   }
-}
 
-.hemisphere-buttons > button:active {
-  opacity: 0.9;
-  transform: scale(1);
+  .fruits-buttons > svg:hover {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
 }
-

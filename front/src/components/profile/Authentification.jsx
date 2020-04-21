@@ -2,23 +2,35 @@ import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../contexts";
 import { signUpUser, logInUser } from "../../services";
 import { Button, Dimmer, Header, Loader, Input } from "semantic-ui-react";
-import { ReactComponent as NextButton } from "../../res/images/arrow-button-next.svg";
 import { CSSTransition } from "react-transition-group";
+
+import { ReactComponent as NextButton } from "../../res/images/arrow-button-next.svg";
+import { ReactComponent as CheckButton } from "../../res/images/check-button.svg";
+
+import { ReactComponent as AppleButton } from "../../res/images/apple-button.svg";
+import { ReactComponent as OrangeButton } from "../../res/images/orange-button.svg";
+import { ReactComponent as CherryButton } from "../../res/images/cherry-button.svg";
+import { ReactComponent as PeachButton } from "../../res/images/peach-button.svg";
+import { ReactComponent as PearButton } from "../../res/images/pear-button.svg";
 
 const SignUp = ({
   setSignType,
   usePseudo,
   usePassword,
   usePasswordConfirmation,
+  isAskingComplementary,
   useIslandName,
+  useHemisphere,
+  useNativeFruit,
+  useFriendCode,
   pseudoError,
   passwordError,
   passwordConfirmationError,
   resetErrors,
   error,
   signUp,
+  goToComplementary,
 }) => {
-  const [isAskingComplementary, setIsAskingComplementary] = useState(false);
   const [pseudo, setPseudo] = usePseudo;
   const [password, setPassword] = usePassword;
   const [
@@ -27,10 +39,12 @@ const SignUp = ({
   ] = usePasswordConfirmation;
 
   const [islandName, setIslandName] = useIslandName;
-  const [hemisphere, setHemisphere] = useState(null);
-  const [nativeFruit, setNativefruit] = useState(null);
-  const [friendCode, setFriendCode] = useState(null);
-
+  const [friendCode, setFriendCode] = useFriendCode;
+  const [hemisphere, setHemisphere] = useHemisphere;
+  const [nativeFruit, setNativefruit] = useNativeFruit;
+console.log(pseudoError,
+  passwordError,
+  passwordConfirmationError)
   return (
     <>
       <div className="sign-up-root-container">
@@ -82,7 +96,7 @@ const SignUp = ({
 
             <NextButton
               className="next-button"
-              onClick={() => setIsAskingComplementary(!isAskingComplementary)}
+              onClick={goToComplementary}
             />
 
             <div>
@@ -107,7 +121,7 @@ const SignUp = ({
         >
           <div className="sign-up-complementary-absolute">
             <div className="sign-up-complementary-container">
-              <Header as="h2">...hep pas si vite</Header>
+              <Header as="h2">...hop hop pas si vite</Header>
 
               <span className="nook-input-label">Nom de ton île</span>
               <Input
@@ -144,52 +158,60 @@ const SignUp = ({
               </div>
 
               <span className="nook-input-label">Fruit natif de ton île</span>
-              <Input
-                className="profile-form-input nook-input"
-                width={12}
-                placeholder="Mot de passe (confirmation)"
-                name="password"
-                value={passwordConfirmation}
-                error={!!passwordConfirmationError}
-                onFocus={resetErrors}
-                type="password"
-                onChange={(_, { value }) => setPasswordConfirmation(value)}
-              />
+              <div className="fruits-buttons">
+                <CherryButton
+                  className={`${
+                    nativeFruit === "CHERRY" ? "active-fruit" : ""
+                  }`}
+                  onClick={() => setNativefruit("CHERRY")}
+                />
+                <AppleButton
+                  className={`${nativeFruit === "APPLE" ? "active-fruit" : ""}`}
+                  onClick={() => setNativefruit("APPLE")}
+                />
+                <OrangeButton
+                  className={`${
+                    nativeFruit === "ORANGE" ? "active-fruit" : ""
+                  }`}
+                  onClick={() => setNativefruit("ORANGE")}
+                />
+                <PeachButton
+                  className={`${nativeFruit === "PEACH" ? "active-fruit" : ""}`}
+                  onClick={() => setNativefruit("PEACH")}
+                />
+                <PearButton
+                  className={`${nativeFruit === "PEAR" ? "active-fruit" : ""}`}
+                  onClick={() => setNativefruit("PEAR")}
+                />
+              </div>
 
               <span className="nook-input-label">Code ami Switch</span>
               <Input
                 className="profile-form-input nook-input"
                 width={12}
-                placeholder="Mot de passe (confirmation)"
-                name="password"
-                value={passwordConfirmation}
-                error={!!passwordConfirmationError}
+                placeholder="SW-XXXX-XXXX-XXXX"
+                name="friendCode"
+                value={friendCode}
+                // error={!!passwordConfirmationError}
                 onFocus={resetErrors}
-                type="password"
-                onChange={(_, { value }) => setPasswordConfirmation(value)}
+                onChange={(_, { value }) => setFriendCode(value)}
               />
 
               {error && <span className="error-message">{error}</span>}
 
-              <NextButton
-                className="next-button"
-                onClick={() => setIsAskingComplementary(!isAskingComplementary)}
-              />
+              <CheckButton className="next-button" onClick={signUp} />
 
-              <div>
+              {/* <div>
                 <span>Déjà un compte ?</span>
                 <a
-                  onClick={
-                    () =>
-                      null /*{
+                  onClick={() => {
                     resetErrors();
                     setSignType("LOG_IN");
-                  }*/
-                  }
+                  }}
                 >
                   &nbsp;Connexion
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </CSSTransition>
@@ -274,10 +296,15 @@ const Authentification = () => {
     null
   );
   const [error, setError] = useState(null);
+
+  const [isAskingComplementary, setIsAskingComplementary] = useState(false);
+  const [hemisphere, setHemisphere] = useState(null);
+  const [nativeFruit, setNativefruit] = useState(null);
   const [islandName, setIslandName] = useState("");
   const [islandError, setIslandError] = useState(null);
+  const [friendCode, setFriendCode] = useState(null);
 
-  const handleSignUp = async () => {
+  const goToComplementary = () => {
     if (pseudo === "") setPseudoError("Rentre ton pseudo du jeu frero");
 
     if (password === "") setPasswordError("Pas de password, pas de chocolat");
@@ -288,8 +315,6 @@ const Authentification = () => {
     if (password !== passwordConfirmation)
       setPasswordConfirmationError("Les mots de passe ne sont pas identiques");
 
-    // if (islandName === "") setIslandError("Rentre le nom de ton île frer");
-
     if (
       pseudo === "" ||
       password === "" ||
@@ -297,7 +322,21 @@ const Authentification = () => {
       password !== passwordConfirmation /* || islandName === ""*/
     )
       return;
+
     resetErrors();
+    setIsAskingComplementary(true);
+  };
+
+  const handleSignUp = async () => {
+    // if (islandName === "") setIslandError("Rentre le nom de ton île frer");
+    console.log(
+      pseudo,
+      password,
+      hemisphere,
+      nativeFruit,
+      islandName,
+      friendCode);
+      return;
     setIsConnecting(true);
 
     try {
@@ -379,13 +418,18 @@ const Authentification = () => {
                 passwordConfirmation,
                 setPasswordConfirmation,
               ]}
+              isAskingComplementary={isAskingComplementary}
               useIslandName={[islandName, setIslandName]}
+              useHemisphere={[hemisphere, setHemisphere]}
+              useNativeFruit={[nativeFruit, setNativefruit]}
+              useFriendCode={[friendCode, setFriendCode]}
               pseudoError={pseudoError}
               passwordError={passwordError}
               passwordConfirmationError={passwordConfirmationError}
               resetErrors={resetErrors}
               error={error}
               signUp={handleSignUp}
+              goToComplementary={goToComplementary}
             />
           ) : (
             <LogIn
