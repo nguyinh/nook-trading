@@ -8,6 +8,12 @@
   padding: 10% 30%;
 }
 
+@media only screen and (max-device-width : 768px) {
+  .changelog-background {
+    padding: 20% 5%;
+  }
+}
+
 .changelog-baseline {
   position: relative;
   height: 100%;
