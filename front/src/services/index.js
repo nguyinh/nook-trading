@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
-  process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
+  process.env.NODE_ENV === "development" && "http://172.20.10.5:2020";
 // TODO: handle PROD env
 
 const checkAvailability = async (pseudo) => {
@@ -48,10 +48,10 @@ const logInUser = async (pseudo, password) => {
 
 const connectUser = async () => {
   const {
-    data: { user },
+    data: { user, currentVersion },
   } = await axios.post("/api/auth/connect");
 
-  return user;
+  return { user, currentVersion };
 };
 
 const logOutUser = async () => {

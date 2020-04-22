@@ -28,6 +28,10 @@ exports.add = (
     islandName,
     hemisphere,
     nativeFruit,
-    friendCode
+    friendCode,
   });
+};
+
+exports.updateVersion = (_id, currentVersion) => {
+  return User.findOneAndUpdate({ _id }, { currentVersion });
 };

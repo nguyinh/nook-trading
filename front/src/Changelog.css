@@ -1,0 +1,28 @@
+.changelog-background {
+  position: absolute;
+  top: 0;
+  z-index: 999999999;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100vw;
+  height: 100vh;
+  padding: 10% 30%;
+}
+
+.changelog-baseline {
+  position: relative;
+  height: 100%;
+  transition: all 200ms;
+}
+
+.changelog-baseline:hover {
+  transform: scale(1.05);
+}
+
+.changelog-content-container {
+  display: flex;
+  flex-direction: column;
+  background: #F7F4E5;
+  height: 100%;
+  border-radius: 60px;
+  padding: 15%;
+}

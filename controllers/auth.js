@@ -1,5 +1,5 @@
 const { logger } = require("../middlewares");
-const { users } = require("../services");
+const { users, versions } = require("../services");
 const Boom = require("@hapi/boom");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -17,8 +17,14 @@ exports.connect = async (req, res, next) => {
       return next(Boom.unauthorized("User deleted"));
     }
 
-    const { pseudo, islandName } = fetchedUser;
+    const { pseudo, islandName, currentVersion: userVersion } = fetchedUser;
 
+    const currentVersion = await versions.findLatest();
+
+    if (currentVersion && userVersion != currentVersion.number) {
+      await users.updateVersion(_id, currentVersion.number);
+      return res.send({ user: { _id, pseudo, islandName }, currentVersion });
+    }
     // TODO: refresh token
     // const JWTToken = jwt.sign(
     //   {
@@ -148,7 +154,7 @@ exports.checkForUser = async (req, res, next) => {
   try {
     const user = await users.findByPseudo(pseudo);
     const isAvailable = !user;
-    
+
     return res.send({ isAvailable });
   } catch (err) {
     return next(err);

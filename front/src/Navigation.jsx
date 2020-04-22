@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Icon } from "semantic-ui-react";
 import "./Navigation.css";
 import { ReactComponent as MenuIcon } from "./res/images/menu-icon.svg";
 import { ReactComponent as NookTrading } from "./res/images/nook-trading.svg";

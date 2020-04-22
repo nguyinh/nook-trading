@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AppProvider } from "./contexts";
 import Navigation from "./Navigation";
+import Changelog from "./Changelog";
 
 import { Profile, Market, PostCreator, Home } from "./pages";
 
@@ -11,6 +12,8 @@ function App() {
     <AppProvider>
       <Router>
         <>
+          <Changelog/>
+
           <Navigation />
 
           <Switch>
