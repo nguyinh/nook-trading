@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
-  process.env.NODE_ENV === "development" && "http://172.20.10.5:2020";
+  process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
 // TODO: handle PROD env
 
 const checkAvailability = async (pseudo) => {
@@ -107,6 +107,14 @@ const unbookPost = async (postId) => {
   return post;
 };
 
+const uploadAvatar = async (avatarData) => {
+  const {
+    data: { user },
+  } = await axios.post(`/api/users/avatar`, { avatarData });
+
+  return user;
+};
+
 export {
   signUpUser,
   logInUser,
@@ -119,4 +127,5 @@ export {
   bookPost,
   unbookPost,
   checkAvailability,
+  uploadAvatar
 };

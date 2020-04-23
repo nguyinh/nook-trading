@@ -6,7 +6,7 @@ exports.findAll = () => {
 };
 
 exports.findById = (_id) => {
-  return User.findOne({ _id });
+  return User.findOne({ _id }).select('-password');
 };
 
 exports.findByPseudo = (pseudo) => {
@@ -34,4 +34,8 @@ exports.add = (
 
 exports.updateVersion = (_id, currentVersion) => {
   return User.findOneAndUpdate({ _id }, { currentVersion });
+};
+
+exports.updateAvatar = (_id, avatar) => {
+  return User.findOneAndUpdate({ _id }, { avatar }).select('-password');
 };

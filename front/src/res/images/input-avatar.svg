@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="93" height="93" viewBox="0 0 93 93">
+  <g id="Groupe_80" data-name="Groupe 80" transform="translate(-141 -93)">
+    <circle id="Ellipse_25" data-name="Ellipse 25" cx="46.5" cy="46.5" r="46.5" transform="translate(141 93)" fill="#9ddb8e"/>
+    <g id="Groupe_21" data-name="Groupe 21" transform="translate(84 -52)" opacity="0.797">
+      <g id="Groupe_16" data-name="Groupe 16">
+        <g id="Groupe_12" data-name="Groupe 12">
+          <path id="Rectangle_23" data-name="Rectangle 23" d="M5,0H15a5,5,0,0,1,5,5v5a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V5A5,5,0,0,1,5,0Z" transform="translate(94 176)" fill="#4a3c34"/>
+          <rect id="Rectangle_24" data-name="Rectangle 24" width="6" height="3" rx="1.5" transform="translate(101 178)" fill="#fbf5e8"/>
+          <rect id="Rectangle_25" data-name="Rectangle 25" width="5" height="3" rx="1.5" transform="translate(88 180)" fill="#ed70aa"/>
+        </g>
+        <g id="Groupe_15" data-name="Groupe 15">
+          <rect id="Rectangle_22" data-name="Rectangle 22" width="42" height="26" rx="9" transform="translate(83 182)" fill="#4a3c34"/>
+          <g id="Groupe_14" data-name="Groupe 14">
+            <circle id="Ellipse_3" data-name="Ellipse 3" cx="8" cy="8" r="8" transform="translate(94.964 188.191) rotate(-8)" fill="#fff"/>
+            <g id="Groupe_13" data-name="Groupe 13">
+              <circle id="Ellipse_4" data-name="Ellipse 4" cx="6" cy="6" r="6" transform="translate(98 189)" fill="#b993ed"/>
+              <path id="Tracé_1" data-name="Tracé 1" d="M-782,190.623a6.828,6.828,0,0,1,1.141.644,4.693,4.693,0,0,1,.84.813" transform="translate(887.018 0.781)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2"/>
+              <circle id="Ellipse_5" data-name="Ellipse 5" cx="1" cy="1" r="1" transform="translate(107 194.5)" fill="#fff"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

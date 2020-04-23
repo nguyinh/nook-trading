@@ -47,6 +47,11 @@
   }
 }
 
+
+.rounded-borders {
+  border-radius: 100px;
+}
+
 .wip {
   width: 75%;
   display: flex;

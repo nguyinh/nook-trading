@@ -17,13 +17,16 @@ exports.connect = async (req, res, next) => {
       return next(Boom.unauthorized("User deleted"));
     }
 
-    const { pseudo, islandName, currentVersion: userVersion } = fetchedUser;
+    const { currentVersion: userVersion } = fetchedUser;
 
     const currentVersion = await versions.findLatest();
 
     if (currentVersion && userVersion != currentVersion.number) {
       await users.updateVersion(_id, currentVersion.number);
-      return res.send({ user: { _id, pseudo, islandName }, currentVersion });
+      return res.send({
+        user: fetchedUser,
+        currentVersion,
+      });
     }
     // TODO: refresh token
     // const JWTToken = jwt.sign(
@@ -40,7 +43,9 @@ exports.connect = async (req, res, next) => {
     //   // secure: true,
     // });
 
-    return res.send({ user: { _id, pseudo, islandName } });
+    return res.send({
+      user: fetchedUser,
+    });
   } catch (err) {
     return next(err);
   }
@@ -58,7 +63,7 @@ exports.login = async (req, res, next) => {
     const fetchedUser = await users.findByPseudo(pseudo);
     if (!fetchedUser) return next(Boom.unauthorized("Wrong pseudo"));
 
-    const { _id, islandName, password: hash } = fetchedUser;
+    const { _id, password: hash } = fetchedUser;
 
     const isPasswordCorrect = await bcrypt.compare(password, hash);
 
@@ -79,7 +84,10 @@ exports.login = async (req, res, next) => {
       // secure: true
     });
 
-    return res.send({ user: { _id, pseudo, islandName } });
+    // Remove password field from response
+    const { password: _, ...user } = fetchedUser.toObject();
+
+    return res.send({ user });
   } catch (err) {
     return next(err);
   }
@@ -103,7 +111,7 @@ exports.signin = async (req, res, next) => {
   try {
     const hash = await bcrypt.hash(password, 10);
 
-    const { _id } = await users.add(
+    const createdUser = await users.add(
       hash,
       pseudo,
       islandName,
@@ -111,6 +119,8 @@ exports.signin = async (req, res, next) => {
       nativeFruit,
       friendCode
     );
+
+    const { _id } = createdUser;
 
     const JWTToken = jwt.sign(
       {
@@ -127,7 +137,10 @@ exports.signin = async (req, res, next) => {
       // secure: true,
     });
 
-    return res.status(201).send({ user: { _id, pseudo, islandName } });
+    // Remove password field from response
+    const { password: _, ...user } = createdUser.toObject();
+
+    return res.status(201).send({ user });
   } catch (err) {
     console.log(err);
     if (err.code === 11000) return next(Boom.conflict("Pseudo already taken"));

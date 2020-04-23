@@ -40,25 +40,20 @@ exports.getById = async (req, res, next) => {
   }
 };
 
-// exports.create = async (req, res, next) => {
-//   const { email, password, pseudo, islandName } = req.body;
+exports.uploadAvatar = async (req, res, next) => {
+  const { _id } = req.decoded;
+  const { avatarData } = req.body;
 
-//   if (!email || !password || !pseudo || !islandName)
-//     return next(Boom.badRequest("Missing parameter in request body"));
+  logger.info(`[CONTROLLERS | users] uploadAvatar ${_id}`);
 
-//   logger.info(
-//     `[CONTROLLERS | users] create | ${email} as ${pseudo} in island ${islandName}`
-//   );
+  if (!avatarData)
+    return next(Boom.badRequest("Missing avatar data in request body"));
 
-//   try {
-//     const hash = await bcrypt.hash(password, 10);
+  try {
+    const updatedUser = await users.updateAvatar(_id, avatarData);
 
-//     const { _id } = await users.add(email, hash, pseudo, islandName);
-
-//     return res.send({ user: { _id, email, pseudo, islandName } });
-//   } catch (err) {
-//     if (err.code === 11000)
-//       return next(Boom.conflict("Email or pseudo already taken"));
-//     return next(err);
-//   }
-// };
+    return res.send({ user: updatedUser });
+  } catch (err) {
+    return next(err);
+  }
+};

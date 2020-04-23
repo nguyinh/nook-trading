@@ -2,8 +2,6 @@ import React, { useReducer, useEffect } from "react";
 import { connectUser, logOutUser } from "../services";
 
 let reducer = (state, action) => {
-  // const { some } = state;
-
   switch (action.type) {
     case "SET_USER":
       return setUser(state, action.user);

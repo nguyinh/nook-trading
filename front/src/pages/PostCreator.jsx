@@ -85,6 +85,7 @@ const PostCreator = ({ backFromCreator }) => {
       }
     });
   };
+  
   return (
     <div className="market--post-creator">
       <Header as="h2">Ton annonce du jour</Header>

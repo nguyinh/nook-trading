@@ -22,17 +22,20 @@ const userScheme = mongoose.Schema({
   },
   nativeFruit: {
     type: String,
-    enum: ['APPLE', 'ORANGE', 'CHERRY', 'PEACH', 'PEAR'],
+    enum: ['APPLE', 'ORANGE', 'CHERRY', 'PEACH', 'PEAR', null],
   },
   hemisphere: {
     type: String,
-    enum: ['NORTH', 'SOUTH']
+    enum: ['NORTH', 'SOUTH', null]
   },
   avatar: {
     data: Buffer,
     contentType: String,
   },
   currentVersion: {
+    data: String
+  },
+  profileDescription: {
     data: String
   },
   createdAt: {

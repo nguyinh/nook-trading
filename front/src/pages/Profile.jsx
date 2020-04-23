@@ -4,7 +4,7 @@ import { signUpUser, logInUser } from "../services";
 import { Button, Form, Header, Loader, Message } from "semantic-ui-react";
 import nookTradingBanner from "../res/images/nook-trading-banner.png";
 import "./Profile.css";
-import { Authentification } from "../components/profile";
+import { Authentification, UserProfile } from "../components/profile";
 
 const Profile = () => {
   const {
@@ -23,9 +23,8 @@ const Profile = () => {
     <>
       {!currentUser ? (
         <div className="profile-container-2">
-          
           <Authentification />
-          
+
           <div className="app-presentation">
             <div className="banner-container">
               <img src={nookTradingBanner} id="atnh-banner"></img>
@@ -33,8 +32,9 @@ const Profile = () => {
           </div>
         </div>
       ) : (
-        <div className='logged-profile-container'>
-          Salut {currentUser.pseudo} 👋
+        <div className="logged-profile-container">
+          <UserProfile />
+
           <Button
             color="red"
             style={{ marginTop: "3rem" }}
@@ -42,7 +42,7 @@ const Profile = () => {
           >
             Déconnexion 👋
           </Button>
-          </div>
+        </div>
       )}
     </>
   );

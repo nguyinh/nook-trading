@@ -1,0 +1,80 @@
+.user-profile-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.avatar-baseline {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: 1rem;
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.avatar--rounded-container {
+  border-radius: 100px;
+}
+
+.avatar--pseudo {
+  align-self: center;
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin-top: 0.7rem;
+}
+
+.avatar-input {
+  position: relative;
+}
+
+.user-fruit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(10%, 10%);
+}
+
+.user-avatar-image {
+  border-radius: 100px;
+  width: 100px;
+  height: 100px;
+}
+
+.nook-input-container {
+  position: relative;
+  padding: 1rem 0;
+}
+
+.nook-input--label {
+  position: absolute;
+  background: #E2AE65;
+  z-index: 2;
+  padding: 0.2rem 1.1rem;
+  border-radius: 20px;
+  transform: rotateZ(-4deg);
+  font-weight: 700;
+}
+
+.profile-input {
+  margin-top: 1.4rem;
+}
+
+.nook-text-area {
+  border-radius: 20px;
+  background-color: rgb(247, 243, 232);
+  border: none;
+  margin: 0px;
+  width: 272px;
+  height: 104px;
+  margin-top: 1.4rem;
+  padding: 1rem;
+  border: 1px solid rgba(34,36,38,.15);
+}
+
+/* .nook-input:disabled,  */
+.nook-text-area:disabled {
+  opacity: 0.5;
+}
