@@ -18,7 +18,8 @@ exports.getAll = async (req, res, next) => {
       items: post.items,
       bookings: post.bookings,
       author: post.author
-    }));
+    })).filter(({author}) => !!author);
+    // Remove posts without author
 
     return res.send({ posts: formattedPosts });
   } catch (err) {
