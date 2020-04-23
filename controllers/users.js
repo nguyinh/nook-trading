@@ -3,18 +3,30 @@ const { users } = require("../services");
 const Boom = require("@hapi/boom");
 // const bcrypt = require("bcrypt");
 
-exports.getAll = async (req, res, next) => {
-  logger.info("[CONTROLLERS | users] getAll");
+exports.get = async (req, res, next) => {
+  const { pseudo } = req.query;
+
+  logger.info(`[CONTROLLERS | users] get ${pseudo ? "| " + pseudo : ""}`);
 
   try {
-    const fetchedUsers = await users.findAll();
+    if (!pseudo) {
+      const fetchedUsers = await users.findAll();
 
-    return res.send({
-      users: fetchedUsers.map((user) => ({
-        pseudo: user.pseudo,
-        islandName: user.islandName,
-      })),
-    });
+      return res.send({
+        users: fetchedUsers.map((user) => {
+          const { password: _, ...userRest } = user.toObject();
+          return userRest;
+        }),
+      });
+    } else {
+      const fetchedUser = await users.findByPseudo(pseudo);
+      
+      if (!fetchedUser) return next(Boom.notFound("User not found"));
+      
+      const { password: _, ...user } = fetchedUser.toObject();
+
+      return res.send({ user });
+    }
   } catch (err) {
     return next(err);
   }

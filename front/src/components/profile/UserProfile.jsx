@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Compressor from "compressorjs";
 
 import { uploadAvatar } from "../../services";
@@ -6,6 +6,7 @@ import "./UserProfile.css";
 import { AppContext } from "../../contexts/AppContext";
 import { Input, TextArea, Loader, Dimmer } from "semantic-ui-react";
 import { ReactComponent as AvatarInput } from "../../res/images/input-avatar.svg";
+import { ReactComponent as AvatarDefault } from "../../res/images/avatar-default.svg";
 import { ReactComponent as Apple } from "../../res/images/apple-selection.svg";
 import { ReactComponent as Cherry } from "../../res/images/cherry-selection.svg";
 import { ReactComponent as Orange } from "../../res/images/orange-selection.svg";
@@ -27,8 +28,9 @@ const FRUITS = [
   { code: "", label: "Pas précisé" },
 ];
 
-const ProfilePicture = ({ pseudo, nativeFruit, avatarPicture }) => {
+const ProfilePicture = ({ _id, pseudo, nativeFruit, avatarPicture }) => {
   const {
+    state: { currentUser },
     dispatch,
   } = useContext(AppContext);
 
@@ -39,7 +41,7 @@ const ProfilePicture = ({ pseudo, nativeFruit, avatarPicture }) => {
   const inputRef = useRef(null);
   const userFruit =
     FRUITS.find(({ code, component }) => code === nativeFruit) || null;
-
+  console.log(currentUser._id, _id);
   const onInputChange = async (evt) => {
     const file = evt.target.files[0];
 
@@ -89,8 +91,10 @@ const ProfilePicture = ({ pseudo, nativeFruit, avatarPicture }) => {
               className="user-avatar-image"
               onClick={() => inputRef.current.click()}
             />
-          ) : (
+          ) : currentUser._id === _id ? (
             <AvatarInput onClick={() => inputRef.current.click()} />
+          ) : (
+            <AvatarDefault />
           )}
 
           <input
@@ -136,29 +140,36 @@ const NookInput = ({ label, placeholder, textArea, value, disabled }) => {
   );
 };
 
-const UserProfile = () => {
+const UserProfile = ({ userData }) => {
   const {
-    state: { currentUser, isAutoConnecting },
-    dispatch,
+    state: { currentUser },
   } = useContext(AppContext);
 
+  const [userProfile, setUserProfile] = useState(userData || currentUser);
+
+  // useEffect(() => {
+  //   if (userData) setUserProfile(userData);
+  //   else setUserProfile(currentUser);
+  // }, [userData]);
+
   const userHemisphere = HEMISPHERES.find(
-    ({ code }) => currentUser.hemisphere === code
+    ({ code }) => userProfile.hemisphere === code
   );
 
   return (
     <div className="user-profile-container">
       <ProfilePicture
-        pseudo={currentUser.pseudo}
-        nativeFruit={currentUser.nativeFruit}
-        avatarPicture={currentUser.avatar}
+        _id={userProfile._id}
+        pseudo={userProfile.pseudo}
+        nativeFruit={userProfile.nativeFruit}
+        avatarPicture={userProfile.avatar}
       />
 
       <NookInput
         label="Nom de l'île"
         placeholder="Nom de l'île"
         disabled
-        value={currentUser.islandName || "Pas précisé"}
+        value={userProfile.islandName || "Pas précisé"}
       />
 
       <NookInput
@@ -172,7 +183,7 @@ const UserProfile = () => {
         label="Code ami"
         placeholder="Code ami"
         disabled
-        value={currentUser.friendCode || "Pas précisé"}
+        value={userProfile.friendCode || "Pas précisé"}
       />
 
       <NookInput
@@ -180,7 +191,7 @@ const UserProfile = () => {
         placeholder="Nookazon link / horaires de l'île..."
         textArea
         disabled
-        value={currentUser.profileDescription}
+        value={userProfile.profileDescription}
       />
     </div>
   );

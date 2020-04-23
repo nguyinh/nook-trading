@@ -59,7 +59,6 @@ function AppProvider(props) {
 
         // If user connect to a new version, display changelog
         if (currentVersion) {
-          console.log("NEW VERSION");
           dispatch({ type: "SET_NEW_VERSION", currentVersion });
         }
       } catch (err) {

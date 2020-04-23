@@ -13,6 +13,14 @@ const checkAvailability = async (pseudo) => {
   return isAvailable;
 };
 
+const getUser = async (pseudo) => {
+  const {
+    data: { user },
+  } = await axios.get(`/api/users`, { params: { pseudo } });
+
+  return user;
+};
+
 const signUpUser = async (
   pseudo,
   password,
@@ -127,5 +135,6 @@ export {
   bookPost,
   unbookPost,
   checkAvailability,
+  getUser,
   uploadAvatar
 };

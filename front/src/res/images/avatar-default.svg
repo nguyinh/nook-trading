@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="93" height="93" viewBox="0 0 93 93">
+  <g id="Groupe_86" data-name="Groupe 86" transform="translate(-20 -93)">
+    <circle id="Ellipse_27" data-name="Ellipse 27" cx="46.5" cy="46.5" r="46.5" transform="translate(20 93)" fill="#9ddb8e"/>
+    <g id="Groupe_40" data-name="Groupe 40" transform="translate(40.327 117.327)">
+      <g id="Groupe_39" data-name="Groupe 39" transform="translate(-0.327 -0.327)">
+        <g id="Groupe_38" data-name="Groupe 38" transform="translate(4.145)">
+          <ellipse id="Ellipse_13" data-name="Ellipse 13" cx="23" cy="20.5" rx="23" ry="20.5" transform="translate(-0.145)" fill="#f1d265"/>
+          <g id="Groupe_37" data-name="Groupe 37" transform="translate(12.434 10.428)">
+            <path id="Tracé_24" data-name="Tracé 24" d="M-622.7,176.077l4.23-3.8,3.453,3.8,4.077-3.8,3.284,3.8,4-3.8" transform="translate(622.879 -172.273)" fill="none" stroke="#707070" stroke-linecap="square" stroke-width="1.5"/>
+            <circle id="Ellipse_14" data-name="Ellipse 14" cx="2" cy="2" r="2" transform="translate(0.421 10.572)" fill="#707070"/>
+            <circle id="Ellipse_15" data-name="Ellipse 15" cx="2" cy="2" r="2" transform="translate(16.421 10.572)" fill="#707070"/>
+            <path id="Tracé_25" data-name="Tracé 25" d="M-618,187a4.1,4.1,0,0,0,3.771,3.105c3.028.037,3.522-3.105,3.522-3.105" transform="translate(624.955 -168.126)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1.5"/>
+          </g>
+        </g>
+        <g id="Groupe_36" data-name="Groupe 36" transform="translate(0 16.579)">
+          <circle id="Ellipse_16" data-name="Ellipse 16" cx="5" cy="5" r="5" transform="translate(44 0.421)" fill="#f1d265"/>
+          <ellipse id="Ellipse_17" data-name="Ellipse 17" cx="6" cy="5" rx="6" ry="5" transform="translate(0 0.421)" fill="#f1d265"/>
+        </g>
+      </g>
+      <path id="Tracé_26" data-name="Tracé 26" d="M15.863,0c8.761,0,15.863,11.621,15.863,25.957,0,4.559-2.27,5.964-2.27,5.964a60.727,60.727,0,0,1-14.449,2A53.044,53.044,0,0,1,1.183,31.718S0,30.6,0,25.957C0,11.621,7.1,0,15.863,0Z" transform="translate(10.67 34.743)" fill="#f1d265"/>
+    </g>
+  </g>
+</svg>

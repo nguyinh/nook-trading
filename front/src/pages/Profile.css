@@ -277,6 +277,8 @@
   padding: 5% 30%;
   display: flex;
   flex-direction: column;
+  position: relative;
+  height: 100%;
 }
 
 @media only screen and (max-device-width : 768px) {

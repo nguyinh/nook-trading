@@ -17,6 +17,9 @@ function App() {
           <Navigation />
 
           <Switch>
+            <Route path="/profile/:pseudo">
+              <Profile />
+            </Route>
             <Route path="/profile">
               <Profile />
             </Route>
