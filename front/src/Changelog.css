@@ -6,6 +6,7 @@
   width: 100vw;
   height: 100vh;
   padding: 10% 30%;
+  position: fixed;
 }
 
 @media only screen and (max-device-width : 768px) {
