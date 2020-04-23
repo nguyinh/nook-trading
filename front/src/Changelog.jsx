@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { CSSTransition } from "react-transition-group";
 import "./Changelog.css";
 import { Header, List } from "semantic-ui-react";
 import { AppContext } from "./contexts/AppContext";
@@ -9,26 +10,39 @@ const Changelog = () => {
     dispatch,
   } = useContext(AppContext);
 
+  const [number, setNumber] = useState("");
+  const [changelogs, setChangelogs] = useState([]);
+
+  useEffect(() => {
+    if (currentVersion) {
+      setNumber(currentVersion.number);
+      setChangelogs(currentVersion.changelogs);
+    }
+  }, [currentVersion]);
+
   return (
-    <>
-      {(currentVersion && !!currentVersion.changelogs.length) && (
-        <div
-          className="changelog-background"
-          onClick={() => dispatch({ type: "VALID_VERSION" })}
-        >
-          <div className="changelog-baseline">
-            <div className="changelog-content-container">
-              <Header as="h2">{`What's new in ${currentVersion.number}`}</Header>
-              <List>
-                {currentVersion.changelogs.map((log) => (
-                  <List.Item>{log}</List.Item>
-                ))}
-              </List>
-            </div>
+    <CSSTransition
+      in={currentVersion}
+      unmountOnExit
+      timeout={500}
+      classNames="changelog-anim"
+    >
+      <div
+        className="changelog-background"
+        onClick={() => dispatch({ type: "VALID_VERSION" })}
+      >
+        <div className="changelog-baseline">
+          <div className="changelog-content-container">
+            <Header as="h2">{`What's new in ${number}`}</Header>
+            <List>
+              {changelogs.map((log) => (
+                <List.Item>{log}</List.Item>
+              ))}
+            </List>
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </CSSTransition>
   );
 };
 
