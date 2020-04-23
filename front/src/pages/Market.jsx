@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import { AppContext } from "../contexts";
 import {
   getDailyPosts,
@@ -250,7 +251,7 @@ const Market = () => {
                       <Header as="h3" style={{ fontWeight: 400 }}>
                         {author.pseudo === currentUser.pseudo
                           ? "Ton shop ✨"
-                          : <><b>{author.pseudo}</b><span>{` propose`}</span></>}
+                          : <><b><Link to={`/profile/${author.pseudo}`}>{author.pseudo}</Link></b><span>{` propose`}</span></>}
                       </Header>
 
                       <div className="market--post--shop-picture">
