@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
+
+import "./Market.css";
 import { AppContext } from "../contexts";
 import {
   getDailyPosts,
@@ -48,6 +51,8 @@ const Market = () => {
   const [postLoading, setPostLoading] = useState(null);
 
   const [posts, setPosts] = useState([]);
+
+  const [selectedPicture, setSelectedPicture] = useState(null);
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -164,10 +169,13 @@ const Market = () => {
     if (bookingAuthors.length === 1) {
       const isSelfAuthor = bookingAuthors[0]._id === currentUser._id;
       if (isSelfAuthor) return <span>Tu es interréssé 👀</span>;
-      else return <>
-        <span style={{ fontWeight: 700 }}>{bookingAuthors[0].pseudo}</span>
-        <span>{` est intéressé`}</span>
-      </>
+      else
+        return (
+          <>
+            <span style={{ fontWeight: 700 }}>{bookingAuthors[0].pseudo}</span>
+            <span>{` est intéressé`}</span>
+          </>
+        );
     } else {
       const isSelfAuthor = (_id) => _id === currentUser._id;
       const authorsList = bookingAuthors.map(({ pseudo, _id }, i) =>
@@ -178,13 +186,28 @@ const Market = () => {
         return (
           <>
             <span style={{ fontWeight: 700 }}>{authorsList.join(", ")}</span>
-            <span>{` ${bookingAuthors.some(({_id}) => _id === currentUser._id) ? 'êtes' : 'sont'} intéressés`}</span>
+            <span>{` ${
+              bookingAuthors.some(({ _id }) => _id === currentUser._id)
+                ? "êtes"
+                : "sont"
+            } intéressés`}</span>
           </>
         );
     }
 
     return null;
   };
+
+  const [shopPictureOverlay, setShopPictureOverlay] = useState(false);
+
+  // useEffect(() => {
+  // if (!!selectedPicture && !shopPictureOverlay) setShopPictureOverlay(true) ;
+  // else
+  //   if (!selectedPicture && !shopPictureOverlay) {
+  //     console.log('fermeture');
+  //     setTimeout(() => setSelectedPicture(null), 2000);
+  //   }
+  // }, [selectedPicture, shopPictureOverlay]);
 
   if (isAutoConnecting)
     return (
@@ -196,11 +219,24 @@ const Market = () => {
 
   return (
     <>
-      {" "}
       {isCreating ? (
         <PostCreator backFromCreator={backFromCreator} />
       ) : (
         <div className="market">
+          <CSSTransition
+            in={selectedPicture}
+            unmountOnExit
+            timeout={300}
+            classNames="shop-picture-overlay-anim"
+          >
+            <div
+              className="shop-picture--overlay"
+              onClick={() => setSelectedPicture(null)}
+            >
+              <img src={selectedPicture} className="selected-shop-picture" />
+            </div>
+          </CSSTransition>
+
           <div className="market--header">
             <Header
               as="h2"
@@ -249,12 +285,24 @@ const Market = () => {
                   ) => (
                     <div className="market-post" key={postId}>
                       <Header as="h3" style={{ fontWeight: 400 }}>
-                        {author.pseudo === currentUser.pseudo
-                          ? "Ton shop ✨"
-                          : <><b><Link to={`/profile/${author.pseudo}`}>{author.pseudo}</Link></b><span>{` propose`}</span></>}
+                        {author.pseudo === currentUser.pseudo ? (
+                          "Ton shop ✨"
+                        ) : (
+                          <>
+                            <b>
+                              <Link to={`/profile/${author.pseudo}`}>
+                                {author.pseudo}
+                              </Link>
+                            </b>
+                            <span>{` propose`}</span>
+                          </>
+                        )}
                       </Header>
 
-                      <div className="market--post--shop-picture">
+                      <div
+                        className="market--post--shop-picture"
+                        onClick={() => setSelectedPicture(shopPictureSrc)}
+                      >
                         <img src={shopPictureSrc} className="shop-picture" />
                       </div>
 
@@ -271,7 +319,7 @@ const Market = () => {
                                     <span className="market-items--creator--item-price">{`${price}`}</span>
                                     <img
                                       src={bellsImage}
-                                      className='market-items--bell-image'
+                                      className="market-items--bell-image"
                                     />
                                   </>
                                 )}
@@ -296,7 +344,9 @@ const Market = () => {
                                     color="orange"
                                     compact
                                     loading={itemLoading === itemId}
-                                    disabled={itemLoading || postLoading/* === itemId*/}
+                                    disabled={
+                                      itemLoading || postLoading /* === itemId*/
+                                    }
                                     onClick={() => handleItemUnbooking(itemId)}
                                   >
                                     ❌ Annuler
@@ -306,7 +356,9 @@ const Market = () => {
                                     color="teal"
                                     compact
                                     loading={itemLoading === itemId}
-                                    disabled={itemLoading || postLoading/* === itemId*/}
+                                    disabled={
+                                      itemLoading || postLoading /* === itemId*/
+                                    }
                                     onClick={() => handleItemBooking(itemId)}
                                   >
                                     👈 I want it
@@ -329,7 +381,9 @@ const Market = () => {
                                   compact
                                   size="large"
                                   loading={postLoading === postId}
-                                  disabled={postLoading || itemLoading/* === postId*/}
+                                  disabled={
+                                    postLoading || itemLoading /* === postId*/
+                                  }
                                   onClick={() => handlePostUnbooking(postId)}
                                 >
                                   ❌ Annuler
@@ -340,7 +394,9 @@ const Market = () => {
                                   compact
                                   size="large"
                                   loading={postLoading === postId}
-                                  disabled={postLoading || itemLoading/* === postId*/}
+                                  disabled={
+                                    postLoading || itemLoading /* === postId*/
+                                  }
                                   onClick={() => handlePostBooking(postId)}
                                 >
                                   I want something 🙏

@@ -2,15 +2,17 @@ const mongoose = require("mongoose");
 const { Version } = require("../models");
 
 exports.findLatest = () => {
-  return Version.findOne({ isCurrent: true }).select("number types changelogs");
+  return Version.findOne({ isCurrent: true }).select("number types changelogs preMessage postMessage");
 };
 
-exports.create = (number, types, changelogs) => {
+exports.create = (number, types, changelogs, preMessage, postMessage) => {
   return Version.create({
     _id: new mongoose.Types.ObjectId(),
     number,
     types,
     changelogs,
+    preMessage,
+    postMessage,
     isCurrent: true,
   });
 };

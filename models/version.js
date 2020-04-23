@@ -15,8 +15,14 @@ const versionScheme = mongoose.Schema({
   types: {
     type: [String],
   },
+  preMessage: {
+    type: String,
+  },
   changelogs: {
     type: [String],
+  },
+  postMessage: {
+    type: String,
   },
   createdAt: {
     type: Date,

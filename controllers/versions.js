@@ -3,7 +3,7 @@ const { versions } = require("../services");
 const Boom = require("@hapi/boom");
 
 exports.add = async (req, res, next) => {
-  const { number, types, changelogs } = req.body;
+  const { number, types, changelogs, preMessage, postMessage } = req.body;
 
   if (!number || !types || !changelogs)
     return next(Boom.badRequest("Missing parameters in request body"));
@@ -14,7 +14,7 @@ exports.add = async (req, res, next) => {
 
   try {
     await versions.disableLastVersion();
-    const version = await versions.create(number, types, changelogs);
+    const version = await versions.create(number, types, changelogs, preMessage, postMessage);
 
     return res.send({ version });
   } catch (err) {
