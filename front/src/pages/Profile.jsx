@@ -2,10 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../contexts";
 import { getUser } from "../services";
-import {
-  Button,
-  Loader,
-} from "semantic-ui-react";
+import { Button, Loader } from "semantic-ui-react";
 import nookTradingBanner from "../res/images/nook-trading-banner.png";
 import "./Profile.css";
 import { Authentification, UserProfile } from "../components/profile";
@@ -84,7 +81,11 @@ const Profile = () => {
               )}
             </>
           ) : (
-            <Loader active content="Un instant, je recheche ton frero 🖐" />
+            <Loader
+              active
+              content="Un instant, je recheche ton frero 🖐"
+              style={{ marginTop: "30%" }}
+            />
           )}
         </div>
       )}
