@@ -6,7 +6,7 @@ exports.findAll = () => {
 };
 
 exports.findById = (_id) => {
-  return User.findOne({ _id }).select('-password');
+  return User.findOne({ _id }).select("-password");
 };
 
 exports.findByPseudo = (pseudo) => {
@@ -37,5 +37,29 @@ exports.updateVersion = (_id, currentVersion) => {
 };
 
 exports.updateAvatar = (_id, avatar) => {
-  return User.findOneAndUpdate({ _id }, { avatar }).select('-password');
+  return User.findOneAndUpdate(
+    { _id },
+    { avatar, updatedAt: Date.now() }
+  ).select("-password");
+};
+
+exports.update = (
+  _id,
+  friendCode,
+  islandName,
+  nativeFruit,
+  hemisphere,
+  profileDescription
+) => {
+  return User.findOneAndUpdate(
+    { _id },
+    {
+      friendCode,
+      islandName,
+      nativeFruit,
+      hemisphere,
+      profileDescription,
+      updatedAt: Date.now(),
+    }
+  ).select("-password");
 };

@@ -21,6 +21,26 @@ const getUser = async (pseudo) => {
   return user;
 };
 
+const updateUser = async (
+  nativeFruit,
+  islandName,
+  hemisphere,
+  friendCode,
+  profileDescription,
+) => {
+  const {
+    data: { user },
+  } = await axios.put("/api/users", {
+    nativeFruit,
+    islandName,
+    hemisphere,
+    friendCode,
+    profileDescription,
+  });
+
+  return user;
+};
+
 const signUpUser = async (
   pseudo,
   password,
@@ -136,5 +156,6 @@ export {
   unbookPost,
   checkAvailability,
   getUser,
-  uploadAvatar
+  updateUser,
+  uploadAvatar,
 };

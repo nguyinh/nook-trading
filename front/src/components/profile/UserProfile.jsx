@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import Compressor from "compressorjs";
 
-import { uploadAvatar } from "../../services";
+import { uploadAvatar, updateUser } from "../../services";
 import "./UserProfile.css";
 import { AppContext } from "../../contexts/AppContext";
-import { Input, TextArea, Loader, Dimmer } from "semantic-ui-react";
+import {
+  Input,
+  TextArea,
+  Loader,
+  Dimmer,
+  Button,
+  Icon,
+} from "semantic-ui-react";
 import { ReactComponent as AvatarInput } from "../../res/images/input-avatar.svg";
 import { ReactComponent as AvatarDefault } from "../../res/images/avatar-default.svg";
 import { ReactComponent as Apple } from "../../res/images/apple-selection.svg";
@@ -16,7 +23,6 @@ import { ReactComponent as Pear } from "../../res/images/pear-selection.svg";
 const HEMISPHERES = [
   { code: "NORTH", label: "Nord" },
   { code: "SOUTH", label: "Sud" },
-  { code: "", label: "Pas précisé" },
 ];
 
 const FRUITS = [
@@ -25,7 +31,6 @@ const FRUITS = [
   { code: "ORANGE", component: () => <Orange className="user-fruit" /> },
   { code: "PEACH", component: () => <Peach className="user-fruit" /> },
   { code: "PEAR", component: () => <Pear className="user-fruit" /> },
-  { code: "", label: "Pas précisé" },
 ];
 
 const ProfilePicture = ({ _id, pseudo, nativeFruit, avatarPicture }) => {
@@ -39,9 +44,8 @@ const ProfilePicture = ({ _id, pseudo, nativeFruit, avatarPicture }) => {
   );
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
   const inputRef = useRef(null);
-  const userFruit =
-    FRUITS.find(({ code, component }) => code === nativeFruit) || null;
-  console.log(currentUser._id, _id);
+  const userFruit = FRUITS.find(({ code }) => code === nativeFruit) || null;
+
   const onInputChange = async (evt) => {
     const file = evt.target.files[0];
 
@@ -56,11 +60,12 @@ const ProfilePicture = ({ _id, pseudo, nativeFruit, avatarPicture }) => {
         const reader = new FileReader();
 
         reader.onload = async () => {
-          setUserAvatar(reader.result);
           try {
             setIsAvatarLoading(true);
 
             const user = await uploadAvatar(new Buffer(reader.result, "utf8"));
+
+            setUserAvatar(reader.result);
 
             dispatch({ type: "SET_USER", user });
           } catch (err) {
@@ -89,10 +94,10 @@ const ProfilePicture = ({ _id, pseudo, nativeFruit, avatarPicture }) => {
             <img
               src={userAvatar}
               className="user-avatar-image"
-              onClick={() => inputRef.current.click()}
+              onClick={() => _id === currentUser._id && inputRef.current.click()}
             />
           ) : currentUser._id === _id ? (
-            <AvatarInput onClick={() => inputRef.current.click()} />
+            <AvatarInput onClick={() => _id === currentUser._id && inputRef.current.click()} />
           ) : (
             <AvatarDefault />
           )}
@@ -113,9 +118,17 @@ const ProfilePicture = ({ _id, pseudo, nativeFruit, avatarPicture }) => {
   );
 };
 
-const NookInput = ({ label, placeholder, textArea, value, disabled }) => {
+const NookInput = ({
+  label,
+  placeholder,
+  textArea,
+  value,
+  onChange,
+  disabled,
+  onClick,
+}) => {
   return (
-    <div className="nook-input-container">
+    <div className="nook-input-container" onClick={onClick}>
       <span className="nook-input--label">{label}</span>
 
       {textArea ? (
@@ -124,6 +137,7 @@ const NookInput = ({ label, placeholder, textArea, value, disabled }) => {
           className="nook-text-area"
           value={value}
           disabled={disabled}
+          onChange={(_, { value }) => onChange(value)}
         />
       ) : (
         <Input
@@ -133,28 +147,86 @@ const NookInput = ({ label, placeholder, textArea, value, disabled }) => {
           name="pseudo"
           value={value}
           disabled={disabled}
-          // onChange={(_, { value }) => setPseudo(value)}
+          onFocus={onClick}
+          onChange={(_, { value }) => onChange(value)}
         />
       )}
     </div>
   );
 };
 
+const HemisphereButton = ({ active, children, onClick }) => (
+  <button
+    style={active ? { border: "solid 3px #E2AE65", opacity: 1 } : null}
+    onClick={onClick}
+  >
+    {children}
+  </button>
+);
+
 const UserProfile = ({ userData }) => {
   const {
     state: { currentUser },
+    dispatch,
   } = useContext(AppContext);
 
   const [userProfile, setUserProfile] = useState(userData || currentUser);
 
-  // useEffect(() => {
-  //   if (userData) setUserProfile(userData);
-  //   else setUserProfile(currentUser);
-  // }, [userData]);
-
-  const userHemisphere = HEMISPHERES.find(
-    ({ code }) => userProfile.hemisphere === code
+  const [editMode, setEditMode] = useState(false);
+  const [isSavingChanges, setIsSavingChanges] = useState(false);
+  const [savingButtonDisabled, setSavingButtonDisabled] = useState(false);
+  const [savingButtonContent, setSavingButtonContent] = useState("Enregistrer");
+  // TODO: update native fruit
+  const [nativeFruit, setNativeFruit] = useState(userProfile.nativeFruit);
+  const [islandName, setIslandName] = useState(userProfile.islandName);
+  const [hemisphere, setHemisphere] = useState(userProfile.hemisphere);
+  const [hemisphereEdit, setHemisphereEdit] = useState(false);
+  const [friendCode, setFriendCode] = useState(userProfile.friendCode);
+  const [profileDescription, setProfileDescription] = useState(
+    userProfile.profileDescription
   );
+
+  const updateProfile = async () => {
+    try {
+      setIsSavingChanges(true);
+      setSavingButtonContent("Transmission des données à des sociétés tierces 👨‍💻");
+      setSavingButtonDisabled(true);
+      const user = await updateUser(
+        nativeFruit,
+        islandName,
+        hemisphere,
+        friendCode,
+        profileDescription
+      );
+
+      dispatch({ type: "SET_USER", user });
+      setSavingButtonContent(<Icon name="check" />);
+    } catch (err) {
+      setSavingButtonDisabled(false);
+      setEditMode(false);
+      setSavingButtonContent("Enregistrer");
+      console.log(err);
+    } finally {
+      setTimeout(() => {
+        setSavingButtonDisabled(false);
+        setEditMode(false);
+        setSavingButtonContent("Enregistrer");
+      }, 2000);
+      setIsSavingChanges(false);
+    }
+  };
+
+  useEffect(() => {
+    setEditMode(
+      userProfile.nativeFruit !== nativeFruit ||
+        userProfile.islandName !== islandName ||
+        userProfile.hemisphere !== hemisphere ||
+        userProfile.friendCode !== friendCode ||
+        userProfile.profileDescription !== profileDescription
+    );
+  }, [islandName, hemisphere, friendCode, profileDescription]);
+
+  const userHemisphere = HEMISPHERES.find(({ code }) => hemisphere === code);
 
   return (
     <div className="user-profile-container">
@@ -165,33 +237,72 @@ const UserProfile = ({ userData }) => {
         avatarPicture={userProfile.avatar}
       />
 
+      {editMode && (
+        <Button
+          onClick={updateProfile}
+          loading={isSavingChanges}
+          disabled={savingButtonDisabled}
+          color="green"
+          style={{ margin: "1rem 0" }}
+        >
+          {savingButtonContent}
+        </Button>
+      )}
+
       <NookInput
         label="Nom de l'île"
         placeholder="Nom de l'île"
-        disabled
-        value={userProfile.islandName || "Pas précisé"}
+        disabled={!!userData}
+        value={islandName}
+        onChange={setIslandName}
       />
 
-      <NookInput
-        label="Hemisphere"
-        placeholder="Hemisphere"
-        disabled
-        value={userHemisphere ? userHemisphere.label : "Pas précisé"}
-      />
+      {hemisphereEdit ? (
+        <div className="hemisphere-buttons">
+          <HemisphereButton
+            active={hemisphere === "NORTH"}
+            onClick={() => {
+              setHemisphere("NORTH");
+              setHemisphereEdit(false);
+            }}
+          >
+            Nord
+          </HemisphereButton>
+          <HemisphereButton
+            active={hemisphere === "SOUTH"}
+            onClick={() => {
+              setHemisphere("SOUTH");
+              setHemisphereEdit(false);
+            }}
+          >
+            Sud
+          </HemisphereButton>
+        </div>
+      ) : (
+        <NookInput
+          label="Hemisphere"
+          placeholder="Hemisphere"
+          disabled={!!userData}
+          value={userHemisphere && userHemisphere.label}
+          onClick={() => !userData && setHemisphereEdit(true)}
+        />
+      )}
 
       <NookInput
         label="Code ami"
         placeholder="Code ami"
-        disabled
-        value={userProfile.friendCode || "Pas précisé"}
+        disabled={!!userData}
+        value={friendCode}
+        onChange={setFriendCode}
       />
 
       <NookInput
         label="More ?"
         placeholder="Nookazon link / horaires de l'île..."
         textArea
-        disabled
-        value={userProfile.profileDescription}
+        disabled={!!userData}
+        value={profileDescription}
+        onChange={setProfileDescription}
       />
     </div>
   );

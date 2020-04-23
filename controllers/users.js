@@ -20,9 +20,9 @@ exports.get = async (req, res, next) => {
       });
     } else {
       const fetchedUser = await users.findByPseudo(pseudo);
-      
+
       if (!fetchedUser) return next(Boom.notFound("User not found"));
-      
+
       const { password: _, ...user } = fetchedUser.toObject();
 
       return res.send({ user });
@@ -47,6 +47,34 @@ exports.getById = async (req, res, next) => {
 
     const { pseudo, islandName } = fetchedUser;
     return res.send({ user: { pseudo, islandName } });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.update = async (req, res, next) => {
+  const { _id } = req.decoded;
+  const {
+    friendCode,
+    islandName,
+    nativeFruit,
+    hemisphere,
+    profileDescription
+  } = req.body;
+
+  logger.info(`[CONTROLLERS | users] update ${_id}`);
+
+  try {
+    const updatedUser = await users.update(
+      _id,
+      friendCode,
+      islandName,
+      nativeFruit,
+      hemisphere,
+      profileDescription
+    );  
+
+    return res.send({ user: updatedUser });
   } catch (err) {
     return next(err);
   }

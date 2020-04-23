@@ -5,7 +5,8 @@ const { verifyJWT, findUser } = require('../middlewares');
 
 router
   .route('/users')
-  .get(verifyJWT, users.get);
+  .get(verifyJWT, users.get)
+  .put(verifyJWT, findUser, users.update);
 
 router
   .route('/users/:userId')
