@@ -63,7 +63,7 @@
 }
 
 .nook-text-area {
-  border-radius: 20px;
+  border-radius: 30px;
   background-color: rgb(247, 243, 232);
   border: none;
   margin: 0px;
@@ -76,5 +76,5 @@
 
 /* .nook-input:disabled,  */
 .nook-text-area:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
 }
