@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
-  process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
+  process.env.NODE_ENV === "development" && "http://172.20.10.3:2020";
 // TODO: handle PROD env
 
 const checkAvailability = async (pseudo) => {
@@ -26,7 +26,7 @@ const updateUser = async (
   islandName,
   hemisphere,
   friendCode,
-  profileDescription,
+  profileDescription
 ) => {
   const {
     data: { user },
@@ -103,6 +103,18 @@ const createPost = (items, shopPicture) => {
   });
 };
 
+const deletePost = async (postId, authorId) => {
+  const {
+    data: { post },
+  } = await axios.delete(`/api/posts/${postId}`, {
+    params: {
+      authorId,
+    },
+  });
+
+  return post;
+};
+
 const bookItem = async (itemId) => {
   const {
     data: { item },
@@ -149,6 +161,7 @@ export {
   connectUser,
   logOutUser,
   createPost,
+  deletePost,
   getDailyPosts,
   bookItem,
   unbookItem,
