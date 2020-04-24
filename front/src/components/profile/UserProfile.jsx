@@ -50,8 +50,8 @@ const ProfilePicture = ({ _id, pseudo, nativeFruit, avatarPicture }) => {
     const file = evt.target.files[0];
 
     new Compressor(file, {
-      width: 100,
-      height: 100,
+      width: 400,
+      height: 400,
       minWidth: 100,
       minHeight: 100,
       convertSize: 1000000, // 1000 kB
