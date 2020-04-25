@@ -67,9 +67,9 @@ const PostCreator = ({ backFromCreator }) => {
     const file = evt.target.files[0];
 
     new Compressor(file, {
-      maxWidth: 500,
-      maxHeight: 500,
-      convertSize: 100000, // 100 kB
+      maxWidth: 1000,
+      maxHeight: 1000,
+      convertSize: 1000000, // 1000 kB
       quality: 0.8,
       success: blob => {
         const reader = new FileReader();
