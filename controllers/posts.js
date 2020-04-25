@@ -44,6 +44,27 @@ exports.create = async (req, res, next) => {
   }
 };
 
+exports.delete = async (req, res, next) => {
+  const { postId } = req.params;
+  const { authorId } = req.query;
+  const { _id } = req.decoded;
+
+  if (!postId) return next(Boom.badRequest("Missing postId in request query"));
+  if (authorId !== _id) return next(Boom.unauthorized("Only post owner can delete this post"));
+
+  logger.info(
+    `[CONTROLLERS | bookings] delete | ${authorId} ${postId}`
+  );
+
+  try {
+    const deletedPost = await posts.remove(postId, authorId);
+
+    return res.send({ post: deletedPost });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.createBooking = async (req, res, next) => {
   const { postId } = req.params;
   const { _id: authorId } = req.user;
@@ -51,7 +72,7 @@ exports.createBooking = async (req, res, next) => {
   if (!postId) return next(Boom.badRequest("Missing postId in request query"));
 
   logger.info(
-    `[CONTROLLERS | bookings] create | ${authorId} ${postId}`
+    `[CONTROLLERS | posts] createBooking | ${authorId} ${postId}`
   );
 
   try {
@@ -70,7 +91,7 @@ exports.deleteBooking = async (req, res, next) => {
   if (!postId) return next(Boom.badRequest("Missing postId in request query"));
 
   logger.info(
-    `[CONTROLLERS | bookings] delete | ${authorId} ${postId}`
+    `[CONTROLLERS | posts] deleteBooking | ${authorId} ${postId}`
   );
 
   try {
