@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
-  process.env.NODE_ENV === "development" && "http://172.20.10.3:2020";
+  process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
 // TODO: handle PROD env
 
 const checkAvailability = async (pseudo) => {
@@ -157,7 +157,10 @@ const addCurrentPrice = async (day, hour, lastSunday, newPrice) => {
   const {
     data: { price },
   } = await axios.post("/api/turnipTrends/prices", {
-    params: { day, hour, lastSunday, price: newPrice }
+    day,
+    hour,
+    lastSunday,
+    price: newPrice,
   });
 
   return price;
@@ -190,5 +193,5 @@ export {
   uploadAvatar,
   fetchTurnipPrices,
   addCurrentPrice,
-  fetchTrend
+  fetchTrend,
 };

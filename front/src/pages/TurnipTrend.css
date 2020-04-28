@@ -8,6 +8,9 @@
   color: #838383;
   font-size: 1.5rem;
   align-items: center;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 2rem;
 }
 
 .turnip-input {
