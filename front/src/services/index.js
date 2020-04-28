@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
-  process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
+  process.env.NODE_ENV === "development" && "http://172.20.10.3:2020";
 // TODO: handle PROD env
 
 const checkAvailability = async (pseudo) => {
@@ -26,7 +26,7 @@ const updateUser = async (
   islandName,
   hemisphere,
   friendCode,
-  profileDescription,
+  profileDescription
 ) => {
   const {
     data: { user },
@@ -143,6 +143,16 @@ const uploadAvatar = async (avatarData) => {
   return user;
 };
 
+const fetchTurnipPrices = async (day, hour, lastSunday) => {
+  const {
+    data: { trends },
+  } = await axios.get("/api/turnipTrends/prices", {
+    params: { day, hour, lastSunday },
+  });
+
+  return trends;
+};
+
 export {
   signUpUser,
   logInUser,
@@ -158,4 +168,5 @@ export {
   getUser,
   updateUser,
   uploadAvatar,
+  fetchTurnipPrices,
 };

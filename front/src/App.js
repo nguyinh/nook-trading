@@ -5,7 +5,7 @@ import { AppProvider } from "./contexts";
 import Navigation from "./Navigation";
 import Changelog from "./Changelog";
 
-import { Profile, Market, PostCreator, Home } from "./pages";
+import { Profile, Market, TurnipTrend, Home } from "./pages";
 
 function App() {
   return (
@@ -23,13 +23,11 @@ function App() {
             <Route path="/profile">
               <Profile />
             </Route>
+            <Route path="/turnip-trend/:pseudo">
+              <TurnipTrend />
+            </Route>
             <Route path="/turnip-trend">
-              <div className="wip">
-                <span className="wip-title">Work in progress 👨‍💻🔥</span>
-                <span className="wip-explanations">
-                  icitupourraspartagertoncoursdunavetavectesmeilleurspotosmatin&après-midimaischutc'estunsecret
-                </span>
-              </div>
+              <TurnipTrend />
             </Route>
             <Route path="/market">
               <Market />

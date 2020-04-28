@@ -9,9 +9,6 @@ const turnipTrendScheme = mongoose.Schema({
     ref: "User",
     required: true,
   },
-  createdAt: {
-    type: Date,
-  },
   prices: {
     type: Object,
     default: {
@@ -37,6 +34,7 @@ const turnipTrendScheme = mongoose.Schema({
   },
   sellerPrice: {
     type: Number,
+    default: 0,
   },
   createdAt: {
     type: Date,

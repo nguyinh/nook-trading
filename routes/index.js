@@ -3,5 +3,6 @@ module.exports = server => {
   server.use('/api', require('./auth'));
   server.use('/api', require('./posts'));
   server.use('/api', require('./items'));
+  server.use('/api', require('./turnips'));
   server.use('/api', require('./versions'));
 };
