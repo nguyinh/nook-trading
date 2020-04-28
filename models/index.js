@@ -3,4 +3,5 @@ module.exports = {
   Post: require('./post'),
   Item: require('./item'),
   Version: require('./version'),
+  NookItem: require('./nookItem')
 }
