@@ -77,6 +77,17 @@ const WeekView = () => {
     if (currentUser) fetchPrices();
   }, [currentUser]);
 
+  useEffect(() => {
+    if (!askForPrice) {
+      if (prices.length) {
+        const haveSelfCurrentPrice = prices.some(
+          (price) => price.author._id === currentUser._id
+        );
+        setAskForPrice(!haveSelfCurrentPrice);
+      } else setAskForPrice(true);
+    }
+  }, [prices]);
+
   return (
     <>
       {isLoading ? (
@@ -93,7 +104,7 @@ const WeekView = () => {
           {askForPrice && <TrendInput updatePrices={updatePrices} />}
           <BuyingPrice
             prices={prices}
-            priceByTurnip={selfTrend.priceByTurnip}
+            turnipsOwnedValue={selfTrend.turnipsOwnedValue}
             turnipsOwned={selfTrend.turnipsOwned}
           />
         </>

@@ -67,8 +67,7 @@ const Profit = ({ price, turnipQuantity, turnipBoughtFor }) => {
   );
 };
 
-const BuyingPrice = ({ prices, priceByTurnip, turnipsOwned }) => {
-  console.log(priceByTurnip, turnipsOwned);
+const BuyingPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
   return (
     <div className="all-prices--container">
       {prices.map((trend) => (
@@ -85,7 +84,7 @@ const BuyingPrice = ({ prices, priceByTurnip, turnipsOwned }) => {
                 <Profit
                   price={trend.price}
                   turnipQuantity={turnipsOwned}
-                  turnipBoughtFor={priceByTurnip}
+                  turnipBoughtFor={turnipsOwnedValue}
                 />
               )}
             </div>
