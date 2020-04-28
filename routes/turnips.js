@@ -10,6 +10,7 @@ router
 
 router
   .route('/turnipTrends/prices')
-  .get(verifyJWT, turnips.getPrices);
+  .get(verifyJWT, turnips.getPrices)
+  .post(verifyJWT, findUser, turnips.createPrice);
 
 module.exports = router;
