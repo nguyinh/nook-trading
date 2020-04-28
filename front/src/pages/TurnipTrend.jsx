@@ -1,11 +1,31 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Button, Header, Divider, Loader } from "semantic-ui-react";
+import { useParams } from "react-router-dom";
 
 import "./TurnipTrend.css";
 import { AppContext } from "../contexts";
 import { fetchTurnipPrices, fetchTrend } from "../services";
 import { BuyingPrice } from "../components/turnip-trend";
-import { Button, Header, Divider, Loader } from "semantic-ui-react";
-import { useParams } from "react-router-dom";
+import { ReactComponent as BellsPerTurnip } from "../res/images/bells-per-turnip-2.svg";
+import { ReactComponent as Check } from "../res/images/little-check.svg";
+
+const TrendInput = () => {
+  return (
+    <div className="turnip-input--container">
+      <span>Quel est ton cours du navet ?</span>
+
+      <div className="turnip-input">
+        <BellsPerTurnip/>
+        <input type="text" id="price-input" name="price-input" />
+        <span className='turnip-input--label'>
+          {/* prix */}
+          {/* <Loader active inline size='mini'/> */}
+          <Check style={{marginBottom: '-2px'}}/>
+        </span>
+      </div>
+    </div>
+  );
+};
 
 const TurnipTrend = () => {
   const {
@@ -38,7 +58,7 @@ const TurnipTrend = () => {
         lastSunday
       );
       console.log(turnipPrices);
-      turnipPrices = turnipPrices.map(({author, ...rest}) => ({
+      turnipPrices = turnipPrices.map(({ author, ...rest }) => ({
         ...rest,
         author: {
           ...author,
@@ -47,7 +67,6 @@ const TurnipTrend = () => {
       }));
 
       setPrices(turnipPrices);
-
     } catch (err) {
     } finally {
       setIsLoading(false);
@@ -55,8 +74,7 @@ const TurnipTrend = () => {
   };
 
   useEffect(() => {
-    if (currentUser)
-      fetchPrices();
+    if (currentUser) fetchPrices();
   }, [currentUser]);
 
   if (isAutoConnecting)
@@ -78,11 +96,14 @@ const TurnipTrend = () => {
           Calcul par nos meilleurs ingénieurs
         </Loader>
       ) : (
-        <BuyingPrice
-          prices={prices}
-          priceByTurnip={selfTrend.priceByTurnip}
-          turnipsOwned={selfTrend.turnipsOwned}
-        />
+        <>
+          <TrendInput />
+          <BuyingPrice
+            prices={prices}
+            priceByTurnip={selfTrend.priceByTurnip}
+            turnipsOwned={selfTrend.turnipsOwned}
+          />
+        </>
       )}
     </div>
   );

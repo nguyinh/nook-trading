@@ -1,0 +1,45 @@
+.turnip-input--container {
+  display: flex;
+  flex-direction: column;
+  background: #f7f4e7;
+  border-radius: 30px;
+  padding: 2rem;
+  font-family: Finkheavy;
+  color: #838383;
+  font-size: 1.5rem;
+  align-items: center;
+}
+
+.turnip-input {
+  display: flex;
+  max-width: 150px;
+  align-items: center;
+  background: #6CBE4F;
+  border-radius: 40px;
+  border: 4px solid white;
+  margin-top: 1rem;
+  padding: 0rem 1rem;
+  position: relative;
+}
+
+#price-input {
+  padding: 0 0.5rem;
+  background: transparent;
+  color: #FEFF77;
+  font-weight: 800;
+  padding-bottom: 0.2rem;
+  font-size: 2rem;
+  width: 100%;
+  border: none;
+  text-align: center;
+}
+
+.turnip-input--label {
+  position: absolute;
+  bottom: -12px;
+  right: 0;
+  background: white;
+  border-radius: 20px;
+  padding: 0rem 0.5rem;
+  font-size: 1rem;
+}
