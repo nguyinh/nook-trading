@@ -38,11 +38,11 @@ const TurnipTrend = () => {
         lastSunday
       );
       console.log(turnipPrices);
-      turnipPrices = turnipPrices.map((trend) => ({
-        ...trend,
+      turnipPrices = turnipPrices.map(({author, ...rest}) => ({
+        ...rest,
         author: {
-          ...trend.author,
-          avatar: Buffer.from(trend.author.avatar.data, "base64"),
+          ...author,
+          avatar: Buffer.from(author.avatar.data, "base64"),
         },
       }));
 
