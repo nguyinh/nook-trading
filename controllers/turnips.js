@@ -27,16 +27,20 @@ exports.create = async (req, res, next) => {
 };
 
 exports.get = async (req, res, next) => {
-  const { authorId } = req.query;
+  const { authorId, lastSunday } = req.query;
 
-  logger.info(`[CONTROLLERS | turnips] get | ${authorId}`);
+  logger.info(`[CONTROLLERS | turnips] get | ${authorId || ''} ${lastSunday}`);
 
   try {
-    const fetchedTrend = authorId
-      ? await turnips.findByAuthor(authorId)
-      : turnips.find();
-
-    return res.send({ trend: fetchedTrend });
+    if (authorId) {
+      const fetchedTrend = await turnips.findByAuthor(authorId, lastSunday);
+      return res.send({ trend: fetchedTrend });
+    }
+    else {
+      const fetchedTrends = await turnips.findAll(lastSunday);
+      console.log(fetchedTrends);
+      return res.send({ trends: fetchedTrends });
+    }
   } catch (err) {
     return next(err);
   }

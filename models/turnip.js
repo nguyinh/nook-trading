@@ -22,11 +22,11 @@ const turnipTrendScheme = mongoose.Schema({
   },
   turnipsOwned: {
     type: Number,
-    default: 0,
+    default: null,
   },
   turnipsOwnedValue: {
     type: Number,
-    default: 0,
+    default: null,
   },
   areTurnipSold: {
     type: Boolean,
@@ -34,7 +34,7 @@ const turnipTrendScheme = mongoose.Schema({
   },
   sundayPrice: {
     type: Number,
-    default: 0,
+    default: null,
   },
   createdAt: {
     type: Date,

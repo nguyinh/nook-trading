@@ -8,8 +8,18 @@ exports.add = (author) => {
   });
 };
 
-exports.findByAuthor = (author) => {
-  return TurnipTrend.findOne({ author }).populate({
+exports.findAll = (lastSunday) => {
+  return TurnipTrend.find({ createdAt: { $gte: lastSunday } }).populate({
+    path: "author",
+    select: "pseudo avatar",
+  });
+};
+
+exports.findByAuthor = (author, lastSunday) => {
+  return TurnipTrend.findOne({
+    author,
+    createdAt: { $gte: lastSunday },
+  }).populate({
     path: "author",
     select: "pseudo avatar",
   });
