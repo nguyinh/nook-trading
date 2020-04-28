@@ -153,6 +153,16 @@ const fetchTurnipPrices = async (day, hour, lastSunday) => {
   return trends;
 };
 
+const fetchTrend = async (authorId, lastSunday) => {
+  const {
+    data: { trend },
+  } = await axios.get("/api/turnipTrends", {
+    params: { authorId, lastSunday },
+  });
+
+  return trend;
+};
+
 export {
   signUpUser,
   logInUser,
@@ -169,4 +179,5 @@ export {
   updateUser,
   uploadAvatar,
   fetchTurnipPrices,
+  fetchTrend
 };

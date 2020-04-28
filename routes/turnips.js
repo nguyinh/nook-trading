@@ -5,7 +5,7 @@ const { verifyJWT, findUser } = require('../middlewares');
 
 router
   .route('/turnipTrends')
-  // .get(verifyJWT, turnips.get)
+  .get(verifyJWT, turnips.get)
   .post(verifyJWT, findUser, turnips.create);
 
 router

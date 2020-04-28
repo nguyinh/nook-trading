@@ -18,6 +18,20 @@ exports.create = async (req, res, next) => {
   }
 };
 
+exports.get = async (req, res, next) => {
+  const { authorId } = req.query;
+
+  logger.info(`[CONTROLLERS | turnips] get | ${authorId}`);
+
+  try {
+    const fetchedTrend = authorId ? await turnips.findByAuthor(authorId) : turnips.find();
+    console.log(fetchedTrend);
+    return res.send({ trend: fetchedTrend });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.getPrices = async (req, res, next) => {
   const { day, hour, lastSunday } = req.query;
   console.log(day, hour, lastSunday);
