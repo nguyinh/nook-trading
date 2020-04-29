@@ -63,11 +63,13 @@ exports.getPrices = async (req, res, next) => {
       lastSunday
     );
 
+    const isEmpty = obj => Object.entries(obj).length === 0;
+
     const trends = fetchedTrends
       .map(({ _id, author, prices }) => ({
         _id,
         author,
-        price: prices[dayName][dayTime],
+        price: !isEmpty(prices) ? prices[dayName][dayTime] : null,
       }))
       .filter(({ price }) => !!price);
 
