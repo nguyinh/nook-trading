@@ -27,18 +27,17 @@ exports.create = async (req, res, next) => {
 };
 
 exports.get = async (req, res, next) => {
-  const { authorId, lastSunday } = req.query;
+  const { authorId, lastSunday, withSundayPrices } = req.query;
 
-  logger.info(`[CONTROLLERS | turnips] get | ${authorId || ''} ${lastSunday}`);
+  logger.info(`[CONTROLLERS | turnips] get | ${authorId || ""} ${lastSunday}`);
 
   try {
     if (authorId) {
       const fetchedTrend = await turnips.findByAuthor(authorId, lastSunday);
       return res.send({ trend: fetchedTrend });
-    }
-    else {
-      const fetchedTrends = await turnips.findAll(lastSunday);
-      console.log(fetchedTrends);
+    } else {
+      let fetchedTrends = await turnips.findAll(lastSunday);
+      if (withSundayPrices) fetchedTrends = fetchedTrends.filter(trend => trend.sundayPrice);
       return res.send({ trends: fetchedTrends });
     }
   } catch (err) {
@@ -63,7 +62,7 @@ exports.getPrices = async (req, res, next) => {
       lastSunday
     );
 
-    const isEmpty = obj => Object.entries(obj).length === 0;
+    const isEmpty = (obj) => Object.entries(obj).length === 0;
 
     const trends = fetchedTrends
       .map(({ _id, author, prices }) => ({
@@ -94,7 +93,7 @@ exports.createPrice = async (req, res, next) => {
 
     price = parseInt(price);
     if (isNaN(price)) return next(Boom.badRequest("Price is not a number"));
-    
+
     let { _id, author, prices } = await turnips.addCurrentPrice(
       dayName,
       dayTime,
@@ -110,6 +109,57 @@ exports.createPrice = async (req, res, next) => {
     };
 
     return res.send({ price: addedPrice });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+// SUNDAY WITH PORCELETTE
+exports.createSundayPrice = async (req, res, next) => {
+  const { _id: authorId } = req.user;
+  const { thisSunday } = req.body;
+  let { price } = req.body;
+
+  logger.info(
+    `[CONTROLLERS | turnips] createSundayPrice ${thisSunday} ${authorId} ${price}}`
+  );
+
+  try {
+    price = parseInt(price);
+    if (isNaN(price)) return next(Boom.badRequest("Price is not a number"));
+
+    let trend = await turnips.setSundayPrice(
+      thisSunday,
+      authorId,
+      parseInt(price)
+    );
+
+    return res.send({ trend });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.updateOwnedQuantity = async (req, res, next) => {
+  const { _id: authorId } = req.user;
+  const { thisSunday } = req.body;
+  let { quantity } = req.body;
+
+  logger.info(
+    `[CONTROLLERS | turnips] updateOwnedQuantity ${thisSunday} ${authorId} ${quantity}}`
+  );
+
+  try {
+    quantity = parseInt(quantity);
+    if (isNaN(quantity)) return next(Boom.badRequest("Quantity is not a number"));
+
+    let trend = await turnips.setTurnipQuantity(
+      thisSunday,
+      authorId,
+      parseInt(quantity)
+    );  console.log(trend);
+
+    return res.send({ trend });
   } catch (err) {
     return next(err);
   }

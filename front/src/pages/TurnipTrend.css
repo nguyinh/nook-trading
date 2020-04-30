@@ -25,7 +25,7 @@
   position: relative;
 }
 
-#price-input {
+#price-input, #turnip-quantity-input, #unitary-turnip-price-input {
   padding: 0 0.5rem;
   background: transparent;
   color: #FEFF77;
@@ -35,6 +35,18 @@
   width: 100%;
   border: none;
   text-align: center;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+#price-input::-webkit-inner-spin-button, 
+#price-input::-webkit-outer-spin-button,
+#turnip-quantity-input::-webkit-inner-spin-button,
+#turnip-quantity-input::-webkit-outer-spin-button,
+#unitary-turnip-price-input::-webkit-inner-spin-button,
+#unitary-turnip-price-input::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 
 .turnip-input--label {

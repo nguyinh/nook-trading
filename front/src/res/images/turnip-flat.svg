@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36.568" height="39.16" viewBox="0 0 36.568 39.16">
+  <defs>
+    <filter id="turnip-body" x="0" y="6.007" width="34.59" height="33.153" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="turnip" transform="translate(-31.871 -321.36)">
+    <g id="leafs" transform="translate(49.458 321.36)">
+      <g id="leaf-2" transform="translate(5.371 5.859)">
+        <path id="Tracé_22" data-name="Tracé 22" d="M0,5.149H.817a18.947,18.947,0,0,0,.225-2.654A15.46,15.46,0,0,0,.817,0H0A15.849,15.849,0,0,1,.225,2.514,18.511,18.511,0,0,1,0,5.149Z" transform="matrix(-0.788, -0.616, 0.616, -0.788, 0.955, 13.377)" fill="#439046"/>
+        <path id="Tracé_18" data-name="Tracé 18" d="M4.423,0c2.5,0,6.91,3.78,6.91,3.78s-4.415,3.8-6.91,3.8S0,5.618,0,3.78,1.927,0,4.423,0Z" transform="matrix(0.799, -0.602, 0.602, 0.799, 0, 6.82)" fill="#439046"/>
+      </g>
+      <g id="leaf-3" transform="translate(0 0.533)">
+        <path id="Tracé_20" data-name="Tracé 20" d="M0,0H.719a21.439,21.439,0,0,1,.2,2.654,17.483,17.483,0,0,1-.2,2.495H0A17.925,17.925,0,0,0,.2,2.635,20.944,20.944,0,0,0,0,0Z" transform="matrix(0.891, 0.454, -0.454, 0.891, 2.97, 10.569)" fill="#439046"/>
+        <path id="Tracé_18-2" data-name="Tracé 18" d="M4.423,0c2.5,0,6.91,3.78,6.91,3.78s-4.415,3.8-6.91,3.8S0,5.618,0,3.78,1.927,0,4.423,0Z" transform="matrix(0.242, -0.97, 0.97, 0.242, 0, 10.996)" fill="#439046"/>
+      </g>
+      <g id="main-leaf" transform="translate(1.631 0)">
+        <rect id="Rectangle_31" data-name="Rectangle 31" width="0.792" height="5.149" transform="matrix(0.799, 0.602, -0.602, 0.799, 4.347, 12.581)" fill="#56ad63"/>
+        <path id="Tracé_18-3" data-name="Tracé 18" d="M5.525,0c3.117,0,8.632,4.722,8.632,4.722S8.642,9.465,5.525,9.465,0,7.019,0,4.722,2.407,0,5.525,0Z" transform="matrix(0.574, -0.819, 0.819, 0.574, 0, 11.597)" fill="#56ad63"/>
+        <path id="Tracé_19" data-name="Tracé 19" d="M4.007,0H7C8.245-.013,8.089.419,8.1.418s.1.242-.846.985c-1.153.905-1.9,1.576-3.538,1.576A4.772,4.772,0,0,1,.333,1.247C-.167.608.04.332.056.3S.1,0,1.005,0Z" transform="matrix(0.574, -0.819, 0.819, 0.574, 5.067, 12.508)" fill="#4ea159"/>
+      </g>
+    </g>
+    <g id="turnip-body-2" data-name="turnip-body" transform="translate(36.371 331.867)">
+      <g transform="matrix(1, 0, 0, 1, -4.5, -10.51)" filter="url(#turnip-body)">
+        <ellipse id="turnip-body-3" data-name="turnip-body" cx="10.1" cy="8.615" rx="10.1" ry="8.615" transform="translate(11.78 10.51) rotate(25)" fill="#f2f7e2"/>
+      </g>
+      <path id="turnip-head" d="M4.979,0C7.068,0,9.164,5.433,9.164,5.433L0,5.374S2.889,0,4.979,0Z" transform="matrix(-0.891, -0.454, 0.454, -0.891, 10.805, 23.458)" fill="#f2f7e2"/>
+      <g id="dots" transform="translate(13.506 12.82)">
+        <circle id="dot_3" data-name="dot 3" cx="0.5" cy="0.5" r="0.5" transform="translate(0.231 3.672)" fill="#c8bca1"/>
+        <circle id="dot_2" data-name="dot 2" cx="0.5" cy="0.5" r="0.5" transform="translate(3.231 1.672)" fill="#c8bca1"/>
+        <circle id="dot_1" data-name="dot 1" cx="0.5" cy="0.5" r="0.5" transform="translate(0.231 0.672)" fill="#c8bca1"/>
+      </g>
+    </g>
+  </g>
+</svg>

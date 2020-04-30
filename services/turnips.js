@@ -53,12 +53,26 @@ exports.addCurrentPrice = (dayName, dayTime, lastSunday, author, price) => {
     .select(`author prices.${dayName}.${dayTime}`);
 };
 
-// { $addToSet: { bookings: [{ author: authorId }] } },
-//         {
-//           new: true,
-//         }
+exports.setSundayPrice = (thisSunday, author, sundayPrice) => {
+  return TurnipTrend.findOneAndUpdate(
+    { author, createdAt: { $gte: thisSunday } },
+    { sundayPrice },
+    { new: true }
+  )
+    .populate({
+      path: "author",
+      select: "pseudo avatar",
+    });
+};
 
-//         {'$set': {
-//           'items.$.name': 'updated item2',
-//           'items.$.value': 'two updated'
-//       }}
+exports.setTurnipQuantity = (thisSunday, author, turnipsOwned) => {
+  return TurnipTrend.findOneAndUpdate(
+    { author, createdAt: { $gte: thisSunday } },
+    { turnipsOwned },
+    { new: true }
+  )
+    .populate({
+      path: "author",
+      select: "pseudo avatar",
+    });
+};

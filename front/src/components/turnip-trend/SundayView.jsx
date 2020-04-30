@@ -3,8 +3,18 @@ import { Loader } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 
 import { AppContext } from "../../contexts";
-import { fetchTurnipPrices, fetchAllTrends } from "../../services";
-import { BuyingPrice, TrendInput } from ".";
+import { fetchAllTrends } from "../../services";
+import { SundayInput, SundayPrices, TurnipOwnedInput } from "./";
+
+const formatAvatarData = ({ author, ...rest }) => ({
+  ...rest,
+  author: {
+    ...author,
+    avatar: Buffer.from(author.avatar.data, "base64"),
+  },
+});
+
+const bySundayPriceAmount = (a, b) => (a.sundayPrice < b.sundayPice ? -1 : 1);
 
 const SundayView = () => {
   const {
@@ -16,6 +26,7 @@ const SundayView = () => {
   const [selfTrend, setSelfTrend] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [askForPrice, setAskForPrice] = useState(false);
+  const [askForTurnips, setAskForTurnips] = useState(false);
 
   const fetchTrends = async () => {
     try {
@@ -28,12 +39,24 @@ const SundayView = () => {
       );
 
       let fetchedTrends = await fetchAllTrends(lastSunday);
-      console.log(fetchedTrends);
+
+      fetchedTrends = fetchedTrends.map(formatAvatarData).sort(bySundayPriceAmount);
 
       setTrends(fetchedTrends);
-      setSelfTrend(
-        fetchedTrends.find((trend) => trend.author._id === currentUser._id)
-      );
+
+      const fetchedSelfTrend = fetchedTrends.find((trend) => trend.author._id === currentUser._id);
+
+      if (fetchedSelfTrend) {
+        setSelfTrend(
+          fetchedTrends.find((trend) => trend.author._id === currentUser._id)
+        );
+          console.log(fetchedSelfTrend);
+        if (!fetchedSelfTrend.sundayPrice) setAskForPrice(true);
+
+        if (!fetchedSelfTrend.turnipsOwned || !fetchedSelfTrend.turnipsOwnedValue) setAskForTurnips(true);
+        setAskForTurnips(true);
+      }
+      else setAskForPrice(true);
     } catch (err) {
       console.log(err);
     } finally {
@@ -41,16 +64,21 @@ const SundayView = () => {
     }
   };
 
-  useEffect(() => {
-    if (currentUser) fetchTrends();
-  }, [currentUser]);
+  const updateTrends = (newTrend) => {
+    setSelfTrend(newTrend);
+
+    const newTrends = [
+      ...trends.filter((trend) => trend._id !== newTrend._id),
+      formatAvatarData(newTrend),
+    ].sort(bySundayPriceAmount);
+
+    setTrends(newTrends);
+  };
 
   useEffect(() => {
-    if (!askForPrice && selfTrend) {
-      if (!selfTrend.sundayPrice) setAskForPrice(true);
-    }
-  }, [selfTrend]);
-
+      fetchTrends();
+  }, []);
+  console.log(selfTrend && selfTrend.turnipsOwned);
   return (
     <>
       {isLoading ? (
@@ -63,15 +91,15 @@ const SundayView = () => {
           Nous interrogeons Porcelette 🐷
         </Loader>
       ) : (
-        <>
-          {/* // TODO: Replace this for sunday */}
-          {askForPrice && 'Asking'}
-          {/* <BuyingPrice
-            prices={prices}
-            turnipsOwnedValue={selfTrend.turnipsOwnedValue}
-            turnipsOwned={selfTrend.turnipsOwned}
-          /> */}
-        </>
+        <div>
+          {askForPrice && <SundayInput updateTrends={updateTrends}/>}
+
+          {askForTurnips && <TurnipOwnedInput updateTrends={updateTrends} turnipsOwned={selfTrend.turnipsOwned} turnipsOwnedValue={selfTrend.turnipsOwnedValue}/>}
+          
+          <SundayPrices
+            prices={trends.map(({sundayPrice, _id, author}) => ({sundayPrice, _id, author}))}
+          />
+        </div>
       )}
     </>
   );

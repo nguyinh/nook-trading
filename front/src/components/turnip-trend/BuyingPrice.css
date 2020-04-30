@@ -26,8 +26,6 @@
 
 .nook-pseudo {
   background: #E2AE65;
-  width: -moz-fit-content;
-  width: fit-content;
   padding: 4px 1rem;
   border-radius: 40px;
   color: #6E341D;

@@ -5,6 +5,7 @@ axios.defaults.baseURL =
   process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
 // TODO: handle PROD env
 
+/* USERS */
 const checkAvailability = async (pseudo) => {
   const {
     data: { isAvailable },
@@ -88,6 +89,16 @@ const logOutUser = async () => {
   return;
 };
 
+const uploadAvatar = async (avatarData) => {
+  const {
+    data: { user },
+  } = await axios.post(`/api/users/avatar`, { avatarData });
+
+  return user;
+};
+
+
+/* MARKET */
 const getDailyPosts = async () => {
   const {
     data: { posts },
@@ -135,14 +146,7 @@ const unbookPost = async (postId) => {
   return post;
 };
 
-const uploadAvatar = async (avatarData) => {
-  const {
-    data: { user },
-  } = await axios.post(`/api/users/avatar`, { avatarData });
-
-  return user;
-};
-
+/* TURNIP TREND */
 const fetchTurnipPrices = async (day, hour, lastSunday) => {
   const {
     data: { trends },
@@ -166,6 +170,28 @@ const addCurrentPrice = async (day, hour, lastSunday, newPrice) => {
   return price;
 };
 
+const setSundayPrice = async (thisSunday, price) => {
+  const {
+    data: { trend },
+  } = await axios.post("/api/turnipTrends/prices/sunday", {
+    thisSunday,
+    price,
+  });
+
+  return trend;
+};
+
+const setOwnedQuantity = async (thisSunday, quantity) => {
+  const {
+    data: { trend },
+  } = await axios.post("/api/turnipTrends/ownedQuantity", {
+    thisSunday,
+    quantity,
+  });
+
+  return trend;
+};
+
 const fetchTrend = async (authorId, lastSunday) => {
   const {
     data: { trend },
@@ -180,7 +206,7 @@ const fetchAllTrends = async (lastSunday) => {
   const {
     data: { trends },
   } = await axios.get("/api/turnipTrends", {
-    params: { lastSunday },
+    params: { lastSunday, withSundayPrices: true },
   });
 
   return trends;
@@ -203,6 +229,8 @@ export {
   uploadAvatar,
   fetchTurnipPrices,
   addCurrentPrice,
+  setOwnedQuantity,
+  setSundayPrice,
   fetchTrend,
   fetchAllTrends,
 };

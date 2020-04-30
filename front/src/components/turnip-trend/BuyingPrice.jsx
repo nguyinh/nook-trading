@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 
 import "./BuyingPrice.css";
-import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip.svg";
+import { Price } from './';
 import { ReactComponent as Bells } from "../../res/images/bells-flat.svg";
 import { ReactComponent as TriangleUp } from "../../res/images/triangle-green.svg";
 import { ReactComponent as TriangleDown } from "../../res/images/triangle-red.svg";
@@ -9,19 +9,6 @@ import { ReactComponent as TriangleDown } from "../../res/images/triangle-red.sv
 const PriceAvatar = ({ src }) => (
   <div className="price--author-avatar--container">
     <img className="price--author-avatar" src={src} />
-  </div>
-);
-
-const Price = ({ price }) => (
-  <div className="price-per-turnip--container">
-    <div className="price-per-turnip">
-      <span>{price}</span>
-
-      <BellsPerTurnip />
-      {/* <Bells/> */}
-    </div>
-
-    <span className="price-per-turnip--label">Prix rachat</span>
   </div>
 );
 

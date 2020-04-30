@@ -13,4 +13,13 @@ router
   .get(verifyJWT, turnips.getPrices)
   .post(verifyJWT, findUser, turnips.createPrice);
 
+
+  router
+  .route('/turnipTrends/ownedQuantity')
+  .post(verifyJWT, findUser, turnips.updateOwnedQuantity);
+
+router
+  .route('/turnipTrends/prices/sunday')
+  .post(verifyJWT, findUser, turnips.createSundayPrice);
+
 module.exports = router;
