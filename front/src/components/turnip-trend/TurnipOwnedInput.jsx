@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Loader } from "semantic-ui-react";
 
-import { setSundayPrice, setOwnedQuantity } from "../../services";
+import { setSundayPrice, setOwnedQuantity, setOwnedPrice } from "../../services";
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
 import { ReactComponent as Turnip } from "../../res/images/turnip-flat.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
@@ -52,42 +52,42 @@ const TurnipOwnedInput = ({ updateTrends, turnipsOwned, turnipsOwnedValue }) => 
     }
   };
 
-  // const handleChangedPrice = (value) => {
-  //   const saveSundayPrice = async (newPrice) => {
-  //     try {
-  //       setIsSavingPrice(true);
+  const handleChangedPrice = (value) => {
+    const saveTurnipPrice = async (newPrice) => {
+      try {
+        setIsSavingPrice(true);
 
-  //       const now = new Date();
-  //       const today = new Date(
-  //         now.getFullYear(),
-  //         now.getMonth(),
-  //         now.getDate()
-  //       );
-  //       console.log(today);
-  //       // FIXME: In theory today is Sunday
-  //       const thisSunday = new Date(
-  //         today.setDate(today.getDate() - today.getDay())
-  //       );
-  //       console.log(thisSunday);
-  //       const trend = await setSundayPrice(
-  //         thisSunday,
-  //         newPrice
-  //       );
-  //       setIsDefaultLabel(false);
+        const now = new Date();
+        const today = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate()
+        );
 
-  //       updateTrends(trend);
-  //     } catch (err) {
-  //       console.log(err);
-  //     } finally {
-  //       setIsSavingPrice(false);
-  //     }
-  //   };
+        const thisSunday = new Date(
+          today.setDate(today.getDate() - today.getDay())
+        );
 
-  //   if (timer) clearTimeout(timer);
-  //   if (value) {
-  //     setTimer(setTimeout(() => saveSundayPrice(value), 1000));
-  //   }
-  // };
+        const trend = await setOwnedPrice(
+          thisSunday,
+          newPrice
+        );
+
+        setIsDefaultPriceLabel(false);
+
+        updateTrends(trend);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsSavingPrice(false);
+      }
+    };
+
+    if (priceTimer) clearTimeout(priceTimer);
+    if (value) {
+      setPriceTimer(setTimeout(() => saveTurnipPrice(value), 1000));
+    }
+  };
 
   return (
     <div className="turnip-input--container">
@@ -125,7 +125,7 @@ const TurnipOwnedInput = ({ updateTrends, turnipsOwned, turnipsOwnedValue }) => 
           id="unitary-turnip-price-input"
           name="unitary-turnip-price-input"
           defaultValue={turnipsOwnedValue}
-          // onChange={(e) => handleChangedPrice(e.target.value)}
+          onChange={(e) => handleChangedPrice(e.target.value)}
         />
         <span className="turnip-input--label">
           {isSavingPrice ? (

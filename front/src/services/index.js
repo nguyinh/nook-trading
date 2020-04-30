@@ -192,6 +192,18 @@ const setOwnedQuantity = async (thisSunday, quantity) => {
   return trend;
 };
 
+const setOwnedPrice = async (thisSunday, price) => {
+  const {
+    data: { trend },
+  } = await axios.post("/api/turnipTrends/ownedPrice", {
+    thisSunday,
+    price,
+  });
+
+  return trend;
+};
+
+
 const fetchTrend = async (authorId, lastSunday) => {
   const {
     data: { trend },
@@ -233,4 +245,5 @@ export {
   setSundayPrice,
   fetchTrend,
   fetchAllTrends,
+  setOwnedPrice
 };

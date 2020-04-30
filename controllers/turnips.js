@@ -165,13 +165,13 @@ exports.updateOwnedQuantity = async (req, res, next) => {
   }
 };
 
-exports.updateOwnedValue = async (req, res, next) => {
+exports.updateOwnedPrice = async (req, res, next) => {
   const { _id: authorId } = req.user;
   const { thisSunday } = req.body;
   let { price } = req.body;
 
   logger.info(
-    `[CONTROLLERS | turnips] updateOwnedValue ${thisSunday} ${authorId} ${price}}`
+    `[CONTROLLERS | turnips] updateOwnedPrice ${thisSunday} ${authorId} ${price}}`
   );
 
   try {
