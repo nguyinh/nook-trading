@@ -104,8 +104,8 @@ const WeekView = () => {
           {askForPrice && <TrendInput updatePrices={updatePrices} />}
           <BuyingPrice
             prices={prices}
-            turnipsOwnedValue={selfTrend.turnipsOwnedValue}
-            turnipsOwned={selfTrend.turnipsOwned}
+            turnipsOwnedValue={selfTrend && selfTrend.turnipsOwnedValue}
+            turnipsOwned={selfTrend && selfTrend.turnipsOwned}
           />
         </>
       )}

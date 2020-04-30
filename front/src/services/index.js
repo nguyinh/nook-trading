@@ -6,7 +6,7 @@ axios.defaults.baseURL =
 // TODO: handle PROD env
 
 /* USERS */
-const checkAvailability = async (pseudo) => {
+export async function checkAvailability(pseudo) {
   const {
     data: { isAvailable },
   } = await axios.get(`/api/auth/checkAvailability/${pseudo}`);
@@ -14,7 +14,7 @@ const checkAvailability = async (pseudo) => {
   return isAvailable;
 };
 
-const getUser = async (pseudo) => {
+export async function getUser(pseudo) {
   const {
     data: { user },
   } = await axios.get(`/api/users`, { params: { pseudo } });
@@ -22,13 +22,13 @@ const getUser = async (pseudo) => {
   return user;
 };
 
-const updateUser = async (
+export async function updateUser(
   nativeFruit,
   islandName,
   hemisphere,
   friendCode,
   profileDescription
-) => {
+) {
   const {
     data: { user },
   } = await axios.put("/api/users", {
@@ -42,14 +42,14 @@ const updateUser = async (
   return user;
 };
 
-const signUpUser = async (
+export async function signUpUser(
   pseudo,
   password,
   hemisphere,
   nativeFruit,
   islandName,
   friendCode
-) => {
+) {
   const {
     data: { user },
   } = await axios.post("/api/auth/signin", {
@@ -64,7 +64,7 @@ const signUpUser = async (
   return user;
 };
 
-const logInUser = async (pseudo, password) => {
+export async function logInUser(pseudo, password) {
   const {
     data: { user },
   } = await axios.post("/api/auth/login", {
@@ -75,7 +75,7 @@ const logInUser = async (pseudo, password) => {
   return user;
 };
 
-const connectUser = async () => {
+export async function connectUser() {
   const {
     data: { user, currentVersion },
   } = await axios.post("/api/auth/connect");
@@ -83,13 +83,13 @@ const connectUser = async () => {
   return { user, currentVersion };
 };
 
-const logOutUser = async () => {
+export async function logOutUser() {
   await axios.post("/api/auth/logout");
 
   return;
 };
 
-const uploadAvatar = async (avatarData) => {
+export async function uploadAvatar(avatarData) {
   const {
     data: { user },
   } = await axios.post(`/api/users/avatar`, { avatarData });
@@ -99,7 +99,7 @@ const uploadAvatar = async (avatarData) => {
 
 
 /* MARKET */
-const getDailyPosts = async () => {
+export async function getDailyPosts() {
   const {
     data: { posts },
   } = await axios.get("/api/posts", { params: { onlyDaily: "true" } });
@@ -107,14 +107,14 @@ const getDailyPosts = async () => {
   return posts.reverse();
 };
 
-const createPost = (items, shopPicture) => {
+export async function createPost (items, shopPicture) {
   return axios.post("/api/posts", {
     items,
     shopPicture,
   });
 };
 
-const bookItem = async (itemId) => {
+export async function bookItem(itemId) {
   const {
     data: { item },
   } = await axios.post(`/api/items/${itemId}/bookings`);
@@ -122,7 +122,7 @@ const bookItem = async (itemId) => {
   return item;
 };
 
-const unbookItem = async (itemId) => {
+export async function unbookItem(itemId) {
   const {
     data: { item },
   } = await axios.delete(`/api/items/${itemId}/bookings`);
@@ -130,7 +130,7 @@ const unbookItem = async (itemId) => {
   return item;
 };
 
-const bookPost = async (postId) => {
+export async function bookPost(postId) {
   const {
     data: { post },
   } = await axios.post(`/api/posts/${postId}/bookings`);
@@ -138,7 +138,7 @@ const bookPost = async (postId) => {
   return post;
 };
 
-const unbookPost = async (postId) => {
+export async function unbookPost(postId) {
   const {
     data: { post },
   } = await axios.delete(`/api/posts/${postId}/bookings`);
@@ -147,30 +147,30 @@ const unbookPost = async (postId) => {
 };
 
 /* TURNIP TREND */
-const fetchTurnipPrices = async (day, hour, lastSunday) => {
+export async function fetchTurnipPrices(day, hour, thisSunday) {
   const {
     data: { trends },
   } = await axios.get("/api/turnipTrends/prices", {
-    params: { day, hour, lastSunday },
+    params: { day, hour, thisSunday },
   });
 
   return trends;
 };
 
-const addCurrentPrice = async (day, hour, lastSunday, newPrice) => {
+export async function addCurrentPrice(day, hour, thisSunday, newPrice) {
   const {
     data: { price },
   } = await axios.post("/api/turnipTrends/prices", {
     day,
     hour,
-    lastSunday,
+    thisSunday,
     price: newPrice,
   });
 
   return price;
 };
 
-const setSundayPrice = async (thisSunday, price) => {
+export async function setSundayPrice(thisSunday, price) {
   const {
     data: { trend },
   } = await axios.post("/api/turnipTrends/prices/sunday", {
@@ -181,7 +181,7 @@ const setSundayPrice = async (thisSunday, price) => {
   return trend;
 };
 
-const setOwnedQuantity = async (thisSunday, quantity) => {
+export async function setOwnedQuantity(thisSunday, quantity) {
   const {
     data: { trend },
   } = await axios.post("/api/turnipTrends/ownedQuantity", {
@@ -192,7 +192,7 @@ const setOwnedQuantity = async (thisSunday, quantity) => {
   return trend;
 };
 
-const setOwnedPrice = async (thisSunday, price) => {
+export async function setOwnedPrice(thisSunday, price) {
   const {
     data: { trend },
   } = await axios.post("/api/turnipTrends/ownedPrice", {
@@ -204,46 +204,22 @@ const setOwnedPrice = async (thisSunday, price) => {
 };
 
 
-const fetchTrend = async (authorId, lastSunday) => {
+export async function fetchTrend(authorId, thisSunday) {
   const {
     data: { trend },
   } = await axios.get("/api/turnipTrends", {
-    params: { authorId, lastSunday },
+    params: { authorId, thisSunday },
   });
 
   return trend;
 };
 
-const fetchAllTrends = async (lastSunday) => {
+export async function fetchAllTrends(thisSunday) {
   const {
     data: { trends },
   } = await axios.get("/api/turnipTrends", {
-    params: { lastSunday, withSundayPrices: true },
+    params: { thisSunday, withSundayPrices: true },
   });
 
   return trends;
-};
-
-export {
-  signUpUser,
-  logInUser,
-  connectUser,
-  logOutUser,
-  createPost,
-  getDailyPosts,
-  bookItem,
-  unbookItem,
-  bookPost,
-  unbookPost,
-  checkAvailability,
-  getUser,
-  updateUser,
-  uploadAvatar,
-  fetchTurnipPrices,
-  addCurrentPrice,
-  setOwnedQuantity,
-  setSundayPrice,
-  fetchTrend,
-  fetchAllTrends,
-  setOwnedPrice
 };

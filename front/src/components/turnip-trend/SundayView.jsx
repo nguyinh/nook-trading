@@ -40,23 +40,32 @@ const SundayView = () => {
 
       let fetchedTrends = await fetchAllTrends(lastSunday);
 
-      fetchedTrends = fetchedTrends.map(formatAvatarData).sort(bySundayPriceAmount);
+      fetchedTrends = fetchedTrends
+        .map(formatAvatarData)
+        .sort(bySundayPriceAmount);
 
       setTrends(fetchedTrends);
 
-      const fetchedSelfTrend = fetchedTrends.find((trend) => trend.author._id === currentUser._id);
+      const fetchedSelfTrend = fetchedTrends.find(
+        (trend) => trend.author._id === currentUser._id
+      );
 
       if (fetchedSelfTrend) {
         setSelfTrend(
           fetchedTrends.find((trend) => trend.author._id === currentUser._id)
         );
-          console.log(fetchedSelfTrend);
+        console.log(fetchedSelfTrend);
         if (!fetchedSelfTrend.sundayPrice) setAskForPrice(true);
 
-        if (!fetchedSelfTrend.turnipsOwned || !fetchedSelfTrend.turnipsOwnedValue) setAskForTurnips(true);
+        if (
+          !fetchedSelfTrend.turnipsOwned ||
+          !fetchedSelfTrend.turnipsOwnedValue
+        )
+          setAskForTurnips(true);
+      } else {
+        setAskForPrice(true);
         setAskForTurnips(true);
       }
-      else setAskForPrice(true);
     } catch (err) {
       console.log(err);
     } finally {
@@ -76,7 +85,7 @@ const SundayView = () => {
   };
 
   useEffect(() => {
-      fetchTrends();
+    fetchTrends();
   }, []);
   console.log(selfTrend && selfTrend.turnipsOwned);
   return (
@@ -92,12 +101,22 @@ const SundayView = () => {
         </Loader>
       ) : (
         <div>
-          {askForPrice && <SundayInput updateTrends={updateTrends}/>}
+          {askForPrice && <SundayInput updateTrends={updateTrends} />}
 
-          {askForTurnips && <TurnipOwnedInput updateTrends={updateTrends} turnipsOwned={selfTrend.turnipsOwned} turnipsOwnedValue={selfTrend.turnipsOwnedValue}/>}
-          
+          {askForTurnips && (
+            <TurnipOwnedInput
+              updateTrends={updateTrends}
+              turnipsOwned={selfTrend && selfTrend.turnipsOwned}
+              turnipsOwnedValue={selfTrend && selfTrend.turnipsOwnedValue}
+            />
+          )}
+
           <SundayPrices
-            prices={trends.map(({sundayPrice, _id, author}) => ({sundayPrice, _id, author}))}
+            prices={trends.map(({ sundayPrice, _id, author }) => ({
+              sundayPrice,
+              _id,
+              author,
+            }))}
           />
         </div>
       )}

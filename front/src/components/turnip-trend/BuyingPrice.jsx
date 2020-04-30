@@ -47,7 +47,7 @@ const Profit = ({ price, turnipQuantity, turnipBoughtFor }) => {
             </span>
           </>
         ) : (
-          "Total"
+          "Prix de vente"
         )}
       </span>
     </div>

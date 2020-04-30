@@ -20,7 +20,7 @@ const BuyingPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
             <span className="nook-pseudo">{trend.author.pseudo}</span>
 
             <div className="price--informations--basis">
-              <Price price={trend.sundayPrice} label="Prix dimanche matin" />
+              <Price price={trend.sundayPrice} label="Prix du dimanche matin" />
             </div>
           </div>
         </div>

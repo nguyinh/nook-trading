@@ -27,16 +27,16 @@ exports.create = async (req, res, next) => {
 };
 
 exports.get = async (req, res, next) => {
-  const { authorId, lastSunday, withSundayPrices } = req.query;
+  const { authorId, thisSunday, withSundayPrices } = req.query;
 
-  logger.info(`[CONTROLLERS | turnips] get | ${authorId || ""} ${lastSunday}`);
+  logger.info(`[CONTROLLERS | turnips] get | ${authorId || ""} ${thisSunday}`);
 
   try {
     if (authorId) {
-      const fetchedTrend = await turnips.findByAuthor(authorId, lastSunday);
+      const fetchedTrend = await turnips.findByAuthor(authorId, thisSunday);
       return res.send({ trend: fetchedTrend });
     } else {
-      let fetchedTrends = await turnips.findAll(lastSunday);
+      let fetchedTrends = await turnips.findAll(thisSunday);
       if (withSundayPrices) fetchedTrends = fetchedTrends.filter(trend => trend.sundayPrice);
       return res.send({ trends: fetchedTrends });
     }
@@ -46,10 +46,10 @@ exports.get = async (req, res, next) => {
 };
 
 exports.getPrices = async (req, res, next) => {
-  const { day, hour, lastSunday } = req.query;
+  const { day, hour, thisSunday } = req.query;
 
   logger.info(
-    `[CONTROLLERS | turnips] getPrices ${day} ${hour} ${lastSunday}}`
+    `[CONTROLLERS | turnips] getPrices ${day} ${hour} ${thisSunday}}`
   );
 
   try {
@@ -59,7 +59,7 @@ exports.getPrices = async (req, res, next) => {
     const fetchedTrends = await turnips.findCurrentPrice(
       dayName,
       dayTime,
-      lastSunday
+      thisSunday
     );
 
     const isEmpty = (obj) => Object.entries(obj).length === 0;
@@ -80,11 +80,11 @@ exports.getPrices = async (req, res, next) => {
 
 exports.createPrice = async (req, res, next) => {
   const { _id: authorId } = req.user;
-  const { day, hour, lastSunday } = req.body;
+  const { day, hour, thisSunday } = req.body;
   let { price } = req.body;
 
   logger.info(
-    `[CONTROLLERS | turnips] createPrice ${day} ${hour} ${lastSunday} ${authorId} ${price}}`
+    `[CONTROLLERS | turnips] createPrice ${day} ${hour} ${thisSunday} ${authorId} ${price}}`
   );
 
   try {
@@ -97,7 +97,7 @@ exports.createPrice = async (req, res, next) => {
     let { _id, author, prices } = await turnips.addCurrentPrice(
       dayName,
       dayTime,
-      lastSunday,
+      thisSunday,
       authorId,
       parseInt(price)
     );
@@ -157,7 +157,7 @@ exports.updateOwnedQuantity = async (req, res, next) => {
       thisSunday,
       authorId,
       parseInt(quantity)
-    );  console.log(trend);
+    );
 
     return res.send({ trend });
   } catch (err) {
@@ -182,7 +182,7 @@ exports.updateOwnedPrice = async (req, res, next) => {
       thisSunday,
       authorId,
       parseInt(price)
-    );  console.log(trend);
+    );
 
     return res.send({ trend });
   } catch (err) {

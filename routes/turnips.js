@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { turnips } = require('../controllers');
-const { verifyJWT, findUser } = require('../middlewares');
+const { verifyJWT, findUser, createTrend } = require('../middlewares');
 
 router
   .route('/turnipTrends')
@@ -11,19 +11,19 @@ router
 router
   .route('/turnipTrends/prices')
   .get(verifyJWT, turnips.getPrices)
-  .post(verifyJWT, findUser, turnips.createPrice);
+  .post(verifyJWT, findUser, createTrend, turnips.createPrice);
 
 
 router
   .route('/turnipTrends/ownedQuantity')
-  .post(verifyJWT, findUser, turnips.updateOwnedQuantity);
+  .post(verifyJWT, findUser, createTrend, turnips.updateOwnedQuantity);
 
 router
   .route('/turnipTrends/ownedPrice')
-  .post(verifyJWT, findUser, turnips.updateOwnedPrice);
+  .post(verifyJWT, findUser, createTrend, turnips.updateOwnedPrice);
 
 router
   .route('/turnipTrends/prices/sunday')
-  .post(verifyJWT, findUser, turnips.createSundayPrice);
+  .post(verifyJWT, findUser, createTrend, turnips.createSundayPrice);
 
 module.exports = router;

@@ -8,6 +8,13 @@ exports.add = (author) => {
   });
 };
 
+exports.findLatestTrend = (author, thisSunday) => {
+  return TurnipTrend.findOne({
+    author,
+    createdAt: { $gte: thisSunday },
+  }).sort({ createdAt: -1 });
+};
+
 exports.findAll = (lastSunday) => {
   return TurnipTrend.find({ createdAt: { $gte: lastSunday } }).populate({
     path: "author",
@@ -58,11 +65,10 @@ exports.setSundayPrice = (thisSunday, author, sundayPrice) => {
     { author, createdAt: { $gte: thisSunday } },
     { sundayPrice },
     { new: true }
-  )
-    .populate({
-      path: "author",
-      select: "pseudo avatar",
-    });
+  ).populate({
+    path: "author",
+    select: "pseudo avatar",
+  });
 };
 
 exports.setTurnipQuantity = (thisSunday, author, turnipsOwned) => {
@@ -70,11 +76,10 @@ exports.setTurnipQuantity = (thisSunday, author, turnipsOwned) => {
     { author, createdAt: { $gte: thisSunday } },
     { turnipsOwned },
     { new: true }
-  )
-    .populate({
-      path: "author",
-      select: "pseudo avatar",
-    });
+  ).populate({
+    path: "author",
+    select: "pseudo avatar",
+  });
 };
 
 exports.setTurnipValue = (thisSunday, author, turnipsOwnedValue) => {
@@ -82,10 +87,8 @@ exports.setTurnipValue = (thisSunday, author, turnipsOwnedValue) => {
     { author, createdAt: { $gte: thisSunday } },
     { turnipsOwnedValue },
     { new: true }
-  )
-    .populate({
-      path: "author",
-      select: "pseudo avatar",
-    });
+  ).populate({
+    path: "author",
+    select: "pseudo avatar",
+  });
 };
-
