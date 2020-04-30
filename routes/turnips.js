@@ -14,9 +14,13 @@ router
   .post(verifyJWT, findUser, turnips.createPrice);
 
 
-  router
+router
   .route('/turnipTrends/ownedQuantity')
   .post(verifyJWT, findUser, turnips.updateOwnedQuantity);
+
+router
+  .route('/turnipTrends/ownedValue')
+  .post(verifyJWT, findUser, turnips.updateOwnedValue);
 
 router
   .route('/turnipTrends/prices/sunday')

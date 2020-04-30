@@ -76,3 +76,16 @@ exports.setTurnipQuantity = (thisSunday, author, turnipsOwned) => {
       select: "pseudo avatar",
     });
 };
+
+exports.setTurnipValue = (thisSunday, author, turnipsOwnedValue) => {
+  return TurnipTrend.findOneAndUpdate(
+    { author, createdAt: { $gte: thisSunday } },
+    { turnipsOwnedValue },
+    { new: true }
+  )
+    .populate({
+      path: "author",
+      select: "pseudo avatar",
+    });
+};
+

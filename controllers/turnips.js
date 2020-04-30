@@ -164,3 +164,28 @@ exports.updateOwnedQuantity = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.updateOwnedValue = async (req, res, next) => {
+  const { _id: authorId } = req.user;
+  const { thisSunday } = req.body;
+  let { price } = req.body;
+
+  logger.info(
+    `[CONTROLLERS | turnips] updateOwnedValue ${thisSunday} ${authorId} ${price}}`
+  );
+
+  try {
+    price = parseInt(price);
+    if (isNaN(price)) return next(Boom.badRequest("Price is not a number"));
+
+    let trend = await turnips.setTurnipValue(
+      thisSunday,
+      authorId,
+      parseInt(price)
+    );  console.log(trend);
+
+    return res.send({ trend });
+  } catch (err) {
+    return next(err);
+  }
+};
