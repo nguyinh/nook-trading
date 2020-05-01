@@ -88,7 +88,7 @@
   border-radius: 100px 100px 0px 0px;
 }
 
-.nook-pseudo {
+.price--informations--container > .nook-pseudo {
   background: #E2AE65;
   padding: 4px 1rem;
   border-radius: 40px;
@@ -101,7 +101,6 @@
   top: 0;
   left: 50%;
   transform: translate(-50%, -12px);
-
 }
 
 
@@ -201,4 +200,43 @@ svg.bells-svg {
 
 .profit--percentage.negative {
   color: #BF4E4E;
+}
+
+
+/* DETAILED VIEW */
+.detailled-view--container {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.avatar-header--container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.avatar-header--container > .nook-pseudo {
+  background: #E2AE65;
+  padding: 4px 1rem;
+  border-radius: 40px;
+  color: #6E341D;
+  font-size: 1.25rem;
+  font-weight: bold;
+  font-family: Arial;
+  margin-top: 0.5rem;
+  /* position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0); */
+}
+
+.avatar-header--image {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 40px;
+  width: auto;
+  height: auto;
 }

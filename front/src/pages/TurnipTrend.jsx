@@ -23,7 +23,7 @@ const TurnipTrend = () => {
     );
 
   if (pseudo)
-    return <DetailedView/>;
+    return <DetailedView pseudo={pseudo}/>;
     // TODO: if no user do something
   return <div>{isSunday ? <SundayView /> : <WeekView />}</div>;
 };
