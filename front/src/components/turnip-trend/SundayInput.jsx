@@ -4,7 +4,6 @@ import { Loader } from "semantic-ui-react";
 import { setSundayPrice } from "../../services";
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
-import { TurnipOwnedInput } from ".";
 
 const SundayInput = ({ updateTrends }) => {
   const [isSavingPrice, setIsSavingPrice] = useState(false);

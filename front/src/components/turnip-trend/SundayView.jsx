@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Loader } from "semantic-ui-react";
-import { useParams } from "react-router-dom";
 
 import { AppContext } from "../../contexts";
 import { fetchAllTrends } from "../../services";
@@ -11,10 +10,9 @@ const bySundayPriceAmount = (a, b) => a.sundayPrice < b.sundayPrice ? -1 : 1;
 
 const SundayView = () => {
   const {
-    state: { currentUser, isAutoConnecting },
+    state: { currentUser },
   } = useContext(AppContext);
 
-  const [prices, setPrices] = useState([]);
   const [trends, setTrends] = useState([]);
   const [selfTrend, setSelfTrend] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -90,7 +88,7 @@ const SundayView = () => {
           size="big"
           style={{ marginTop: "5rem" }}
         >
-          Nous interrogeons Porcelette 🐷
+          Nous interrogeons Porcelette <span role='img' aria-label='pig-emoji'>🐷</span>
         </Loader>
       ) : (
         <div>

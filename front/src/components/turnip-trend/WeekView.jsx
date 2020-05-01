@@ -11,7 +11,7 @@ const byPriceAmount = (a, b) => (a.price < b.price ? 1 : -1);
 
 const WeekView = () => {
   const {
-    state: { currentUser, isAutoConnecting },
+    state: { currentUser },
   } = useContext(AppContext);
 
   const { pseudo } = useParams();
@@ -90,7 +90,7 @@ const WeekView = () => {
           size="big"
           style={{ marginTop: "5rem" }}
         >
-          Nos meilleurs ingénieurs sont sur le coup 👨‍💻
+          Nos meilleurs ingénieurs sont sur le coup <span role='img' aria-label='computing-emoji'>👨‍💻</span>
         </Loader>
       ) : (
         <>

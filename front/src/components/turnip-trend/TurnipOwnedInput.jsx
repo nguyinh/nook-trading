@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Loader } from "semantic-ui-react";
 
-import { setSundayPrice, setOwnedQuantity, setOwnedPrice } from "../../services";
+import { setOwnedQuantity, setOwnedPrice } from "../../services";
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
 import { ReactComponent as Turnip } from "../../res/images/turnip-flat.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";

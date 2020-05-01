@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip.svg";
 

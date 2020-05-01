@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Loader } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 
@@ -16,10 +16,11 @@ const TurnipTrend = () => {
   if (isAutoConnecting)
     return (
       <Loader active inline="centered" size="big" style={{ marginTop: "5rem" }}>
-        Chargement de l'app ✋
+        Chargement de l'app <span role='img' aria-label='hold-emoji'>✋</span>
       </Loader>
     );
 
+    // TODO: if no user do something
   return <div>{isSunday ? <SundayView /> : <WeekView />}</div>;
 };
 
