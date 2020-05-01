@@ -5,6 +5,8 @@ import { addCurrentPrice } from "../../services";
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
 
+const DAYS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+
 const TrendInput = ({ updatePrices }) => {
   const [isSavingPrice, setIsSavingPrice] = useState(false);
   const [isDefaultLabel, setIsDefaultLabel] = useState(true);
@@ -49,14 +51,15 @@ const TrendInput = ({ updatePrices }) => {
 
   return (
     <div className="turnip-input--container">
-      <span>{`Quel est ton cours du navet ${
-        isMorning ? "ce matin" : "cet apres-midi"
+      <span>{`Quel est ton cours du navet ce ${DAYS[new Date().getDay()]} ${
+        isMorning ? "matin" : "apres-midi"
       } ?`}</span>
 
       <div className="turnip-input">
         <BellsPerTurnip />
         <input
-          type="text"
+          type="number"
+          pattern="\d*"
           id="price-input"
           name="price-input"
           onChange={(e) => handleChangedPrice(e.target.value)}

@@ -1,16 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 
 import "./BuyingPrice.css";
-import { Price } from './';
+import { Price, PriceAvatar } from './';
 import { ReactComponent as Bells } from "../../res/images/bells-flat.svg";
 import { ReactComponent as TriangleUp } from "../../res/images/triangle-green.svg";
 import { ReactComponent as TriangleDown } from "../../res/images/triangle-red.svg";
-
-const PriceAvatar = ({ src }) => (
-  <div className="price--author-avatar--container">
-    <img className="price--author-avatar" src={src} />
-  </div>
-);
 
 const Profit = ({ price, turnipQuantity, turnipBoughtFor }) => {
   const totalProfit = price * turnipQuantity - turnipBoughtFor * turnipQuantity;

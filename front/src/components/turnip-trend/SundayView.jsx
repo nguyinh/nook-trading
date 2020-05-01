@@ -5,16 +5,9 @@ import { useParams } from "react-router-dom";
 import { AppContext } from "../../contexts";
 import { fetchAllTrends } from "../../services";
 import { SundayInput, SundayPrices, TurnipOwnedInput } from "./";
+import { formatAvatarData } from './lib';
 
-const formatAvatarData = ({ author, ...rest }) => ({
-  ...rest,
-  author: {
-    ...author,
-    avatar: Buffer.from(author.avatar.data, "base64"),
-  },
-});
-
-const bySundayPriceAmount = (a, b) => (a.sundayPrice < b.sundayPice ? -1 : 1);
+const bySundayPriceAmount = (a, b) => a.sundayPrice < b.sundayPrice ? -1 : 1;
 
 const SundayView = () => {
   const {
@@ -54,7 +47,7 @@ const SundayView = () => {
         setSelfTrend(
           fetchedTrends.find((trend) => trend.author._id === currentUser._id)
         );
-        console.log(fetchedSelfTrend);
+
         if (!fetchedSelfTrend.sundayPrice) setAskForPrice(true);
 
         if (
@@ -87,7 +80,7 @@ const SundayView = () => {
   useEffect(() => {
     fetchTrends();
   }, []);
-  console.log(selfTrend && selfTrend.turnipsOwned);
+
   return (
     <>
       {isLoading ? (

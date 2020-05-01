@@ -3,16 +3,9 @@ import { Loader } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 
 import { AppContext } from "../../contexts";
-import { fetchTurnipPrices, fetchTrend, addCurrentPrice } from "../../services";
+import { fetchTurnipPrices, fetchTrend } from "../../services";
 import { BuyingPrice, TrendInput } from "./";
-
-const formatAvatarData = ({ author, ...rest }) => ({
-  ...rest,
-  author: {
-    ...author,
-    avatar: Buffer.from(author.avatar.data, "base64"),
-  },
-});
+import { formatAvatarData } from './lib';
 
 const byPriceAmount = (a, b) => (a.price < b.price ? 1 : -1);
 

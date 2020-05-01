@@ -113,9 +113,9 @@ const TurnipOwnedInput = ({ updateTrends, turnipsOwned, turnipsOwnedValue }) => 
           )}
         </span>
       </div>
+      
 
-
-      <span>A quel prix ?</span>
+      <span>Quel etait le prix du navet ?</span>
 
       <div className="turnip-input">
         <BellsPerTurnip />

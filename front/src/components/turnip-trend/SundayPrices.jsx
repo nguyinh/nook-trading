@@ -1,15 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 
 import "./BuyingPrice.css";
-import { Price } from "./";
+import { Price, PriceAvatar } from "./";
 
-const PriceAvatar = ({ src }) => (
-  <div className="price--author-avatar--container">
-    <img className="price--author-avatar" src={src} />
-  </div>
-);
-
-const BuyingPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
+const SundayPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
   return (
     <div className="all-prices--container">
       {prices.map((trend) => (
@@ -29,4 +23,4 @@ const BuyingPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
   );
 };
 
-export default BuyingPrice;
+export default SundayPrice;

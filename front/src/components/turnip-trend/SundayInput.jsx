@@ -22,12 +22,12 @@ const SundayInput = ({ updateTrends }) => {
           now.getMonth(),
           now.getDate()
         );
-        console.log(today);
+
         // FIXME: In theory today is Sunday
         const thisSunday = new Date(
           today.setDate(today.getDate() - today.getDay())
         );
-        console.log(thisSunday);
+
         const trend = await setSundayPrice(
           thisSunday,
           newPrice

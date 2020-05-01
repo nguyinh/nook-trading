@@ -200,15 +200,6 @@ const Market = () => {
 
   const [shopPictureOverlay, setShopPictureOverlay] = useState(false);
 
-  // useEffect(() => {
-  // if (!!selectedPicture && !shopPictureOverlay) setShopPictureOverlay(true) ;
-  // else
-  //   if (!selectedPicture && !shopPictureOverlay) {
-  //     console.log('fermeture');
-  //     setTimeout(() => setSelectedPicture(null), 2000);
-  //   }
-  // }, [selectedPicture, shopPictureOverlay]);
-
   if (isAutoConnecting)
     return (
       <Loader active inline="centered" size="big" style={{ marginTop: "5rem" }}>
