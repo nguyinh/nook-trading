@@ -6,11 +6,16 @@ import { getUser, fetchTrend } from "../../services";
 import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
 import { formatAvatarData } from "./lib";
+import { WeekPrices } from "./";
 
 const Avatar = ({ trend }) => {
   return (
     <div className="avatar-header--container">
-      <img className="avatar-header--image" src={trend.author.avatar || AvatarDefault} alt='avatar'/>
+      <img
+        className="avatar-header--image"
+        src={trend.author.avatar || AvatarDefault}
+        alt="avatar"
+      />
 
       <span className="nook-pseudo">{trend.author.pseudo}</span>
     </div>
@@ -59,9 +64,9 @@ const DetailedView = ({ pseudo }) => {
         <div className="detailled-view--container">
           {trend && (
             <>
-              <Avatar trend={trend}/>
+              <Avatar trend={trend} />
 
-            
+              <WeekPrices trend={trend} />
             </>
           )}
         </div>
