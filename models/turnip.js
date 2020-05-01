@@ -15,7 +15,7 @@ const turnipTrendScheme = mongoose.Schema({
       monday: { AM: null, PM: null },
       tuesday: { AM: null, PM: null },
       wenesday: { AM: null, PM: null },
-      tuesday: { AM: null, PM: null },
+      thursday: { AM: null, PM: null },
       friday: { AM: null, PM: null },
       saturday: { AM: null, PM: null },
     },
