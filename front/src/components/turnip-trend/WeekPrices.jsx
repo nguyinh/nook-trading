@@ -10,6 +10,24 @@ const DAYS = [
   "Samedi",
 ];
 
+const DayEntryInput = ({ value, isPast, isFuture, AM, PM }) => {
+  const isCurrentDayMoment = new Date().getHours() < 12 ? AM : PM;
+  const isToday = !isPast && !isFuture;
+
+  return (
+    <input
+      className={`day-entry--moment--input ${isPast || (isToday && new Date().getHours() > 12 && AM) ? "no-background with-little-opacity" : ""} ${isFuture ? 'with-max-opacity' : ''}`}
+      placeholder={isToday && isCurrentDayMoment ? '...' : '-'}
+      // defaultValue={value === null ? '-' : value}
+      defaultValue={value}
+      type="number"
+      pattern="\d*"
+      // id="price-input"
+      // name="price-input"
+    />
+  );
+};
+
 const DayEntry = ({ price }) => {
   return (
     <div className="day-entry--container">
@@ -17,12 +35,22 @@ const DayEntry = ({ price }) => {
       <div className="day-entry--moment--container">
         <div className="day-entry--moment">
           <span className="day-entry--moment--label">AM</span>
-          <span className="day-entry--moment--input">78</span>
+          <DayEntryInput
+            isPast={price.isPast}
+            isFuture={price.isFuture}
+            value={price.AM}
+            AM
+          />
         </div>
 
         <div className="day-entry--moment">
           <span className="day-entry--moment--label">PM</span>
-          <span className="day-entry--moment--input">98</span>
+          <DayEntryInput
+            isPast={price.isPast}
+            isFuture={price.isFuture}
+            value={price.PM}
+            PM
+          />
         </div>
       </div>
     </div>
@@ -31,8 +59,16 @@ const DayEntry = ({ price }) => {
 
 const WeekPrices = ({ trend }) => {
   let prices = Object.values(trend.prices);
-  prices = prices.map((price, i) => ({ ...price, label: DAYS[i + 1] }));
+  const dayCount = new Date().getDay() - 1;
+
+  prices = prices.map((price, i) => ({
+    ...price,
+    label: DAYS[i + 1],
+    isPast: i < dayCount,
+    isFuture: i > dayCount
+  }));
   console.log(prices);
+
   return (
     <div className="week-prices--container">
       <div className="week-prices--prices">
