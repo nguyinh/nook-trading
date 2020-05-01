@@ -1,7 +1,7 @@
 import React from "react";
 
-import "./BuyingPrice.css";
-import { Price, PriceAvatar } from './';
+// import "./BuyingPrice.css";
+import { Price, PriceAvatar } from '.';
 import { ReactComponent as Bells } from "../../res/images/bells-flat.svg";
 import { ReactComponent as TriangleUp } from "../../res/images/triangle-green.svg";
 import { ReactComponent as TriangleDown } from "../../res/images/triangle-red.svg";
@@ -48,7 +48,7 @@ const Profit = ({ price, turnipQuantity, turnipBoughtFor }) => {
   );
 };
 
-const BuyingPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
+const BuyingPrices = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
   return (
     <div className="all-prices--container">
       {prices.map((trend) => (
@@ -76,4 +76,4 @@ const BuyingPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
   );
 };
 
-export default BuyingPrice;
+export default BuyingPrices;

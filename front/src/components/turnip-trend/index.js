@@ -1,5 +1,5 @@
 export { default as WeekView } from './WeekView';
-export { default as BuyingPrice } from './BuyingPrice';
+export { default as BuyingPrices } from './BuyingPrices';
 export { default as TrendInput } from './TrendInput';
 export { default as SundayView } from './SundayView';
 export { default as SundayInput } from './SundayInput';

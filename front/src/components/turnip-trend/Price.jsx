@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import "./BuyingPrice.css";
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip.svg";
 
 const Price = ({ price, label }) => (

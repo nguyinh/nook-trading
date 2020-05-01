@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 import { AppContext } from "../../contexts";
 import { fetchTurnipPrices, fetchTrend } from "../../services";
-import { BuyingPrice, TrendInput } from "./";
+import { BuyingPrices, TrendInput } from "./";
 import { formatAvatarData } from './lib';
 
 const byPriceAmount = (a, b) => (a.price < b.price ? 1 : -1);
@@ -95,7 +95,7 @@ const WeekView = () => {
       ) : (
         <>
           {askForPrice && <TrendInput updatePrices={updatePrices} />}
-          <BuyingPrice
+          <BuyingPrices
             prices={prices}
             turnipsOwnedValue={selfTrend && selfTrend.turnipsOwnedValue}
             turnipsOwned={selfTrend && selfTrend.turnipsOwned}

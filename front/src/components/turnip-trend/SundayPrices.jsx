@@ -1,6 +1,5 @@
 import React from "react";
 
-import "./BuyingPrice.css";
 import { Price, PriceAvatar } from "./";
 
 const SundayPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {

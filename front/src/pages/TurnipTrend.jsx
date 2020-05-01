@@ -20,7 +20,7 @@ const TurnipTrend = () => {
       </Loader>
     );
 
-  return <div>{isSunday ? <SundayView /> : <WeekView />}</div>;
+  return <div>{true || isSunday ? <SundayView /> : <WeekView />}</div>;
 };
 
 export default TurnipTrend;
