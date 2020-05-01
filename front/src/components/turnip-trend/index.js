@@ -7,3 +7,6 @@ export { default as TurnipOwnedInput } from './TurnipOwnedInput';
 export { default as SundayPrices } from './SundayPrices';
 export { default as Price } from './Price';
 export { default as PriceAvatar } from './PriceAvatar';
+
+export { default as DetailedView } from './DetailedView';
+export { default as WeekPrices } from './WeekPrices';
