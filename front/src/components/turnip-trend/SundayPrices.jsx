@@ -2,11 +2,11 @@ import React from "react";
 
 import { Price, PriceAvatar } from "./";
 
-const SundayPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
+const SundayPrices = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
   return (
     <div className="all-prices--container">
       {prices.map((trend) => (
-        <div className="price--container">
+        <div className="price--container" key={trend._id}>
           <PriceAvatar src={trend.author.avatar} />
 
           <div className="price--informations--container">
@@ -22,4 +22,4 @@ const SundayPrice = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
   );
 };
 
-export default SundayPrice;
+export default SundayPrices;

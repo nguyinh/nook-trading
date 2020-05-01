@@ -35,7 +35,7 @@ const Profit = ({ price, turnipQuantity, turnipBoughtFor }) => {
               {totalProfit > 0 ? (
                 <TriangleUp className="profit--triangle-indicator" />
               ) : (
-                <TriangleDown sclassName="profit--triangle-indicator" />
+                <TriangleDown className="profit--triangle-indicator" />
               )}{" "}
               {Math.abs(profitPercentage)}%
             </span>
@@ -52,7 +52,7 @@ const BuyingPrices = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
   return (
     <div className="all-prices--container">
       {prices.map((trend) => (
-        <div className="price--container">
+        <div className="price--container" key={trend._id}>
           <PriceAvatar src={trend.author.avatar} />
 
           <div className="price--informations--container">
