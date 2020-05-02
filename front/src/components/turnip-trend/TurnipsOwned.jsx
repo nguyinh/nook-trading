@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice }) => {
+const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice, handleChangedSundayPrice }) => {
   const [timer, setTimer] = useState(null);
   const [valueTimer, setValueTimer] = useState(null);
 
@@ -18,7 +18,7 @@ const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice }) => {
     <div className="turnips-owned--container">
       <div className="turnips-owned--questions-inputs">
         <div className="turnips-owned--input-row">
-          <span className="turnip-owned--label-question">Quantite</span>
+          <span className="turnip-owned--label-question">Ta quantite de navets</span>
 
           <input
             className="turnip-owned--input large"
@@ -31,7 +31,7 @@ const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice }) => {
         </div>
 
         <div className="turnips-owned--input-row">
-          <span className="turnip-owned--label-question">Prix par navet</span>
+          <span className="turnip-owned--label-question">Leur prix unitaire</span>
 
           <input
             className="turnip-owned--input"
@@ -40,6 +40,19 @@ const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice }) => {
             type="number"
             pattern="\d*"
             onChange={(e) => handleTurnipsOwnedValue(e.target.value)}
+          />
+        </div>
+
+        <div className="turnips-owned--input-row">
+          <span className="turnip-owned--label-question">Prix de Porcinette sur ton ile</span>
+
+          <input
+            className="turnip-owned--input"
+            placeholder="..."
+            defaultValue={trend.sundayPrice}
+            type="number"
+            pattern="\d*"
+            onChange={(e) => handleChangedSundayPrice(e.target.value)}
           />
         </div>
       </div>

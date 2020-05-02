@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 
-// import "./BuyingPrice.css";
 import { Price, PriceAvatar } from ".";
 import { ReactComponent as Bells } from "../../res/images/bells-flat.svg";
 import { ReactComponent as TriangleUp } from "../../res/images/triangle-green.svg";
 import { ReactComponent as TriangleDown } from "../../res/images/triangle-red.svg";
+import { spacify as s } from "../../utils";
 
 const Profit = ({ price, turnipQuantity, turnipBoughtFor }) => {
   const totalProfit = price * turnipQuantity - turnipBoughtFor * turnipQuantity;
@@ -16,9 +16,9 @@ const Profit = ({ price, turnipQuantity, turnipBoughtFor }) => {
     <div className="profit--container">
       <div className="profit">
         {!!turnipBoughtFor ? (
-          <span>{`${totalProfit > 0 ? "+" : ""} ${totalProfit}`}</span>
+          <span>{`${totalProfit > 0 ? "+" : ""} ${s(totalProfit)}`}</span>
         ) : (
-          <span>{totalProfit}</span>
+          <span>{s(totalProfit)}</span>
         )}
 
         <Bells className="bells-svg" />

@@ -9,6 +9,7 @@ import {
   setWeekPrices,
   setOwnedQuantity,
   setOwnedPrice,
+  setSundayPrice
 } from "../../services";
 import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
@@ -114,6 +115,16 @@ const DetailedView = ({ pseudo }) => {
     }
   };
 
+  const handleChangedSundayPrice = async (sundayPrice) => {
+    try {
+      const trend = await setSundayPrice(getLastSunday(), sundayPrice);
+
+      setTrend(trend);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchUserTrend(pseudo);
   }, []);
@@ -156,6 +167,7 @@ const DetailedView = ({ pseudo }) => {
                   trend={trend}
                   handleChangedQuantity={handleChangedQuantity}
                   handleChangedPrice={handleChangedPrice}
+                  handleChangedSundayPrice={handleChangedSundayPrice}
                 />
               )}
             </>
