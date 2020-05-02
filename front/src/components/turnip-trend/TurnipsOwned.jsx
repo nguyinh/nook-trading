@@ -44,7 +44,7 @@ const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice, handle
         </div>
 
         <div className="turnips-owned--input-row">
-          <span className="turnip-owned--label-question">Prix de Porcinette sur ton ile</span>
+          <span className="turnip-owned--label-question">Prix de Porcelette sur ton ile</span>
 
           <input
             className="turnip-owned--input"

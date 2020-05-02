@@ -40,7 +40,7 @@ const SundayInput = ({ updateTrends }) => {
 
   return (
     <div className="turnip-input--container">
-      <span>{`A quel prix Porcinette vend-t-elle ses navets sur ton île ?`}</span>
+      <span>{`A quel prix Porcelette vend-t-elle ses navets sur ton île ?`}</span>
 
       <div className="turnip-input">
         <BellsPerTurnip />
