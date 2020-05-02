@@ -74,8 +74,14 @@
   flex-direction: column;
   position: relative;
   align-items: center;
-  flex: 0 1 46%;
+  flex: 0 1 21%;
   margin: 2%;
+}
+
+@media (max-width : 768px) {
+  .price--container {
+    flex: 0 1 46%;
+  }
 }
 
 .price--author-avatar--container {
@@ -207,7 +213,7 @@ svg.bells-svg {
 .detailled-view--container {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
+  align-items: center;
   margin-bottom: 1.5rem;
   position: relative;
 }
@@ -278,6 +284,7 @@ svg.bells-svg {
   font-family: FinkHeavy;
   font-size: 1.2rem;
   text-align: center;
+  max-width: 600px;
 }
 
 .week-prices--prices {
@@ -421,6 +428,8 @@ svg.bells-svg {
   font-family: FinkHeavy;
   font-size: 1.2rem;
   text-align: center;
+  /* width: 600px; */
+  max-width: 100%;
 }
 
 .turnips-owned--questions-inputs {
