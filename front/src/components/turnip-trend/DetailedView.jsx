@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Redirect } from "react-router-dom";
 
+import { Icon } from "semantic-ui-react";
 import { AppContext } from "../../contexts";
 import {
   getUser,
@@ -35,6 +37,7 @@ const DetailedView = ({ pseudo }) => {
   const [isSelf, setIsSelf] = useState(false);
   const [trend, setTrend] = useState(null);
   const [timer, setTimer] = useState(null);
+  const [redirectToDetailed, setRedirectToDetailed] = useState(null);
 
   const fetchUserTrend = async (pseudo) => {
     setIsLoading(true);
@@ -115,6 +118,8 @@ const DetailedView = ({ pseudo }) => {
     fetchUserTrend(pseudo);
   }, []);
 
+  if (redirectToDetailed) return <Redirect to={"/turnip-trend"} push />;
+
   return (
     <div>
       <WithLoader
@@ -129,6 +134,13 @@ const DetailedView = ({ pseudo }) => {
         }
       >
         <div className="detailled-view--container">
+          <div
+            className="back-button"
+            onClick={() => setRedirectToDetailed(true)}
+          >
+            <Icon name="angle left" size="big" />
+          </div>
+
           {trend && (
             <>
               <Avatar trend={trend} />
