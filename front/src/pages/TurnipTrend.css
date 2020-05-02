@@ -312,6 +312,18 @@ svg.bells-svg {
   transition: all 200ms ease;
 }
 
+.day-entry--moment--input::-webkit-inner-spin-button,
+.day-entry--moment--input::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.day-entry--moment--input:focus::placeholder { color: transparent; }
+.day-entry--moment--input:focus::-webkit-input-placeholder { color:transparent; }
+.day-entry--moment--input:focus:-moz-placeholder { color:transparent; } /* FF 4-18 */
+.day-entry--moment--input:focus::-moz-placeholder { color:transparent; } /* FF 19+ */
+.day-entry--moment--input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
+
 .day-entry--moment--input.no-background{
   background: transparent;
 }
