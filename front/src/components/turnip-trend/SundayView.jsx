@@ -3,10 +3,11 @@ import { Loader } from "semantic-ui-react";
 
 import { AppContext } from "../../contexts";
 import { fetchAllTrends } from "../../services";
+import { WithLoader } from "../lib";
 import { SundayInput, SundayPrices, TurnipOwnedInput } from "./";
-import { formatAvatarData } from './lib';
+import { formatAvatarData } from "./lib";
 
-const bySundayPriceAmount = (a, b) => a.sundayPrice < b.sundayPrice ? -1 : 1;
+const bySundayPriceAmount = (a, b) => (a.sundayPrice < b.sundayPrice ? -1 : 1);
 
 const SundayView = () => {
   const {
@@ -81,16 +82,17 @@ const SundayView = () => {
 
   return (
     <>
-      {isLoading ? (
-        <Loader
-          active
-          inline="centered"
-          size="big"
-          style={{ marginTop: "5rem" }}
-        >
-          Nous interrogeons Porcelette <span role='img' aria-label='pig-emoji'>🐷</span>
-        </Loader>
-      ) : (
+      <WithLoader
+        active={isLoading}
+        content={
+          <>
+            Nous interrogeons Porcelette{" "}
+            <span role="img" aria-label="pig-emoji">
+              🐷
+            </span>
+          </>
+        }
+      >
         <div>
           {askForPrice && <SundayInput updateTrends={updateTrends} />}
 
@@ -110,7 +112,7 @@ const SundayView = () => {
             }))}
           />
         </div>
-      )}
+      </WithLoader>
     </>
   );
 };

@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { Button, Loader } from "semantic-ui-react";
+
+import "./Profile.css";
 import { AppContext } from "../contexts";
 import { getUser } from "../services";
-import { Button, Loader } from "semantic-ui-react";
 import nookTradingBanner from "../res/images/nook-trading-banner.png";
-import "./Profile.css";
 import { Authentification, UserProfile } from "../components/profile";
 
 const Profile = () => {

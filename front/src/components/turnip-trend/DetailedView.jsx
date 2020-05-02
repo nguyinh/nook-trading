@@ -117,7 +117,17 @@ const DetailedView = ({ pseudo }) => {
 
   return (
     <div>
-      <WithLoader active={isLoading}>
+      <WithLoader
+        active={isLoading}
+        content={
+          <>
+            Recherche du correspondant{" "}
+            <span role="img" aria-label="hold-emoji">
+              ✋
+            </span>
+          </>
+        }
+      >
         <div className="detailled-view--container">
           {trend && (
             <>

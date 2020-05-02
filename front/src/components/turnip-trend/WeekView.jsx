@@ -5,7 +5,8 @@ import { useParams } from "react-router-dom";
 import { AppContext } from "../../contexts";
 import { fetchTurnipPrices, fetchTrend } from "../../services";
 import { BuyingPrices, TrendInput } from "./";
-import { formatAvatarData } from './lib';
+import { formatAvatarData } from "./lib";
+import { WithLoader } from '../lib';
 
 const byPriceAmount = (a, b) => (a.price < b.price ? 1 : -1);
 
@@ -83,16 +84,18 @@ const WeekView = () => {
 
   return (
     <>
-      {isLoading ? (
-        <Loader
-          active
-          inline="centered"
-          size="big"
-          style={{ marginTop: "5rem" }}
-        >
-          Nos meilleurs ingénieurs sont sur le coup <span role='img' aria-label='computing-emoji'>👨‍💻</span>
-        </Loader>
-      ) : (
+      <WithLoader
+        active={isLoading}
+        content={
+          <>
+            {" "}
+            Nos meilleurs ingénieurs sont sur le coup{" "}
+            <span role="img" aria-label="computing-emoji">
+              👨‍💻
+            </span>
+          </>
+        }
+      >
         <>
           {askForPrice && <TrendInput updatePrices={updatePrices} />}
           <BuyingPrices
@@ -101,7 +104,7 @@ const WeekView = () => {
             turnipsOwned={selfTrend && selfTrend.turnipsOwned}
           />
         </>
-      )}
+      </WithLoader>
     </>
   );
 };

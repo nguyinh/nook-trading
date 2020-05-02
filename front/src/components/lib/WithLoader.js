@@ -1,7 +1,7 @@
 import React from "react";
 import { Loader } from 'semantic-ui-react';
 
-const WithLoader = ({ active, children }) => {
+const WithLoader = ({ active, content, children }) => {
   return (
     <>
       {active ? (
@@ -11,10 +11,7 @@ const WithLoader = ({ active, children }) => {
           size="big"
           style={{ marginTop: "5rem" }}
         >
-          Recherche du correspondant{" "}
-          <span role="img" aria-label="hold-emoji">
-            ✋
-          </span>
+          {content}
         </Loader>
       ) : (
         children

@@ -8,7 +8,7 @@ import { WeekView, SundayView, DetailedView } from "../components/turnip-trend";
 
 const TurnipTrend = () => {
   const {
-    state: { currentUser, isAutoConnecting },
+    state: { isAutoConnecting },
   } = useContext(AppContext);
 
   const { pseudo } = useParams();
