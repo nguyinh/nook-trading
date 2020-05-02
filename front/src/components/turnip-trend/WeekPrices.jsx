@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
@@ -120,6 +120,23 @@ const WeekPrices = ({ trend, setWeekPrice, isEditable }) => {
   let prices = Object.values(trend.prices);
   const dayCodes = Object.keys(trend.prices);
   const dayCount = new Date().getDay() - 1;
+  
+  const weekRange = useMemo(() => {
+    const f = (d) => (d < 10 ? `0${d}` : d);
+
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const thisSunday = new Date(
+      today.setDate(today.getDate() - today.getDay())
+    );
+
+    const sunday = thisSunday;
+    let nextSaturday = new Date(thisSunday);
+    nextSaturday = new Date(nextSaturday.setDate(nextSaturday.getDate() + 6));
+    return `${f(sunday.getDate())}/${f(sunday.getMonth() + 1)} au ${f(
+      nextSaturday.getDate()
+    )}/${f(nextSaturday.getMonth() + 1)}`;
+  }, []);
 
   prices = prices.map((price, i) => ({
     ...price,
@@ -142,7 +159,7 @@ const WeekPrices = ({ trend, setWeekPrice, isEditable }) => {
         ))}
       </div>
 
-      <span className="week-prices--label">Semaine du </span>
+      <span className="week-prices--label">Semaine du {weekRange}</span>
     </div>
   );
 };
