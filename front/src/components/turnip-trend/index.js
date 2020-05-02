@@ -10,3 +10,4 @@ export { default as PriceAvatar } from './PriceAvatar';
 
 export { default as DetailedView } from './DetailedView';
 export { default as WeekPrices } from './WeekPrices';
+export { default as TurnipsOwned } from './TurnipsOwned';

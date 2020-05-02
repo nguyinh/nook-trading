@@ -6,7 +6,7 @@ import { getUser, fetchTrend, setWeekPrices } from "../../services";
 import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
 import { formatAvatarData } from "./lib";
-import { WeekPrices } from "./";
+import { WeekPrices, TurnipsOwned } from "./";
 
 const Avatar = ({ trend }) => {
   return (
@@ -104,6 +104,8 @@ const DetailedView = ({ pseudo }) => {
               <Avatar trend={trend} />
 
               <WeekPrices trend={trend} setWeekPrice={setWeekPrice} isEditable={isSelf}/>
+
+              {isSelf && <TurnipsOwned trend={trend}/>}
             </>
           )}
         </div>
