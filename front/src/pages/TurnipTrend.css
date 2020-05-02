@@ -309,6 +309,7 @@ svg.bells-svg {
   text-align: center;
   background: #E8E1BC;
   outline: none;
+  transition: all 200ms ease;
 }
 
 .day-entry--moment--input.no-background{
@@ -326,6 +327,7 @@ svg.bells-svg {
 .day-entry--moment--input:focus {
   background: #E8E1BC;
   opacity: 1;
+  transform: scale(1.15);
 }
 
 
