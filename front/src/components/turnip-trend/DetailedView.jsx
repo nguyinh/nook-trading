@@ -1,27 +1,30 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Loader } from "semantic-ui-react";
 
 import { AppContext } from "../../contexts";
-import { getUser, fetchTrend, setWeekPrices, setOwnedQuantity, setOwnedPrice } from "../../services";
+import {
+  getUser,
+  fetchTrend,
+  setWeekPrices,
+  setOwnedQuantity,
+  setOwnedPrice,
+} from "../../services";
 import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
 import { formatAvatarData } from "./lib";
 import { WeekPrices, TurnipsOwned } from "./";
-import { getLastSunday } from '../../utils';
+import { getLastSunday } from "../../utils";
 
-const Avatar = ({ trend }) => {
-  return (
-    <div className="avatar-header--container">
-      <img
-        className="avatar-header--image"
-        src={trend.author.avatar || AvatarDefault}
-        alt="avatar"
-      />
+const Avatar = ({ trend }) => (
+  <div className="avatar-header--container">
+    <img
+      className="avatar-header--image"
+      src={trend.author.avatar || AvatarDefault}
+      alt="avatar"
+    />
 
-      <span className="nook-pseudo">{trend.author.pseudo}</span>
-    </div>
-  );
-};
+    <span className="nook-pseudo">{trend.author.pseudo}</span>
+  </div>
+);
 
 const DetailedView = ({ pseudo }) => {
   const {
@@ -40,13 +43,7 @@ const DetailedView = ({ pseudo }) => {
 
       setIsSelf(currentUser._id === _id);
 
-      const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const thisSunday = new Date(
-        today.setDate(today.getDate() - today.getDay())
-      );
-
-      const fetchedTrend = await fetchTrend(_id, thisSunday);
+      const fetchedTrend = await fetchTrend(_id, getLastSunday());
 
       setTrend(formatAvatarData(fetchedTrend));
     } catch (err) {
@@ -75,18 +72,20 @@ const DetailedView = ({ pseudo }) => {
 
       setTrend({
         ...trend,
-        prices
+        prices,
       });
 
       if (timer) clearTimeout(timer);
       // Reset flags
-      setTimer(setTimeout(() => {
-        prices[day].isUpdated = undefined;
-        setTrend({
-          ...trend,
-          prices
-        });
-      }, 2000));
+      setTimer(
+        setTimeout(() => {
+          prices[day].isUpdated = undefined;
+          setTrend({
+            ...trend,
+            prices,
+          });
+        }, 2000)
+      );
     } catch (err) {
       console.log(err);
     }
@@ -94,20 +93,7 @@ const DetailedView = ({ pseudo }) => {
 
   const handleChangedQuantity = async (newQuantity) => {
     try {
-      const now = new Date();
-      const today = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
-      );
-      const thisSunday = new Date(
-        today.setDate(today.getDate() - today.getDay())
-      );
-
-      const trend = await setOwnedQuantity(
-        thisSunday,
-        newQuantity
-      );
+      const trend = await setOwnedQuantity(getLastSunday(), newQuantity);
 
       setTrend(trend);
     } catch (err) {
@@ -117,21 +103,7 @@ const DetailedView = ({ pseudo }) => {
 
   const handleChangedPrice = async (newPrice) => {
     try {
-      const now = new Date();
-      const today = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
-      );
-
-      const thisSunday = new Date(
-        today.setDate(today.getDate() - today.getDay())
-      );
-
-      const trend = await setOwnedPrice(
-        thisSunday,
-        newPrice
-      );
+      const trend = await setOwnedPrice(getLastSunday(), newPrice);
 
       setTrend(trend);
     } catch (err) {
@@ -151,9 +123,19 @@ const DetailedView = ({ pseudo }) => {
             <>
               <Avatar trend={trend} />
 
-              <WeekPrices trend={trend} setWeekPrice={setWeekPrice} isEditable={isSelf}/>
+              <WeekPrices
+                trend={trend}
+                setWeekPrice={setWeekPrice}
+                isEditable={isSelf}
+              />
 
-              {isSelf && <TurnipsOwned trend={trend} handleChangedQuantity={handleChangedQuantity} handleChangedPrice={handleChangedPrice}/>}
+              {isSelf && (
+                <TurnipsOwned
+                  trend={trend}
+                  handleChangedQuantity={handleChangedQuantity}
+                  handleChangedPrice={handleChangedPrice}
+                />
+              )}
             </>
           )}
         </div>

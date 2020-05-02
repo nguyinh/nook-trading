@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Loader } from "semantic-ui-react";
 
 import { setOwnedQuantity, setOwnedPrice } from "../../services";
+import { getLastSunday } from '../../utils';
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
 import { ReactComponent as Turnip } from "../../res/images/turnip-flat.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
@@ -20,19 +21,8 @@ const TurnipOwnedInput = ({ updateTrends, turnipsOwned, turnipsOwnedValue }) => 
       try {
         setIsSavingQuantity(true);
 
-        const now = new Date();
-        const today = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate()
-        );
-
-        const thisSunday = new Date(
-          today.setDate(today.getDate() - today.getDay())
-        );
-
         const trend = await setOwnedQuantity(
-          thisSunday,
+          getLastSunday(),
           newQuantity
         );
 
@@ -56,20 +46,9 @@ const TurnipOwnedInput = ({ updateTrends, turnipsOwned, turnipsOwnedValue }) => 
     const saveTurnipPrice = async (newPrice) => {
       try {
         setIsSavingPrice(true);
-
-        const now = new Date();
-        const today = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate()
-        );
-
-        const thisSunday = new Date(
-          today.setDate(today.getDate() - today.getDay())
-        );
-
+        
         const trend = await setOwnedPrice(
-          thisSunday,
+          getLastSunday(),
           newPrice
         );
 

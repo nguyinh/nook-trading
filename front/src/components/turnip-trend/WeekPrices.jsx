@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
+import { getLastSunday } from "../../utils";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
 
 const DAYS = [
@@ -79,59 +80,51 @@ const AnimatedMomentLabel = ({ label, isUpdated }) => (
   </SwitchTransition>
 );
 
-const DayEntry = ({ price, setWeekPrice, isEditable }) => {
-  return (
-    <div className="day-entry--container">
-      <span className="day-entry--label">{price.label}</span>
-      <div className="day-entry--moment--container">
-        <div className="day-entry--moment">
-          <AnimatedMomentLabel label="AM" isUpdated={price.isUpdated} />
+const DayEntry = ({ price, setWeekPrice, isEditable }) => (
+  <div className="day-entry--container">
+    <span className="day-entry--label">{price.label}</span>
+    <div className="day-entry--moment--container">
+      <div className="day-entry--moment">
+        <AnimatedMomentLabel label="AM" isUpdated={price.isUpdated} />
 
-          <DayEntryInput
-            isPast={price.isPast}
-            isFuture={price.isFuture}
-            value={price.AM}
-            day={price.code}
-            AM
-            setWeekPrice={setWeekPrice}
-            isEditable={isEditable}
-          />
-        </div>
+        <DayEntryInput
+          isPast={price.isPast}
+          isFuture={price.isFuture}
+          value={price.AM}
+          day={price.code}
+          AM
+          setWeekPrice={setWeekPrice}
+          isEditable={isEditable}
+        />
+      </div>
 
-        <div className="day-entry--moment">
-          <AnimatedMomentLabel label="PM" isUpdated={price.isUpdated} />
+      <div className="day-entry--moment">
+        <AnimatedMomentLabel label="PM" isUpdated={price.isUpdated} />
 
-          <DayEntryInput
-            isPast={price.isPast}
-            isFuture={price.isFuture}
-            value={price.PM}
-            day={price.code}
-            PM
-            setWeekPrice={setWeekPrice}
-            isEditable={isEditable}
-          />
-        </div>
+        <DayEntryInput
+          isPast={price.isPast}
+          isFuture={price.isFuture}
+          value={price.PM}
+          day={price.code}
+          PM
+          setWeekPrice={setWeekPrice}
+          isEditable={isEditable}
+        />
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 const WeekPrices = ({ trend, setWeekPrice, isEditable }) => {
   let prices = Object.values(trend.prices);
   const dayCodes = Object.keys(trend.prices);
   const dayCount = new Date().getDay() - 1;
-  
+
   const weekRange = useMemo(() => {
     const f = (d) => (d < 10 ? `0${d}` : d);
 
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const thisSunday = new Date(
-      today.setDate(today.getDate() - today.getDay())
-    );
-
-    const sunday = thisSunday;
-    let nextSaturday = new Date(thisSunday);
+    const sunday = getLastSunday();
+    let nextSaturday = new Date(getLastSunday());
     nextSaturday = new Date(nextSaturday.setDate(nextSaturday.getDate() + 6));
     return `${f(sunday.getDate())}/${f(sunday.getMonth() + 1)} au ${f(
       nextSaturday.getDate()

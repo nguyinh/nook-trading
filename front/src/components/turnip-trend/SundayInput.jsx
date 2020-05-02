@@ -4,6 +4,7 @@ import { Loader } from "semantic-ui-react";
 import { setSundayPrice } from "../../services";
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
+import { getLastSunday } from '../../utils';
 
 const SundayInput = ({ updateTrends }) => {
   const [isSavingPrice, setIsSavingPrice] = useState(false);
@@ -15,20 +16,10 @@ const SundayInput = ({ updateTrends }) => {
       try {
         setIsSavingPrice(true);
 
-        const now = new Date();
-        const today = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate()
-        );
-
         // FIXME: In theory today is Sunday
-        const thisSunday = new Date(
-          today.setDate(today.getDate() - today.getDay())
-        );
 
         const trend = await setSundayPrice(
-          thisSunday,
+          getLastSunday(),
           newPrice
         );
         setIsDefaultLabel(false);
