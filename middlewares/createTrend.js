@@ -6,10 +6,18 @@ const logger = require('./logger');
 module.exports = async (req, res, next) => {
   try {
     const { _id } = req.user;
-    const { thisSunday } = req.body;
+    let { thisSunday } = req.body;
+
+    if (!thisSunday) {
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      thisSunday = new Date(
+        today.setDate(today.getDate() - today.getDay())
+      );
+    }
 
     const latestTrend = await turnips.findLatestTrend(_id, thisSunday);
-
+    
     if (!latestTrend) {
       logger.info(`[MIDDLEWARES] createTrend | ${_id}`);
 
