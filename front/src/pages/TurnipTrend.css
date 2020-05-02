@@ -288,6 +288,13 @@ svg.bells-svg {
   padding: 0 0.5rem;
 }
 
+.day-entry--moment--value {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 60px;
+  padding: 0.4rem;
+  text-align: center;
+}
+
 .day-entry--moment--label {
   opacity: 0.5;
   padding: 0.5rem 0;

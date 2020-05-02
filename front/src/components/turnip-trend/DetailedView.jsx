@@ -103,7 +103,7 @@ const DetailedView = ({ pseudo }) => {
             <>
               <Avatar trend={trend} />
 
-              <WeekPrices trend={trend} setWeekPrice={setWeekPrice} />
+              <WeekPrices trend={trend} setWeekPrice={setWeekPrice} isEditable={isSelf}/>
             </>
           )}
         </div>

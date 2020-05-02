@@ -21,11 +21,15 @@ const DayEntryInput = ({
   AM,
   PM,
   setWeekPrice,
+  isEditable,
 }) => {
+  const [timer, setTimer] = useState(null);
+
+  if (!isEditable)
+    return <span className="day-entry--moment--value">{value || "-"}</span>;
+
   const isCurrentDayMoment = new Date().getHours() < 12 ? AM : PM;
   const isToday = !isPast && !isFuture;
-
-  const [timer, setTimer] = useState(null);
 
   const handleChange = (value) => {
     if (timer) clearTimeout(timer);
@@ -45,7 +49,6 @@ const DayEntryInput = ({
           : ""
       } ${isFuture ? "with-max-opacity" : ""}`}
       placeholder={isToday && isCurrentDayMoment ? "..." : "-"}
-      // defaultValue={value === null ? '-' : value}
       defaultValue={value}
       type="number"
       pattern="\d*"
@@ -76,13 +79,13 @@ const AnimatedMomentLabel = ({ label, isUpdated }) => (
   </SwitchTransition>
 );
 
-const DayEntry = ({ price, setWeekPrice }) => {
+const DayEntry = ({ price, setWeekPrice, isEditable }) => {
   return (
     <div className="day-entry--container">
       <span className="day-entry--label">{price.label}</span>
       <div className="day-entry--moment--container">
         <div className="day-entry--moment">
-          <AnimatedMomentLabel label="AM" isUpdated={price.isUpdated}/>
+          <AnimatedMomentLabel label="AM" isUpdated={price.isUpdated} />
 
           <DayEntryInput
             isPast={price.isPast}
@@ -91,11 +94,12 @@ const DayEntry = ({ price, setWeekPrice }) => {
             day={price.code}
             AM
             setWeekPrice={setWeekPrice}
+            isEditable={isEditable}
           />
         </div>
 
         <div className="day-entry--moment">
-          <AnimatedMomentLabel label="PM" isUpdated={price.isUpdated}/>
+          <AnimatedMomentLabel label="PM" isUpdated={price.isUpdated} />
 
           <DayEntryInput
             isPast={price.isPast}
@@ -104,6 +108,7 @@ const DayEntry = ({ price, setWeekPrice }) => {
             day={price.code}
             PM
             setWeekPrice={setWeekPrice}
+            isEditable={isEditable}
           />
         </div>
       </div>
@@ -111,7 +116,7 @@ const DayEntry = ({ price, setWeekPrice }) => {
   );
 };
 
-const WeekPrices = ({ trend, setWeekPrice }) => {
+const WeekPrices = ({ trend, setWeekPrice, isEditable }) => {
   let prices = Object.values(trend.prices);
   const dayCodes = Object.keys(trend.prices);
   const dayCount = new Date().getDay() - 1;
@@ -132,6 +137,7 @@ const WeekPrices = ({ trend, setWeekPrice }) => {
             price={price}
             setWeekPrice={setWeekPrice}
             key={`entry-${price.code}-${i % 2 ? "AM" : "PM"}`}
+            isEditable={isEditable}
           />
         ))}
       </div>
