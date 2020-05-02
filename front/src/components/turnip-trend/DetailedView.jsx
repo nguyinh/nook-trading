@@ -2,11 +2,12 @@ import React, { useEffect, useState, useContext } from "react";
 import { Loader } from "semantic-ui-react";
 
 import { AppContext } from "../../contexts";
-import { getUser, fetchTrend, setWeekPrices } from "../../services";
+import { getUser, fetchTrend, setWeekPrices, setOwnedQuantity, setOwnedPrice } from "../../services";
 import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
 import { formatAvatarData } from "./lib";
 import { WeekPrices, TurnipsOwned } from "./";
+import { getLastSunday } from '../../utils';
 
 const Avatar = ({ trend }) => {
   return (
@@ -91,6 +92,53 @@ const DetailedView = ({ pseudo }) => {
     }
   };
 
+  const handleChangedQuantity = async (newQuantity) => {
+    try {
+      const now = new Date();
+      const today = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+      );
+      const thisSunday = new Date(
+        today.setDate(today.getDate() - today.getDay())
+      );
+
+      const trend = await setOwnedQuantity(
+        thisSunday,
+        newQuantity
+      );
+
+      setTrend(trend);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangedPrice = async (newPrice) => {
+    try {
+      const now = new Date();
+      const today = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+      );
+
+      const thisSunday = new Date(
+        today.setDate(today.getDate() - today.getDay())
+      );
+
+      const trend = await setOwnedPrice(
+        thisSunday,
+        newPrice
+      );
+
+      setTrend(trend);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchUserTrend(pseudo);
   }, []);
@@ -105,7 +153,7 @@ const DetailedView = ({ pseudo }) => {
 
               <WeekPrices trend={trend} setWeekPrice={setWeekPrice} isEditable={isSelf}/>
 
-              {isSelf && <TurnipsOwned trend={trend}/>}
+              {isSelf && <TurnipsOwned trend={trend} handleChangedQuantity={handleChangedQuantity} handleChangedPrice={handleChangedPrice}/>}
             </>
           )}
         </div>

@@ -1,6 +1,23 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 
-const TurnipsOwned = ({ trend }) => {
+const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice }) => {
+  const [timer, setTimer] = useState(null);
+  const [valueTimer, setValueTimer] = useState(null);
+
+  const handleTurnipsOwned = (value) => {
+    if (timer) clearTimeout(timer);
+    if (value) {
+      setTimer(setTimeout(() => handleChangedQuantity(value), 1000));
+    }
+  };
+
+  const handleTurnipsOwnedValue = (value) => {
+    if (valueTimer) clearTimeout(valueTimer);
+    if (value) {
+      setValueTimer(setTimeout(() => handleChangedPrice(value), 1000));
+    }
+  };
+
   return (
     <div className="turnips-owned--container">
 
@@ -11,9 +28,10 @@ const TurnipsOwned = ({ trend }) => {
           <input
             className="turnip-owned--input large"
             placeholder="..."
-            defaultValue="XX"
+            defaultValue={trend.turnipsOwned}
             type="number"
             pattern="\d*"
+            onChange={e => handleTurnipsOwned(e.target.value)}
           />
         </div>
 
@@ -23,9 +41,10 @@ const TurnipsOwned = ({ trend }) => {
           <input
             className="turnip-owned--input"
             placeholder="..."
-            defaultValue="XX"
+            defaultValue={trend.turnipsOwnedValue}
             type="number"
             pattern="\d*"
+            onChange={e => handleTurnipsOwnedValue(e.target.value)}
           />
         </div>
       </div>
