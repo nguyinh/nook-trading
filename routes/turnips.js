@@ -11,8 +11,8 @@ router
 router
   .route('/turnipTrends/prices')
   .get(verifyJWT, turnips.getPrices)
-  .post(verifyJWT, findUser, createTrend, turnips.createPrice);
-
+  .post(verifyJWT, findUser, createTrend, turnips.createPrice)
+  .put(verifyJWT, findUser, createTrend, turnips.updatePrices);
 
 router
   .route('/turnipTrends/ownedQuantity')

@@ -60,6 +60,17 @@ exports.addCurrentPrice = (dayName, dayTime, lastSunday, author, price) => {
     .select(`author prices.${dayName}.${dayTime}`);
 };
 
+exports.setPrices = (author, _id, prices) => {
+  return TurnipTrend.findOneAndUpdate(
+    { _id, author },
+    { $set: { prices } },
+    { new: true }
+  ).populate({
+    path: "author",
+    select: "pseudo avatar",
+  });
+};
+
 exports.setSundayPrice = (thisSunday, author, sundayPrice) => {
   return TurnipTrend.findOneAndUpdate(
     { author, createdAt: { $gte: thisSunday } },

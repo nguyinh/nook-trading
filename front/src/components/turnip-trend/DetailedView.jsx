@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Loader } from "semantic-ui-react";
 
 import { AppContext } from "../../contexts";
-import { getUser, fetchTrend } from "../../services";
+import { getUser, fetchTrend, setWeekPrices } from "../../services";
 import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
 import { formatAvatarData } from "./lib";
@@ -54,6 +54,19 @@ const DetailedView = ({ pseudo }) => {
     }
   };
 
+  const setWeekPrice = async (day, moment, price) => {
+    let { _id, prices } = trend;
+    prices[day][moment] = price;
+    console.log(prices);
+
+    const newTrend = await setWeekPrices(_id, prices);
+
+    console.log(newTrend);
+    // setTrends({
+    //   ...trend,
+    // })
+  };
+
   useEffect(() => {
     fetchUserTrend(pseudo);
   }, []);
@@ -66,7 +79,7 @@ const DetailedView = ({ pseudo }) => {
             <>
               <Avatar trend={trend} />
 
-              <WeekPrices trend={trend} />
+              <WeekPrices trend={trend} setWeekPrice={setWeekPrice} />
             </>
           )}
         </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const DAYS = [
   "Dimanche",
@@ -10,25 +10,47 @@ const DAYS = [
   "Samedi",
 ];
 
-const DayEntryInput = ({ value, isPast, isFuture, AM, PM }) => {
+const DayEntryInput = ({
+  value,
+  isPast,
+  isFuture,
+  day,
+  AM,
+  PM,
+  setWeekPrice,
+}) => {
   const isCurrentDayMoment = new Date().getHours() < 12 ? AM : PM;
   const isToday = !isPast && !isFuture;
 
+  const [timer, setTimer] = useState(null);
+
+  const handleChange = (value) => {
+    if (timer) clearTimeout(timer);
+    setTimer(
+      setTimeout(() => setWeekPrice(day, AM ? "AM" : "PM", parseInt(value) || null), 1000)
+    );
+  };
+
   return (
     <input
-      className={`day-entry--moment--input ${isPast || (isToday && new Date().getHours() > 12 && AM) ? "no-background with-little-opacity" : ""} ${isFuture ? 'with-max-opacity' : ''}`}
-      placeholder={isToday && isCurrentDayMoment ? '...' : '-'}
+      className={`day-entry--moment--input ${
+        isPast || (isToday && new Date().getHours() > 12 && AM)
+          ? "no-background with-little-opacity"
+          : ""
+      } ${isFuture ? "with-max-opacity" : ""}`}
+      placeholder={isToday && isCurrentDayMoment ? "..." : "-"}
       // defaultValue={value === null ? '-' : value}
       defaultValue={value}
       type="number"
       pattern="\d*"
+      onChange={(e) => handleChange(e.target.value)}
       // id="price-input"
       // name="price-input"
     />
   );
 };
 
-const DayEntry = ({ price }) => {
+const DayEntry = ({ price, setWeekPrice }) => {
   return (
     <div className="day-entry--container">
       <span className="day-entry--label">{price.label}</span>
@@ -39,7 +61,9 @@ const DayEntry = ({ price }) => {
             isPast={price.isPast}
             isFuture={price.isFuture}
             value={price.AM}
+            day={price.code}
             AM
+            setWeekPrice={setWeekPrice}
           />
         </div>
 
@@ -49,7 +73,9 @@ const DayEntry = ({ price }) => {
             isPast={price.isPast}
             isFuture={price.isFuture}
             value={price.PM}
+            day={price.code}
             PM
+            setWeekPrice={setWeekPrice}
           />
         </div>
       </div>
@@ -57,23 +83,28 @@ const DayEntry = ({ price }) => {
   );
 };
 
-const WeekPrices = ({ trend }) => {
+const WeekPrices = ({ trend, setWeekPrice }) => {
   let prices = Object.values(trend.prices);
+  const dayCodes = Object.keys(trend.prices);
   const dayCount = new Date().getDay() - 1;
 
   prices = prices.map((price, i) => ({
     ...price,
     label: DAYS[i + 1],
+    code: dayCodes[i],
     isPast: i < dayCount,
-    isFuture: i > dayCount
+    isFuture: i > dayCount,
   }));
-  console.log(prices);
 
   return (
     <div className="week-prices--container">
       <div className="week-prices--prices">
-        {prices.map((price) => (
-          <DayEntry price={price} />
+        {prices.map((price, i) => (
+          <DayEntry
+            price={price}
+            setWeekPrice={setWeekPrice}
+            key={`entry-${price.code}-${i % 2 ? "AM" : "PM"}`}
+          />
         ))}
       </div>
 

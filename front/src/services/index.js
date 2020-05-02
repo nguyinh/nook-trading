@@ -170,6 +170,17 @@ export async function addCurrentPrice(day, hour, thisSunday, newPrice) {
   return price;
 };
 
+export async function setWeekPrices(trendId, prices) {
+  const {
+    data: { trend },
+  } = await axios.put("/api/turnipTrends/prices", {
+    trendId,
+    prices
+  });
+
+  return trend;
+};
+
 export async function setSundayPrice(thisSunday, price) {
   const {
     data: { trend },

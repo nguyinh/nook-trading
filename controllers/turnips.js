@@ -114,6 +114,29 @@ exports.createPrice = async (req, res, next) => {
   }
 };
 
+exports.updatePrices = async (req, res, next) => {
+  const { _id: authorId } = req.user;
+  const { trendId, prices } = req.body;
+
+  console.log(trendId, prices);
+
+  logger.info(
+    `[CONTROLLERS | turnips] updatePrices`
+  );
+
+  try {
+    const trend = await turnips.setPrices(
+      authorId,
+      trendId,
+      prices
+    );
+
+    return res.send({ trend });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 // SUNDAY WITH PORCELETTE
 exports.createSundayPrice = async (req, res, next) => {
   const { _id: authorId } = req.user;
