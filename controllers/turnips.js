@@ -37,7 +37,8 @@ exports.get = async (req, res, next) => {
       return res.send({ trend: fetchedTrend });
     } else {
       let fetchedTrends = await turnips.findAll(thisSunday);
-      if (withSundayPrices) fetchedTrends = fetchedTrends.filter(trend => trend.sundayPrice);
+      if (withSundayPrices)
+        fetchedTrends = fetchedTrends.filter((trend) => trend.sundayPrice);
       return res.send({ trends: fetchedTrends });
     }
   } catch (err) {
@@ -118,16 +119,10 @@ exports.updatePrices = async (req, res, next) => {
   const { _id: authorId } = req.user;
   const { trendId, prices } = req.body;
 
-  logger.info(
-    `[CONTROLLERS | turnips] updatePrices`
-  );
+  logger.info("[CONTROLLERS | turnips] updatePrices");
 
   try {
-    const trend = await turnips.setPrices(
-      authorId,
-      trendId,
-      prices
-    );
+    const trend = await turnips.setPrices(authorId, trendId, prices);
 
     return res.send({ trend });
   } catch (err) {
@@ -172,12 +167,13 @@ exports.updateOwnedQuantity = async (req, res, next) => {
 
   try {
     quantity = parseInt(quantity);
-    if (isNaN(quantity)) return next(Boom.badRequest("Quantity is not a number"));
+    if (isNaN(quantity))
+      return next(Boom.badRequest("Quantity is not a number"));
 
     let trend = await turnips.setTurnipQuantity(
       thisSunday,
       authorId,
-      parseInt(quantity)
+      quantity ? parseInt(quantity) : null
     );
 
     return res.send({ trend });
@@ -202,7 +198,7 @@ exports.updateOwnedPrice = async (req, res, next) => {
     let trend = await turnips.setTurnipValue(
       thisSunday,
       authorId,
-      parseInt(price)
+      price ? parseInt(price) : null
     );
 
     return res.send({ trend });

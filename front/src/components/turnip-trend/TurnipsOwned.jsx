@@ -6,21 +6,16 @@ const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice }) => {
 
   const handleTurnipsOwned = (value) => {
     if (timer) clearTimeout(timer);
-    if (value) {
-      setTimer(setTimeout(() => handleChangedQuantity(value), 1000));
-    }
+    setTimer(setTimeout(() => handleChangedQuantity(value || 0), 1000));
   };
 
   const handleTurnipsOwnedValue = (value) => {
     if (valueTimer) clearTimeout(valueTimer);
-    if (value) {
-      setValueTimer(setTimeout(() => handleChangedPrice(value), 1000));
-    }
+    setValueTimer(setTimeout(() => handleChangedPrice(value || 0), 1000));
   };
 
   return (
     <div className="turnips-owned--container">
-
       <div className="turnips-owned--questions-inputs">
         <div className="turnips-owned--input-row">
           <span className="turnip-owned--label-question">Quantite</span>
@@ -31,7 +26,7 @@ const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice }) => {
             defaultValue={trend.turnipsOwned}
             type="number"
             pattern="\d*"
-            onChange={e => handleTurnipsOwned(e.target.value)}
+            onChange={(e) => handleTurnipsOwned(e.target.value)}
           />
         </div>
 
@@ -44,7 +39,7 @@ const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice }) => {
             defaultValue={trend.turnipsOwnedValue}
             type="number"
             pattern="\d*"
-            onChange={e => handleTurnipsOwnedValue(e.target.value)}
+            onChange={(e) => handleTurnipsOwnedValue(e.target.value)}
           />
         </div>
       </div>
