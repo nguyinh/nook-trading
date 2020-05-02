@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { CSSTransition } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import "./Market.css";
+import { PostHeader } from "../components/market";
 import { AppContext } from "../contexts";
 import {
   getDailyPosts,
+  deletePost,
   bookItem,
   unbookItem,
   bookPost,
   unbookPost,
 } from "../services";
-import { Button, Header, Divider, Loader } from "semantic-ui-react";
+import { Button, Header, Divider, Loader, Dimmer } from "semantic-ui-react";
 import PostCreator from "./PostCreator";
 import { Redirect } from "react-router-dom";
 import bellsImage from "../res/images/bells-2.png";
@@ -47,6 +49,7 @@ const Market = () => {
 
   const [isCreating, setIsCreating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [itemLoading, setItemLoading] = useState(null);
   const [postLoading, setPostLoading] = useState(null);
 
@@ -69,6 +72,18 @@ const Market = () => {
       console.log(err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDeletePost = async (postId, authorId) => {
+    try {
+      setIsDeleting(postId);
+      const deletedPost = await deletePost(postId, authorId);
+      setPosts(posts.filter((post) => post._id !== deletedPost._id));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsDeleting(null);
     }
   };
 
@@ -198,8 +213,6 @@ const Market = () => {
     return null;
   };
 
-  const [shopPictureOverlay, setShopPictureOverlay] = useState(false);
-
   if (isAutoConnecting)
     return (
       <Loader active inline="centered" size="big" style={{ marginTop: "5rem" }}>
@@ -263,159 +276,182 @@ const Market = () => {
           ) : (
             <>
               {!!posts.length ? (
-                posts.map(
-                  (
-                    {
-                      _id: postId,
-                      author,
-                      items,
-                      shopPictureSrc,
-                      bookings: postBookings,
-                    },
-                    i
-                  ) => (
-                    <div className="market-post" key={postId}>
-                      <Header as="h3" style={{ fontWeight: 400 }}>
-                        {author.pseudo === currentUser.pseudo ? (
-                          "Ton shop ✨"
-                        ) : (
-                          <>
-                            <b>
-                              <Link to={`/profile/${author.pseudo}`}>
-                                {author.pseudo}
-                              </Link>
-                            </b>
-                            <span>{` propose`}</span>
-                          </>
-                        )}
-                      </Header>
-
-                      <div
-                        className="market--post--shop-picture"
-                        onClick={() => setSelectedPicture(shopPictureSrc)}
+                <TransitionGroup className="posts-anim-group">
+                  {posts.map(
+                    (
+                      {
+                        _id: postId,
+                        author,
+                        items,
+                        shopPictureSrc,
+                        bookings: postBookings,
+                      },
+                      i
+                    ) => (
+                      <CSSTransition
+                        key={postId}
+                        // unmountOnExit
+                        timeout={300}
+                        classNames="posts-anim"
                       >
-                        <img src={shopPictureSrc} className="shop-picture" />
-                      </div>
+                        <div className="market-post">
+                          <Dimmer active={isDeleting === postId}>
+                            <Loader />
+                          </Dimmer>
 
-                      {items.length ? (
-                        items.map(({ _id: itemId, name, price, bookings }) => (
-                          <div className="market-items--input" key={itemId}>
-                            <div className="market-items--post--item">
-                              <div className="market-items--post--item-label">
-                                <span className="market-items--creator--item-name">
-                                  {name}
-                                </span>
-                                {price && (
-                                  <>
-                                    <span className="market-items--creator--item-price">{`${price}`}</span>
-                                    <img
-                                      src={bellsImage}
-                                      className="market-items--bell-image"
-                                    />
-                                  </>
-                                )}
-                              </div>
-                              {!!bookings.length && (
-                                <div className="market-items--post--item-bookings">
+                          <PostHeader
+                            currentUser={currentUser}
+                            author={author}
+                            postId={postId}
+                            deletePost={handleDeletePost}
+                          />
+
+                          <div
+                            className="market--post--shop-picture"
+                            onClick={() => setSelectedPicture(shopPictureSrc)}
+                          >
+                            <img
+                              src={shopPictureSrc}
+                              className="shop-picture"
+                            />
+                          </div>
+
+                          {items.length ? (
+                            items.map(
+                              ({ _id: itemId, name, price, bookings }) => (
+                                <div
+                                  className="market-items--input"
+                                  key={itemId}
+                                >
+                                  <div className="market-items--post--item">
+                                    <div className="market-items--post--item-label">
+                                      <span className="market-items--creator--item-name">
+                                        {name}
+                                      </span>
+                                      {price && (
+                                        <>
+                                          <span className="market-items--creator--item-price">{`${price}`}</span>
+                                          <img
+                                            src={bellsImage}
+                                            className="market-items--bell-image"
+                                          />
+                                        </>
+                                      )}
+                                    </div>
+                                    {!!bookings.length && (
+                                      <div className="market-items--post--item-bookings">
+                                        <BookingIndicator
+                                          bookingAuthors={bookings.map(
+                                            (booking) => booking.author
+                                          )}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                  {author._id !== currentUser._id && (
+                                    <>
+                                      {bookings.some(
+                                        (booking) =>
+                                          booking.author._id === currentUser._id
+                                      ) ? (
+                                        <Button
+                                          color="orange"
+                                          compact
+                                          loading={itemLoading === itemId}
+                                          disabled={
+                                            itemLoading ||
+                                            postLoading /* === itemId*/
+                                          }
+                                          onClick={() =>
+                                            handleItemUnbooking(itemId)
+                                          }
+                                        >
+                                          ❌ Annuler
+                                        </Button>
+                                      ) : (
+                                        <Button
+                                          color="teal"
+                                          compact
+                                          loading={itemLoading === itemId}
+                                          disabled={
+                                            itemLoading ||
+                                            postLoading /* === itemId*/
+                                          }
+                                          onClick={() =>
+                                            handleItemBooking(itemId)
+                                          }
+                                        >
+                                          👈 I want it
+                                        </Button>
+                                      )}
+                                    </>
+                                  )}
+                                </div>
+                              )
+                            )
+                          ) : (
+                            <div className="market-items--no-item">
+                              {author._id !== currentUser._id && (
+                                <>
+                                  {postBookings.some(
+                                    (booking) =>
+                                      booking.author._id === currentUser._id
+                                  ) ? (
+                                    <Button
+                                      color="orange"
+                                      compact
+                                      size="large"
+                                      loading={postLoading === postId}
+                                      disabled={
+                                        postLoading ||
+                                        itemLoading /* === postId*/
+                                      }
+                                      onClick={() =>
+                                        handlePostUnbooking(postId)
+                                      }
+                                    >
+                                      ❌ Annuler
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      color="teal"
+                                      compact
+                                      size="large"
+                                      loading={postLoading === postId}
+                                      disabled={
+                                        postLoading ||
+                                        itemLoading /* === postId*/
+                                      }
+                                      onClick={() => handlePostBooking(postId)}
+                                    >
+                                      I want something 🙏
+                                    </Button>
+                                  )}
+                                </>
+                              )}
+
+                              {!!postBookings.length && (
+                                <div
+                                  className="market-items--post--item-bookings"
+                                  style={{ marginTop: "0.5rem", marginLeft: 0 }}
+                                >
                                   <BookingIndicator
-                                    bookingAuthors={bookings.map(
+                                    bookingAuthors={postBookings.map(
                                       (booking) => booking.author
                                     )}
                                   />
                                 </div>
                               )}
                             </div>
-                            {author._id !== currentUser._id && (
-                              <>
-                                {bookings.some(
-                                  (booking) =>
-                                    booking.author._id === currentUser._id
-                                ) ? (
-                                  <Button
-                                    color="orange"
-                                    compact
-                                    loading={itemLoading === itemId}
-                                    disabled={
-                                      itemLoading || postLoading /* === itemId*/
-                                    }
-                                    onClick={() => handleItemUnbooking(itemId)}
-                                  >
-                                    ❌ Annuler
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    color="teal"
-                                    compact
-                                    loading={itemLoading === itemId}
-                                    disabled={
-                                      itemLoading || postLoading /* === itemId*/
-                                    }
-                                    onClick={() => handleItemBooking(itemId)}
-                                  >
-                                    👈 I want it
-                                  </Button>
-                                )}
-                              </>
-                            )}
-                          </div>
-                        ))
-                      ) : (
-                        <div className="market-items--no-item">
-                          {author._id !== currentUser._id && (
-                            <>
-                              {postBookings.some(
-                                (booking) =>
-                                  booking.author._id === currentUser._id
-                              ) ? (
-                                <Button
-                                  color="orange"
-                                  compact
-                                  size="large"
-                                  loading={postLoading === postId}
-                                  disabled={
-                                    postLoading || itemLoading /* === postId*/
-                                  }
-                                  onClick={() => handlePostUnbooking(postId)}
-                                >
-                                  ❌ Annuler
-                                </Button>
-                              ) : (
-                                <Button
-                                  color="teal"
-                                  compact
-                                  size="large"
-                                  loading={postLoading === postId}
-                                  disabled={
-                                    postLoading || itemLoading /* === postId*/
-                                  }
-                                  onClick={() => handlePostBooking(postId)}
-                                >
-                                  I want something 🙏
-                                </Button>
-                              )}
-                            </>
                           )}
-
-                          {!!postBookings.length && (
-                            <div
-                              className="market-items--post--item-bookings"
-                              style={{ marginTop: "0.5rem", marginLeft: 0 }}
-                            >
-                              <BookingIndicator
-                                bookingAuthors={postBookings.map(
-                                  (booking) => booking.author
-                                )}
-                              />
-                            </div>
+                          {isLastPost(i) && (
+                            <Divider style={{ margin: "3rem 3rem 0" }} />
                           )}
                         </div>
-                      )}
-                      {isLastPost(i) && (
-                        <Divider style={{ margin: "3rem 3rem 0" }} />
-                      )}
-                    </div>
-                  )
-                )
+                      </CSSTransition>
+                    )
+                  )}
+                </TransitionGroup>
               ) : (
                 <div className="no-data">
                   Pas d'annonce aujourd'hui, créé en une 👆

@@ -54,3 +54,7 @@ exports.add = async (author, shopPicture, items) => {
     items: createdItems.map((item) => item._id),
   });
 };
+
+exports.remove = async (_id, author) => {
+  return Post.findByIdAndDelete({_id, author});
+};

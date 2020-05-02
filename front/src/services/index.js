@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
-  process.env.NODE_ENV === "development" && "http://172.20.10.3:2020";
+  process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
 // TODO: handle PROD env
 
 /* USERS */
@@ -112,6 +112,18 @@ export async function createPost (items, shopPicture) {
     items,
     shopPicture,
   });
+};
+
+export async function deletePost(postId, authorId) {
+  const {
+    data: { post },
+  } = await axios.delete(`/api/posts/${postId}`, {
+    params: {
+      authorId,
+    },
+  });
+
+  return post;
 };
 
 export async function bookItem(itemId) {
