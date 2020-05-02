@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 
 const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice, handleChangedSundayPrice }) => {
-  const [timer, setTimer] = useState(null);
-  const [valueTimer, setValueTimer] = useState(null);
+  const [timer1, setTimer1] = useState(null);
+  const [timer2, setTimer2] = useState(null);
+  const [timer3, setTimer3] = useState(null);
 
   const handleTurnipsOwned = (value) => {
-    if (timer) clearTimeout(timer);
-    setTimer(setTimeout(() => handleChangedQuantity(value || 0), 1000));
+    if (timer1) clearTimeout(timer1);
+    setTimer1(setTimeout(() => handleChangedQuantity(value || 0), 1000));
   };
 
   const handleTurnipsOwnedValue = (value) => {
-    if (valueTimer) clearTimeout(valueTimer);
-    setValueTimer(setTimeout(() => handleChangedPrice(value || 0), 1000));
+    if (timer2) clearTimeout(timer2);
+    setTimer2(setTimeout(() => handleChangedPrice(value || 0), 1000));
+  };
+
+  const handleSundayValue = (value) => {
+    if (timer3) clearTimeout(timer3);
+    setTimer3(setTimeout(() => handleChangedSundayPrice(value || 0), 1000));
   };
 
   return (
@@ -52,7 +58,7 @@ const TurnipsOwned = ({ trend, handleChangedQuantity, handleChangedPrice, handle
             defaultValue={trend.sundayPrice}
             type="number"
             pattern="\d*"
-            onChange={(e) => handleChangedSundayPrice(e.target.value)}
+            onChange={(e) => handleSundayValue(e.target.value)}
           />
         </div>
       </div>

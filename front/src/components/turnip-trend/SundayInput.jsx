@@ -17,7 +17,6 @@ const SundayInput = ({ updateTrends }) => {
         setIsSavingPrice(true);
 
         // FIXME: In theory today is Sunday
-
         const trend = await setSundayPrice(
           getLastSunday(),
           newPrice
