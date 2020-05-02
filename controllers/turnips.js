@@ -118,8 +118,6 @@ exports.updatePrices = async (req, res, next) => {
   const { _id: authorId } = req.user;
   const { trendId, prices } = req.body;
 
-  console.log(trendId, prices);
-
   logger.info(
     `[CONTROLLERS | turnips] updatePrices`
   );

@@ -61,9 +61,10 @@ exports.addCurrentPrice = (dayName, dayTime, lastSunday, author, price) => {
 };
 
 exports.setPrices = (author, _id, prices) => {
+  // Disable competitor queries
   return TurnipTrend.findOneAndUpdate(
-    { _id, author },
-    { $set: { prices } },
+    { _id, author, updatedAt: { $lt: Date.now() } },
+    { $set: { prices }, updatedAt: Date.now() },
     { new: true }
   ).populate({
     path: "author",

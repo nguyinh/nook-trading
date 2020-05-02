@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
+
+import { ReactComponent as Check } from "../../res/images/little-check.svg";
 
 const DAYS = [
   "Dimanche",
@@ -27,7 +30,10 @@ const DayEntryInput = ({
   const handleChange = (value) => {
     if (timer) clearTimeout(timer);
     setTimer(
-      setTimeout(() => setWeekPrice(day, AM ? "AM" : "PM", parseInt(value) || null), 1000)
+      setTimeout(
+        () => setWeekPrice(day, AM ? "AM" : "PM", parseInt(value) || null),
+        1000
+      )
     );
   };
 
@@ -50,13 +56,34 @@ const DayEntryInput = ({
   );
 };
 
+const AnimatedMomentLabel = ({ label, isUpdated }) => (
+  <SwitchTransition mode="out-in">
+    <CSSTransition
+      key={isUpdated === label ? "1" : "2"}
+      addEndListener={(node, done) =>
+        node.addEventListener("transitionend", done, false)
+      }
+      classNames="entry-validation-anim"
+    >
+      {isUpdated === label ? (
+        <span className="day-entry--moment--label no-opacity">
+          <Check />
+        </span>
+      ) : (
+        <span className="day-entry--moment--label">{label}</span>
+      )}
+    </CSSTransition>
+  </SwitchTransition>
+);
+
 const DayEntry = ({ price, setWeekPrice }) => {
   return (
     <div className="day-entry--container">
       <span className="day-entry--label">{price.label}</span>
       <div className="day-entry--moment--container">
         <div className="day-entry--moment">
-          <span className="day-entry--moment--label">AM</span>
+          <AnimatedMomentLabel label="AM" isUpdated={price.isUpdated}/>
+
           <DayEntryInput
             isPast={price.isPast}
             isFuture={price.isFuture}
@@ -68,7 +95,8 @@ const DayEntry = ({ price, setWeekPrice }) => {
         </div>
 
         <div className="day-entry--moment">
-          <span className="day-entry--moment--label">PM</span>
+          <AnimatedMomentLabel label="PM" isUpdated={price.isUpdated}/>
+
           <DayEntryInput
             isPast={price.isPast}
             isFuture={price.isFuture}

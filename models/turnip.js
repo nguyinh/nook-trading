@@ -40,6 +40,10 @@ const turnipTrendScheme = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
 const TurnipTrend = mongoose.model("TurnipTrend", turnipTrendScheme);

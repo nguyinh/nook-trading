@@ -30,6 +30,7 @@ const DetailedView = ({ pseudo }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSelf, setIsSelf] = useState(false);
   const [trend, setTrend] = useState(null);
+  const [timer, setTimer] = useState(null);
 
   const fetchUserTrend = async (pseudo) => {
     setIsLoading(true);
@@ -56,15 +57,38 @@ const DetailedView = ({ pseudo }) => {
 
   const setWeekPrice = async (day, moment, price) => {
     let { _id, prices } = trend;
+
+    // Update specific price
     prices[day][moment] = price;
-    console.log(prices);
 
-    const newTrend = await setWeekPrices(_id, prices);
+    // Clean prices before sending
+    const keys = Object.keys(prices);
+    keys.forEach(
+      (key) => (prices[key] = { AM: prices[key].AM, PM: prices[key].PM })
+    );
 
-    console.log(newTrend);
-    // setTrends({
-    //   ...trend,
-    // })
+    try {
+      const newTrend = await setWeekPrices(_id, prices);
+
+      prices[day].isUpdated = moment;
+
+      setTrend({
+        ...trend,
+        prices
+      });
+
+      if (timer) clearTimeout(timer);
+      // Reset flags
+      setTimer(setTimeout(() => {
+        prices[day].isUpdated = undefined;
+        setTrend({
+          ...trend,
+          prices
+        });
+      }, 2000));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
