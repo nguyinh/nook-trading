@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 
 import { Price, PriceAvatar } from "./";
 
-const SundayPrices = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
+const SundayPrices = ({ prices }) => {
+  const [redirectToDetailed, setRedirectToDetailed] = useState(null);
+  const [redirectToProfile, setRedirectToProfile] = useState(null);
+
+  if (redirectToDetailed)
+    return <Redirect to={`/turnip-trend/${redirectToDetailed}`} push />;
+  if (redirectToProfile)
+    return <Redirect to={`/profile/${redirectToProfile}`} push />;
+
   return (
     <div className="all-prices--container">
       {prices.map((trend) => (
         <div className="price--container" key={trend._id}>
-          <PriceAvatar src={trend.author.avatar} />
+          <PriceAvatar
+            src={trend.author.avatar}
+            onClick={() => setRedirectToProfile(trend.author.pseudo)}
+          />
 
-          <div className="price--informations--container">
+          <div
+            className="price--informations--container"
+            onClick={() => setRedirectToDetailed(trend.author.pseudo)}
+          >
             <span className="nook-pseudo">{trend.author.pseudo}</span>
 
             <div className="price--informations--basis">

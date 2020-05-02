@@ -15,7 +15,6 @@ const WeekView = () => {
     state: { currentUser },
   } = useContext(AppContext);
 
-  const { pseudo } = useParams();
   const [prices, setPrices] = useState([]);
   const [selfTrend, setSelfTrend] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
