@@ -126,6 +126,29 @@ const DetailedView = ({ pseudo }) => {
     }
   };
 
+  const goToTurnipProphet = () => {
+    const f = (day) => [day.AM, day.PM];
+    const {
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
+    } = trend.prices;
+    const valueParams = [
+      trend.sundayPrice,
+      ...f(monday),
+      ...f(tuesday),
+      ...f(wednesday),
+      ...f(thursday),
+      ...f(friday),
+      ...f(saturday),
+    ];
+
+    window.open(`https://turnipprophet.io/?prices=${valueParams.join(".")}`);
+  };
+
   useEffect(() => {
     fetchUserTrend(pseudo);
   }, []);
@@ -166,12 +189,22 @@ const DetailedView = ({ pseudo }) => {
               />
 
               {isSelf && (
-                <TurnipsOwned
-                  trend={trend}
-                  handleChangedQuantity={handleChangedQuantity}
-                  handleChangedPrice={handleChangedPrice}
-                  handleChangedSundayPrice={handleChangedSundayPrice}
-                />
+                <>
+                  <button
+                    className="turnip-prophet-button"
+                    onClick={goToTurnipProphet}
+                  >
+                    Simuler sur Turnip Prophet
+                    <Icon name="external" />
+                  </button>
+
+                  <TurnipsOwned
+                    trend={trend}
+                    handleChangedQuantity={handleChangedQuantity}
+                    handleChangedPrice={handleChangedPrice}
+                    handleChangedSundayPrice={handleChangedSundayPrice}
+                  />
+                </>
               )}
             </>
           )}

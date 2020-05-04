@@ -34,33 +34,33 @@ const TurnipSimulator = ({ quantity, value }) => {
       </div>
 
       <div className="turnips-owned--input-row--simulator">
-        <span className="turnip-owned--label-question--simulator">j'aurais</span>
+        <span className="turnip-owned--label-question--simulator">
+          j'aurais
+        </span>
 
         <span className="turnip-owned--simulated-value">
-          {!!value && simulatedValue? (
+          {!!value && simulatedValue ? (
             //  ? (
-              <span>
-                {`${totalProfit > 0 ? "+" : ""} ${s(totalProfit)}`}{" "}
-                <Bells className="bells-svg--simulator" />
-                <span
-                  className={`profit--percentage ${
-                    totalProfit > 0 ? "positive" : "negative"
-                  }`}
-                >
-                  {totalProfit > 0 ? (
-                    <TriangleUp className="profit--triangle-indicator" />
-                  ) : (
-                    <TriangleDown className="profit--triangle-indicator" />
-                  )}{" "}
-                  {Math.abs(profitPercentage)}%
-                </span>
+            <span>
+              {`${totalProfit > 0 ? "+" : ""} ${s(totalProfit)}`}{" "}
+              <Bells className="bells-svg--simulator" />
+              <span
+                className={`profit--percentage ${
+                  totalProfit > 0 ? "positive" : "negative"
+                }`}
+              >
+                {totalProfit > 0 ? (
+                  <TriangleUp className="profit--triangle-indicator" />
+                ) : (
+                  <TriangleDown className="profit--triangle-indicator" />
+                )}{" "}
+                {Math.abs(profitPercentage)}%
               </span>
-            // ) : (
-            //   <><span>{s(totalProfit)}</span> <Bells className="bells-svg--simulator" /></>
-            // )
+            </span>
           ) : (
             <>
-              <span>{s(totalProfit)}</span> <Bells className="bells-svg--simulator" />
+              <span>{s(totalProfit)}</span>{" "}
+              <Bells className="bells-svg--simulator" />
             </>
           )}
         </span>

@@ -504,6 +504,23 @@ svg.bells-svg {
 }
 
 
+.turnip-prophet-button {
+  background: #f3f3f3;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05), 0 3px 6px rgba(0, 0, 0, 0.09);
+  color: #686868;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  padding: 0.8rem 1.5rem;
+}
+
+.turnip-prophet-button > i {
+  color: #0AB5CD;
+  margin-left: 5px !important;
+}
+
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
