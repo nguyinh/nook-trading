@@ -198,6 +198,7 @@ svg.bells-svg {
 .profit--percentage {
   font-size: 0.7rem;
   padding-left: 0.2rem;
+  font-family: Arial;
 }
 
 .profit--percentage.positive {
@@ -473,6 +474,34 @@ svg.bells-svg {
   margin-top: 1rem;
 }
 
+
+.turnips-owned--input-row--simulator {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: 3px;
+  height: 2rem;
+}
+
+.turnip-owned--label-question--simulator {
+  margin-right: 0.5rem;
+  opacity: 0.7;
+}
+
+.turnip-owned--simulator {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.turnip-owned--simulated-value {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.bells-svg--simulator {
+  height: 1.3rem;
+  transform: translateY(2px);
+}
 
 
 input::-webkit-inner-spin-button,
