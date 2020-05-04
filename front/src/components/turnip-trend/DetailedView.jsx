@@ -100,7 +100,7 @@ const DetailedView = ({ pseudo }) => {
     try {
       const trend = await setOwnedQuantity(getLastSunday(), newQuantity);
 
-      setTrend(trend);
+      setTrend(formatAvatarData(trend));
     } catch (err) {
       console.log(err);
     }
@@ -110,7 +110,7 @@ const DetailedView = ({ pseudo }) => {
     try {
       const trend = await setOwnedPrice(getLastSunday(), newPrice);
 
-      setTrend(trend);
+      setTrend(formatAvatarData(trend));
     } catch (err) {
       console.log(err);
     }
@@ -120,7 +120,7 @@ const DetailedView = ({ pseudo }) => {
     try {
       const trend = await setSundayPrice(getLastSunday(), sundayPrice);
 
-      setTrend(trend);
+      setTrend(formatAvatarData(trend));
     } catch (err) {
       console.log(err);
     }
