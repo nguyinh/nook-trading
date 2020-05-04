@@ -9,7 +9,7 @@ import {
   setWeekPrices,
   setOwnedQuantity,
   setOwnedPrice,
-  setSundayPrice
+  setSundayPrice,
 } from "../../services";
 import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
@@ -17,8 +17,8 @@ import { formatAvatarData } from "./lib";
 import { WeekPrices, TurnipsOwned } from "./";
 import { getLastSunday } from "../../utils";
 
-const Avatar = ({ trend }) => (
-  <div className="avatar-header--container">
+const Avatar = ({ trend, onClick }) => (
+  <div className="avatar-header--container" onClick={onClick}>
     <img
       className="avatar-header--image"
       src={trend.author.avatar || AvatarDefault}
@@ -38,7 +38,8 @@ const DetailedView = ({ pseudo }) => {
   const [isSelf, setIsSelf] = useState(false);
   const [trend, setTrend] = useState(null);
   const [timer, setTimer] = useState(null);
-  const [redirectToDetailed, setRedirectToDetailed] = useState(null);
+  const [backToDetailed, setBackToDetailed] = useState(null);
+  const [redirectToProfile, setRedirectToProfile] = useState(null);
 
   const fetchUserTrend = async (pseudo) => {
     setIsLoading(true);
@@ -129,7 +130,9 @@ const DetailedView = ({ pseudo }) => {
     fetchUserTrend(pseudo);
   }, []);
 
-  if (redirectToDetailed) return <Redirect to={"/turnip-trend"} push />;
+  if (backToDetailed) return <Redirect to={"/turnip-trend"} push />;
+  if (redirectToProfile)
+    return <Redirect to={`/profile/${redirectToProfile}`} push />;
 
   return (
     <div>
@@ -145,16 +148,16 @@ const DetailedView = ({ pseudo }) => {
         }
       >
         <div className="detailled-view--container">
-          <div
-            className="back-button"
-            onClick={() => setRedirectToDetailed(true)}
-          >
+          <div className="back-button" onClick={() => setBackToDetailed(true)}>
             <Icon name="angle left" size="big" />
           </div>
 
           {trend && (
             <>
-              <Avatar trend={trend} />
+              <Avatar
+                trend={trend}
+                onClick={() => setRedirectToProfile(trend.author.pseudo)}
+              />
 
               <WeekPrices
                 trend={trend}

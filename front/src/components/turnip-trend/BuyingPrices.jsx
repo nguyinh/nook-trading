@@ -51,26 +51,21 @@ const Profit = ({ price, turnipQuantity, turnipBoughtFor }) => {
 
 const BuyingPrices = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
   const [redirectToDetailed, setRedirectToDetailed] = useState(null);
-  const [redirectToProfile, setRedirectToProfile] = useState(null);
 
   if (redirectToDetailed)
     return <Redirect to={`/turnip-trend/${redirectToDetailed}`} push />;
-  if (redirectToProfile)
-    return <Redirect to={`/profile/${redirectToProfile}`} push />;
 
   return (
     <div className="all-prices--container">
       {prices.map((trend) => (
-        <div className="price--container" key={trend._id}>
-          <PriceAvatar
-            src={trend.author.avatar}
-            onClick={() => setRedirectToProfile(trend.author.pseudo)}
-          />
+        <div
+          className="price--container"
+          key={trend._id}
+          onClick={() => setRedirectToDetailed(trend.author.pseudo)}
+        >
+          <PriceAvatar src={trend.author.avatar} />
 
-          <div
-            className="price--informations--container"
-            onClick={() => setRedirectToDetailed(trend.author.pseudo)}
-          >
+          <div className="price--informations--container">
             <span className="nook-pseudo">{trend.author.pseudo}</span>
 
             <div className="price--informations--basis">
