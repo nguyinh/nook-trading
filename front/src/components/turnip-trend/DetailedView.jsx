@@ -9,13 +9,13 @@ import {
   setWeekPrices,
   setOwnedQuantity,
   setOwnedPrice,
-  setSundayPrice
+  setSundayPrice,
 } from "../../services";
 import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
 import { formatAvatarData } from "./lib";
 import { WeekPrices, TurnipsOwned } from "./";
-import { getLastSunday } from "../../utils";
+import { getLastSunday, useFetch } from "../../utils";
 
 const Avatar = ({ trend }) => (
   <div className="avatar-header--container">
@@ -34,28 +34,10 @@ const DetailedView = ({ pseudo }) => {
     state: { currentUser },
   } = useContext(AppContext);
 
-  const [isLoading, setIsLoading] = useState(true);
   const [isSelf, setIsSelf] = useState(false);
   const [trend, setTrend] = useState(null);
   const [timer, setTimer] = useState(null);
   const [redirectToDetailed, setRedirectToDetailed] = useState(null);
-
-  const fetchUserTrend = async (pseudo) => {
-    setIsLoading(true);
-    try {
-      const { _id } = await getUser(pseudo);
-
-      setIsSelf(currentUser._id === _id);
-
-      const fetchedTrend = await fetchTrend(_id, getLastSunday());
-
-      setTrend(formatAvatarData(fetchedTrend));
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const setWeekPrice = async (day, moment, price) => {
     let { _id, prices } = trend;
@@ -125,16 +107,35 @@ const DetailedView = ({ pseudo }) => {
     }
   };
 
+  const { response: user = {}, isLoading: userLoading, error } = useFetch(
+    getUser,
+    { params: [pseudo] },
+    []
+  );
+  const userId = user._id;
+
   useEffect(() => {
-    fetchUserTrend(pseudo);
-  }, []);
+    setIsSelf(currentUser._id === userId);
+  }, [userId]);
+
+  const { response: fetchedTrend = {}, isLoading: trendLoading } = useFetch(
+    fetchTrend,
+    { params: [userId, getLastSunday()], conditions: !!userId },
+    [userId]
+  );
+  const trendId = fetchedTrend._id
+  useEffect(() => {
+    if (trendId)
+      setTrend(formatAvatarData(fetchedTrend));
+  }, [trendId]);
+
 
   if (redirectToDetailed) return <Redirect to={"/turnip-trend"} push />;
 
   return (
     <div>
       <WithLoader
-        active={isLoading}
+        active={userLoading || trendLoading}
         content={
           <>
             Recherche du correspondant{" "}
