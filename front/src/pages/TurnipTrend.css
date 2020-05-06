@@ -377,6 +377,23 @@ svg.bells-svg {
 }
 
 
+.detailed-view--graph-container {
+  background: #f7f4e6;
+  border-radius: 50px;
+  margin: 2rem 0.5rem;
+  min-width: 600px;
+  height: 200px;
+  overflow: hidden;
+}
+
+@media (max-width : 768px) {
+  .detailed-view--graph-container {
+    width: calc(100% - 0.5rem);
+    min-width: unset;
+  }
+}
+
+
 
 
 .week-prices--label {

@@ -1,11 +1,16 @@
-import React, { useEffect, useState, useContext } from "react";
-import { ParentSize, withParentSize } from "@vx/responsive";
-import { scaleLinear, scaleTime } from "@vx/scale";
-import { AreaClosed } from "@vx/shape";
+import React from "react";
+import { withParentSize } from "@vx/responsive";
+import { scaleLinear } from "@vx/scale";
+import { AreaClosed, LinePath } from "@vx/shape";
 import { Group } from "@vx/group";
-import { curveCatmullRom } from "@vx/curve";
+import { curveMonotoneX } from "@vx/curve";
+import { LinearGradient } from "@vx/gradient";
 
 const extent = (arr, fn) => [min(arr, fn), max(arr, fn)];
+const addPadding = (arr, lowOffset, highOffset) => [
+  lowOffset < 1 ? arr[0] - arr[1] * lowOffset : arr[0] - lowOffset,
+  highOffset < 1 ? arr[1] + arr[1] * highOffset : arr[1] + highOffset,
+];
 
 const min = (arr, fn) => Math.min(...arr.map(fn));
 const max = (arr, fn) => Math.max(...arr.map(fn));
@@ -16,21 +21,25 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
 
   const xScale = scaleLinear({
     range: [0, parentWidth],
-    domain: extent(weekValues, x),
+    domain: [1, 12]
   });
 
   const yScale = scaleLinear({
     range: [parentHeight, 0],
-    domain: extent(weekValues, y),
+    domain: addPadding(extent(weekValues, y), 20, 20),
+    // nice: true
   });
 
   return (
     <svg width={parentWidth} height={parentHeight}>
       <defs>
-        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#87C9A1" stopOpacity={0.7} />
-          <stop offset="100%" stopColor="#8ED680" stopOpacity={0.2} />
-        </linearGradient>
+        <LinearGradient id="gradient"
+        fromOpacity={0.8}
+        toOpacity={0.1}
+        x1="0%" y1="0%" x2="100%" y2="100%"
+        from="#87C9A1"
+        to="#8ED680"
+        />
       </defs>
 
       <Group top={0} left={0}>
@@ -41,6 +50,18 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
           y={(d) => yScale(y(d))}
           yScale={yScale}
           xScale={xScale}
+          defined={(d) => y(d)}
+          curve={curveMonotoneX}
+        />
+
+        <LinePath
+          data={weekValues}
+          x={(d) => xScale(x(d))}
+          y={(d) => yScale(y(d))}
+          defined={(d) => y(d)}
+          stroke="#A6D5B3"
+          strokeWidth={2}
+          curve={curveMonotoneX}
         />
       </Group>
     </svg>
@@ -51,10 +72,13 @@ const WeekGraph = ({ trend }) => {
   const f = (day) => [day[1].AM, day[1].PM];
   let weekValues = Object.entries(trend.prices);
   weekValues = weekValues.map((pair) => f(pair)).flat();
-  weekValues = weekValues.map((value, i) => ({ day: i, value }));
+  weekValues = weekValues.map((value, i) => ({
+    day: i + 1,
+    value,
+  }));
 
   return (
-    <div style={{ height: 200, width: "50%" }}>
+    <div style={{ height: 150 }} className="detailed-view--graph-container">
       <Graph weekValues={weekValues} />
     </div>
   );
