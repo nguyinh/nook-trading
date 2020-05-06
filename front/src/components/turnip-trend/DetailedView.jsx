@@ -14,7 +14,7 @@ import {
 import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
 import { formatAvatarData } from "./lib";
-import { WeekPrices, TurnipsOwned } from "./";
+import { WeekPrices, TurnipsOwned, WeekGraph } from "./";
 import { getLastSunday } from "../../utils";
 
 const Avatar = ({ trend, onClick }) => (
@@ -181,6 +181,8 @@ const DetailedView = ({ pseudo }) => {
                 trend={trend}
                 onClick={() => setRedirectToProfile(trend.author.pseudo)}
               />
+
+              <WeekGraph trend={trend}/>
 
               <WeekPrices
                 trend={trend}
