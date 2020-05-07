@@ -3,9 +3,10 @@ import { Redirect } from "react-router-dom";
 
 import { Price, PriceAvatar } from "./";
 
-const SundayPrices = ({ prices }) => {
+const SundayPrices = ({ prices, currentUserId, onSelfTrendClick }) => {
   const [redirectToDetailed, setRedirectToDetailed] = useState(null);
   const [redirectToProfile, setRedirectToProfile] = useState(null);
+  const isSelfPrice = (trend) => currentUserId === trend.author._id;
 
   if (redirectToDetailed)
     return <Redirect to={`/turnip-trend/${redirectToDetailed}`} push />;
@@ -23,7 +24,11 @@ const SundayPrices = ({ prices }) => {
 
           <div
             className="price--informations--container"
-            onClick={() => setRedirectToDetailed(trend.author.pseudo)}
+            onClick={() =>
+              isSelfPrice(trend)
+                ? onSelfTrendClick()
+                : setRedirectToDetailed(trend.author.pseudo)
+            }
           >
             <span className="nook-pseudo">{trend.author.pseudo}</span>
 

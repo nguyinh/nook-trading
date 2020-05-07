@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useRef, useState, useContext } from "react";
 import Slider from "react-slick";
 
 import { AppContext } from "../../contexts";
@@ -12,6 +12,8 @@ const MainView = () => {
     state: { currentUser },
   } = useContext(AppContext);
 
+  const sliderRef = useRef(null);
+
   const settings = {
     dots: true,
     infinite: false,
@@ -24,6 +26,10 @@ const MainView = () => {
   };
 
   const isSunday = new Date().getDay() === 0;
+
+  const handleSelfTrendClick = () => {
+    sliderRef.current.slickGoTo(0);
+  };
 
   // const [firstClientX, setFirstClientX] = useState();
   // const [firstClientY, setFirstClientY] = useState();
@@ -57,12 +63,16 @@ const MainView = () => {
   //     });
   //   };
   // }, [clientX, firstClientX, firstClientY]);
-  
+
   return (
-    <div className='turnip-trend--slick'>
-      <Slider {...settings}>
-        <DetailedView pseudo={currentUser.pseudo} allowBackTo={false}/>
-        {isSunday ? <SundayView /> : <WeekView />}
+    <div className="turnip-trend--slick">
+      <Slider {...settings} ref={sliderRef}>
+        <DetailedView pseudo={currentUser.pseudo} allowBackTo={false} />
+        {isSunday ? (
+          <SundayView onSelfTrendClick={handleSelfTrendClick} />
+        ) : (
+          <WeekView onSelfTrendClick={handleSelfTrendClick} />
+        )}
       </Slider>
     </div>
   );

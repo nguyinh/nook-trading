@@ -49,8 +49,15 @@ const Profit = ({ price, turnipQuantity, turnipBoughtFor }) => {
   );
 };
 
-const BuyingPrices = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
+const BuyingPrices = ({
+  prices,
+  currentUserId,
+  turnipsOwnedValue,
+  turnipsOwned,
+  onSelfTrendClick,
+}) => {
   const [redirectToDetailed, setRedirectToDetailed] = useState(null);
+  const isSelfPrice = (trend) => currentUserId === trend.author._id;
 
   if (redirectToDetailed)
     return <Redirect to={`/turnip-trend/${redirectToDetailed}`} push />;
@@ -61,7 +68,11 @@ const BuyingPrices = ({ prices, turnipsOwnedValue, turnipsOwned }) => {
         <div
           className="price--container"
           key={trend._id}
-          onClick={() => setRedirectToDetailed(trend.author.pseudo)}
+          onClick={() =>
+            isSelfPrice(trend)
+              ? onSelfTrendClick()
+              : setRedirectToDetailed(trend.author.pseudo)
+          }
         >
           <PriceAvatar src={trend.author.avatar} />
 

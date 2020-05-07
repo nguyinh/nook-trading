@@ -6,11 +6,11 @@ import { fetchAllTrends, fetchTrend } from "../../services";
 import { WithLoader } from "../lib";
 import { SundayInput, SundayPrices, TurnipOwnedInput } from "./";
 import { formatAvatarData } from "./lib";
-import { getLastSunday } from '../../utils';
+import { getLastSunday } from "../../utils";
 
 const bySundayPriceAmount = (a, b) => (a.sundayPrice < b.sundayPrice ? -1 : 1);
 
-const SundayView = () => {
+const SundayView = ({ onSelfTrendClick }) => {
   const {
     state: { currentUser },
   } = useContext(AppContext);
@@ -21,12 +21,14 @@ const SundayView = () => {
   const [askForPrice, setAskForPrice] = useState(false);
   const [askForTurnips, setAskForTurnips] = useState(false);
 
-
   const fetchTrends = async () => {
     try {
       setIsLoading(true);
-          
-      let [fetchedTrends, fetchedSelfTrend] = await Promise.all([fetchAllTrends(getLastSunday()), fetchTrend(currentUser._id, getLastSunday())]);
+
+      let [fetchedTrends, fetchedSelfTrend] = await Promise.all([
+        fetchAllTrends(getLastSunday()),
+        fetchTrend(currentUser._id, getLastSunday()),
+      ]);
 
       fetchedTrends = fetchedTrends
         .map(formatAvatarData)
@@ -102,6 +104,8 @@ const SundayView = () => {
               _id,
               author,
             }))}
+            currentUserId={currentUser._id}
+            onSelfTrendClick={onSelfTrendClick}
           />
         </div>
       </WithLoader>

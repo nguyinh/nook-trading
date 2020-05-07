@@ -6,11 +6,11 @@ import { AppContext } from "../../contexts";
 import { fetchTurnipPrices, fetchTrend } from "../../services";
 import { BuyingPrices, TrendInput } from "./";
 import { formatAvatarData } from "./lib";
-import { WithLoader } from '../lib';
+import { WithLoader } from "../lib";
 
 const byPriceAmount = (a, b) => (a.price < b.price ? 1 : -1);
 
-const WeekView = () => {
+const WeekView = ({ onSelfTrendClick }) => {
   const {
     state: { currentUser },
   } = useContext(AppContext);
@@ -99,8 +99,10 @@ const WeekView = () => {
           {askForPrice && <TrendInput updatePrices={updatePrices} />}
           <BuyingPrices
             prices={prices}
+            currentUserId={currentUser._id}
             turnipsOwnedValue={selfTrend && selfTrend.turnipsOwnedValue}
             turnipsOwned={selfTrend && selfTrend.turnipsOwned}
+            onSelfTrendClick={onSelfTrendClick}
           />
         </>
       </WithLoader>
