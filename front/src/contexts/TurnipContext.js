@@ -11,7 +11,7 @@ let reducer = (state, action) => {
     case "SET_SELF_TREND":
       return { ...state, selfTrend: formatAvatarData(action.trend) };
     case "UPDATE_TREND":
-      return updateTrends(...state, action.trend);
+      return updateTrends(state, action.trend);
     case "SET_DISABLE_TRENDS_LOADING":
       return { ...state, isLoadingTrends: action.isLoading };
     case "SET_DISABLE_SELF_TREND_LOADING":

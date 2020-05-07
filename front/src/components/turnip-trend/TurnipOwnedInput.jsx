@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Loader } from "semantic-ui-react";
 
+import { TurnipContext } from "../../contexts";
 import { setOwnedQuantity, setOwnedPrice } from "../../services";
 import { getLastSunday } from '../../utils';
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
@@ -8,6 +9,8 @@ import { ReactComponent as Turnip } from "../../res/images/turnip-flat.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
 
 const TurnipOwnedInput = ({ updateTrends, turnipsOwned, turnipsOwnedValue }) => {
+  const { dispatch } = useContext(TurnipContext);
+  
   const [isSavingQuantity, setIsSavingQuantity] = useState(false);
   const [isDefaultQuantityLabel, setIsDefaultQuantityLabel] = useState(true);
   const [quantityTimer, setQuantityTimer] = useState(null);
@@ -28,7 +31,7 @@ const TurnipOwnedInput = ({ updateTrends, turnipsOwned, turnipsOwnedValue }) => 
 
         setIsDefaultQuantityLabel(false);
 
-        updateTrends(trend);
+        dispatch({ type: "UPDATE_TREND", trend });
       } catch (err) {
         console.log(err);
       } finally {
@@ -54,7 +57,7 @@ const TurnipOwnedInput = ({ updateTrends, turnipsOwned, turnipsOwnedValue }) => 
 
         setIsDefaultPriceLabel(false);
 
-        updateTrends(trend);
+        dispatch({ type: "UPDATE_TREND", trend });
       } catch (err) {
         console.log(err);
       } finally {

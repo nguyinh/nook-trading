@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 import { getLastSunday } from "../../utils";
@@ -15,7 +15,7 @@ const DAYS = [
 ];
 
 const DayEntryInput = ({
-  value,
+  price,
   isPast,
   isFuture,
   day,
@@ -25,14 +25,21 @@ const DayEntryInput = ({
   isEditable,
 }) => {
   const [timer, setTimer] = useState(null);
+  const [content, setContent] = useState(price);
+
+  useEffect(() => {
+    setContent(price)
+  }, [price]);
 
   if (!isEditable)
-    return <span className="day-entry--moment--value">{value || "-"}</span>;
+    return <span className="day-entry--moment--value">{price || "-"}</span>;
 
   const isCurrentDayMoment = new Date().getHours() < 12 ? AM : PM;
   const isToday = !isPast && !isFuture;
 
   const handleChange = (value) => {
+    setContent(value);
+
     if (timer) clearTimeout(timer);
     setTimer(
       setTimeout(
@@ -50,7 +57,7 @@ const DayEntryInput = ({
           : ""
       } ${isFuture ? "with-max-opacity" : ""}`}
       placeholder={isToday && isCurrentDayMoment ? "..." : "-"}
-      defaultValue={value}
+      value={content}
       type="number"
       pattern="\d*"
       onChange={(e) => handleChange(e.target.value)}
@@ -90,7 +97,7 @@ const DayEntry = ({ price, setWeekPrice, isEditable }) => (
         <DayEntryInput
           isPast={price.isPast}
           isFuture={price.isFuture}
-          value={price.AM}
+          price={price.AM}
           day={price.code}
           AM
           setWeekPrice={setWeekPrice}
@@ -104,7 +111,7 @@ const DayEntry = ({ price, setWeekPrice, isEditable }) => (
         <DayEntryInput
           isPast={price.isPast}
           isFuture={price.isFuture}
-          value={price.PM}
+          price={price.PM}
           day={price.code}
           PM
           setWeekPrice={setWeekPrice}

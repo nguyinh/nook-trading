@@ -57,7 +57,7 @@ exports.addCurrentPrice = (dayName, dayTime, lastSunday, author, price) => {
       path: "author",
       select: "pseudo avatar",
     })
-    .select(`author prices.${dayName}.${dayTime}`);
+    // .select(`author prices.${dayName}.${dayTime}`);
 };
 
 exports.setPrices = (author, _id, prices) => {

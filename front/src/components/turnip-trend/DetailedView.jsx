@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
 import { Icon } from "semantic-ui-react";
-import { AppContext } from "../../contexts";
+import { TurnipContext } from "../../contexts";
 import {
   setWeekPrices,
   setOwnedQuantity,
@@ -33,9 +33,8 @@ const DetailedView = ({
   allowBackTo = true,
 }) => {
   const {
-    state: { currentUser },
     dispatch,
-  } = useContext(AppContext);
+  } = useContext(TurnipContext);
 
   const [timer, setTimer] = useState(null);
   const [backToDetailed, setBackToDetailed] = useState(null);
@@ -150,7 +149,7 @@ const DetailedView = ({
   if (backToDetailed) return <Redirect to={"/turnip-trend"} push />;
   if (redirectToProfile)
     return <Redirect to={`/profile/${redirectToProfile}`} push />;
-
+    
   return (
     <div>
       {/* <WithLoader
@@ -201,8 +200,11 @@ const DetailedView = ({
 
                   <TurnipsOwned
                     trend={trend}
+                    defaultQuantity={trend.turnipsOwned}
                     handleChangedQuantity={handleChangedQuantity}
+                    defaultValue={trend.turnipsOwnedValue}
                     handleChangedPrice={handleChangedPrice}
+                    defaultSundayPrice={trend.sundayPrice}
                     handleChangedSundayPrice={handleChangedSundayPrice}
                   />
                 </>

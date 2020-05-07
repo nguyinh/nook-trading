@@ -95,7 +95,7 @@ exports.createPrice = async (req, res, next) => {
     price = parseInt(price);
     if (isNaN(price)) return next(Boom.badRequest("Price is not a number"));
 
-    let { _id, author, prices } = await turnips.addCurrentPrice(
+    const trend = await turnips.addCurrentPrice(
       dayName,
       dayTime,
       thisSunday,
@@ -103,13 +103,7 @@ exports.createPrice = async (req, res, next) => {
       parseInt(price)
     );
 
-    const addedPrice = {
-      _id,
-      author,
-      price: prices[dayName][dayTime],
-    };
-
-    return res.send({ price: addedPrice });
+    return res.send({ trend });
   } catch (err) {
     return next(err);
   }
@@ -147,7 +141,7 @@ exports.createSundayPrice = async (req, res, next) => {
     let trend = await turnips.setSundayPrice(
       thisSunday,
       authorId,
-      parseInt(price)
+      price ? parseInt(price) : null
     );
 
     return res.send({ trend });

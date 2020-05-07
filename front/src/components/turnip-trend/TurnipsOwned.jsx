@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { spacify as s } from "../../utils";
 import { ReactComponent as TriangleUp } from "../../res/images/triangle-green.svg";
@@ -71,28 +71,52 @@ const TurnipSimulator = ({ quantity, value }) => {
 
 const TurnipsOwned = ({
   trend,
+  defaultQuantity,
   handleChangedQuantity,
+  defaultValue,
   handleChangedPrice,
+  defaultSundayPrice,
   handleChangedSundayPrice,
 }) => {
+  const [quantity, setQuantity] = useState(defaultQuantity);
   const [timer1, setTimer1] = useState(null);
+
+  const [value, setValue] = useState(defaultValue);
   const [timer2, setTimer2] = useState(null);
+
+  const [sundayPrice, setSundayPrice] = useState(defaultSundayPrice);
   const [timer3, setTimer3] = useState(null);
 
+
   const handleTurnipsOwned = (value) => {
+    setQuantity(value);
     if (timer1) clearTimeout(timer1);
     setTimer1(setTimeout(() => handleChangedQuantity(value || 0), 1000));
   };
 
   const handleTurnipsOwnedValue = (value) => {
+    setValue(value);
     if (timer2) clearTimeout(timer2);
     setTimer2(setTimeout(() => handleChangedPrice(value || 0), 1000));
   };
 
   const handleSundayValue = (value) => {
+    setSundayPrice(value);
     if (timer3) clearTimeout(timer3);
     setTimer3(setTimeout(() => handleChangedSundayPrice(value || 0), 1000));
   };
+
+  useEffect(() => {
+    setQuantity(defaultQuantity)
+  }, [defaultQuantity]);
+  
+  useEffect(() => {
+    setValue(defaultValue)
+  }, [defaultValue]);
+  
+  useEffect(() => {
+    setSundayPrice(defaultSundayPrice)
+  }, [defaultSundayPrice]);
 
   return (
     <div className="turnips-owned--container">
@@ -105,7 +129,7 @@ const TurnipsOwned = ({
           <input
             className="turnip-owned--input large"
             placeholder="..."
-            defaultValue={trend.turnipsOwned}
+            value={quantity}
             type="number"
             pattern="\d*"
             onChange={(e) => handleTurnipsOwned(e.target.value)}
@@ -120,7 +144,7 @@ const TurnipsOwned = ({
           <input
             className="turnip-owned--input"
             placeholder="..."
-            defaultValue={trend.turnipsOwnedValue}
+            value={value}
             type="number"
             pattern="\d*"
             onChange={(e) => handleTurnipsOwnedValue(e.target.value)}
@@ -135,7 +159,7 @@ const TurnipsOwned = ({
           <input
             className="turnip-owned--input"
             placeholder="..."
-            defaultValue={trend.sundayPrice}
+            value={sundayPrice}
             type="number"
             pattern="\d*"
             onChange={(e) => handleSundayValue(e.target.value)}

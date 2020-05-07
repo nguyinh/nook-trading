@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Loader } from "semantic-ui-react";
 
+import { TurnipContext } from "../../contexts";
 import { setSundayPrice } from "../../services";
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
-import { getLastSunday } from '../../utils';
+import { getLastSunday } from "../../utils";
 
-const SundayInput = ({ updateTrends }) => {
+const SundayInput = ({ price, updateTrends }) => {
+  const { dispatch } = useContext(TurnipContext);
+
   const [isSavingPrice, setIsSavingPrice] = useState(false);
   const [isDefaultLabel, setIsDefaultLabel] = useState(true);
   const [timer, setTimer] = useState(null);
@@ -17,13 +20,10 @@ const SundayInput = ({ updateTrends }) => {
         setIsSavingPrice(true);
 
         // FIXME: In theory today is Sunday
-        const trend = await setSundayPrice(
-          getLastSunday(),
-          newPrice
-        );
+        const trend = await setSundayPrice(getLastSunday(), newPrice);
         setIsDefaultLabel(false);
 
-        updateTrends(trend);
+        dispatch({ type: "UPDATE_TREND", trend });
       } catch (err) {
         console.log(err);
       } finally {
@@ -47,6 +47,7 @@ const SundayInput = ({ updateTrends }) => {
           type="number"
           pattern="\d*"
           id="price-input"
+          defaultValue={price}
           name="price-input"
           onChange={(e) => handleChangedPrice(e.target.value)}
         />

@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Loader } from "semantic-ui-react";
 
+import { TurnipContext } from "../../contexts";
 import { addCurrentPrice } from "../../services";
+import { getLastSunday } from "../../utils";
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
 
-const DAYS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+const DAYS = [
+  "Dimanche",
+  "Lundi",
+  "Mardi",
+  "Mercredi",
+  "Jeudi",
+  "Vendredi",
+  "Samedi",
+];
 
-const TrendInput = ({ updatePrices }) => {
+const TrendInput = ({ updatePrices, day }) => {
+  const {
+    state: { selfTrend },
+    dispatch,
+  } = useContext(TurnipContext);
+
   const [isSavingPrice, setIsSavingPrice] = useState(false);
   const [isDefaultLabel, setIsDefaultLabel] = useState(true);
   const [timer, setTimer] = useState(null);
@@ -18,24 +33,16 @@ const TrendInput = ({ updatePrices }) => {
       try {
         setIsSavingPrice(true);
         const now = new Date();
-        const today = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate()
-        );
-        const lastSunday = new Date(
-          today.setDate(today.getDate() - today.getDay())
-        );
 
-        const price = await addCurrentPrice(
+        const trend = await addCurrentPrice(
           now.getDay(),
           now.getHours(),
-          lastSunday,
+          getLastSunday(),
           newPrice
         );
         setIsDefaultLabel(false);
-
-        updatePrices(price);
+        
+        dispatch({ type: "UPDATE_TREND", trend });
       } catch (err) {
         console.log(err);
       } finally {
@@ -62,6 +69,7 @@ const TrendInput = ({ updatePrices }) => {
           pattern="\d*"
           id="price-input"
           name="price-input"
+          defaultValue={selfTrend.prices[day.name][day.time]}
           onChange={(e) => handleChangedPrice(e.target.value)}
         />
         <span className="turnip-input--label">

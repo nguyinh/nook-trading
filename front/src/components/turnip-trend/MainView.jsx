@@ -6,6 +6,7 @@ import { WeekView, SundayView, DetailedView, WeekGraphsView } from ".";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { WithLoader } from "../lib";
 
 const MainView = () => {
   const {
@@ -13,7 +14,7 @@ const MainView = () => {
   } = useContext(AppContext);
 
   const {
-    state: { trends, selfTrend, isLoadingSelfTrend },
+    state: { trends, selfTrend, isLoadingTrends },
   } = useContext(TurnipContext);
 
   const sliderRef = useRef(null);
@@ -77,11 +78,17 @@ const MainView = () => {
           pseudo={currentUser.pseudo}
           allowBackTo={false}
         />
-        {isSunday ? (
-          <SundayView onSelfTrendClick={handleSelfTrendClick} />
-        ) : (
-          <WeekView onSelfTrendClick={handleSelfTrendClick} />
-        )}
+        <WithLoader active={isLoadingTrends}>
+          {trends ? (
+            <>
+              {isSunday ? (
+                <SundayView onSelfTrendClick={handleSelfTrendClick} />
+              ) : (
+                <WeekView onSelfTrendClick={handleSelfTrendClick} />
+              )}
+            </>
+          ) : null}
+        </WithLoader>
         <WeekGraphsView />
       </Slider>
     </div>
