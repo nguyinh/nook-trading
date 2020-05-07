@@ -7,13 +7,11 @@ import { getLastSunday, formatAvatarData } from '../utils';
 let reducer = (state, action) => {
   switch (action.type) {
     case "SET_TRENDS":
-      return { ...state, trends: action.trends };
+      return { ...state, trends: action.trends.map(formatAvatarData) };
     case "SET_SELF_TREND":
       return { ...state, selfTrend: formatAvatarData(action.trend) };
-    // case "SET_NEW_VERSION":
-    //   return setVersion(state, action.currentVersion);
-    // case "VALID_VERSION":
-    //   return { ...state, currentVersion: null };
+    case "UPDATE_TREND":
+      return updateTrends(...state, action.trend);
     case "SET_DISABLE_TRENDS_LOADING":
       return { ...state, isLoadingTrends: action.isLoading };
     case "SET_DISABLE_SELF_TREND_LOADING":
@@ -23,26 +21,11 @@ let reducer = (state, action) => {
   }
 };
 
-// const setUser = (state, user) => ({
-//   ...state,
-//   currentUser: user,
-//   isAutoConnecting: false,
-// });
-
-// const setVersion = (state, currentVersion) => ({
-//   ...state,
-//   currentVersion,
-// });
-
-// const logout = async (state) => {
-//   await logOutUser();
-
-//   return {
-//     ...state,
-//     currentUser: null,
-//     isAutoConnecting: true,
-//   };
-// };
+const updateTrends = (state, updatedTrend) => ({
+  ...state,
+  trends: state.trends.map(trend => trend._id === updatedTrend._id ? formatAvatarData(updatedTrend) : trend),
+  selfTrend: state.selfTrend._id === updatedTrend._id ? formatAvatarData(updatedTrend) : state.selfTrend,
+});
 
 const initialState = {
   trends: null,

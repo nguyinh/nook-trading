@@ -1,19 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
 import { Icon } from "semantic-ui-react";
-import { AppContext, TurnipContext } from "../../contexts";
+import { AppContext } from "../../contexts";
 import {
-  getUser,
-  fetchTrend,
   setWeekPrices,
   setOwnedQuantity,
   setOwnedPrice,
   setSundayPrice,
 } from "../../services";
-import { WithLoader } from "../lib";
 import AvatarDefault from "../../res/images/avatar-default.png";
-import { formatAvatarData } from "./lib";
 import { WeekPrices, TurnipsOwned, WeekGraph } from "./";
 import { getLastSunday } from "../../utils";
 
@@ -41,30 +37,9 @@ const DetailedView = ({
     dispatch,
   } = useContext(AppContext);
 
-  // const [isLoading, setIsLoading] = useState(true);
-
-  // const [isSelf, setIsSelf] = useState(false);
-  // const [trend, setTrend] = useState(trend);
   const [timer, setTimer] = useState(null);
   const [backToDetailed, setBackToDetailed] = useState(null);
   const [redirectToProfile, setRedirectToProfile] = useState(null);
-
-  // const fetchUserTrend = async (pseudo) => {
-  //   setIsLoading(true);
-  //   try {
-  //     const { _id } = await getUser(pseudo);
-
-  //     setIsSelf(currentUser._id === _id);
-
-  //     const fetchedTrend = await fetchTrend(_id, getLastSunday());
-
-  //     setTrend(formatAvatarData(fetchedTrend));
-  //   } catch (err) {
-  //     console.log(err);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const setWeekPrice = async (day, moment, price) => {
     let { _id, prices } = trend;
@@ -84,7 +59,7 @@ const DetailedView = ({
       prices[day].isUpdated = moment;
 
       dispatch({
-        type: "SET_SELF_TREND",
+        type: "UPDATE_TREND",
         trend: {
           ...trend,
           prices,
@@ -97,7 +72,7 @@ const DetailedView = ({
         setTimeout(() => {
           prices[day].isUpdated = undefined;
           dispatch({
-            type: "SET_SELF_TREND",
+            type: "UPDATE_TREND",
             trend: {
               ...trend,
               prices,
@@ -110,35 +85,44 @@ const DetailedView = ({
     }
   };
 
-  // const handleChangedQuantity = async (newQuantity) => {
-  //   try {
-  //     const trend = await setOwnedQuantity(getLastSunday(), newQuantity);
+  const handleChangedQuantity = async (newQuantity) => {
+    try {
+      const trend = await setOwnedQuantity(getLastSunday(), newQuantity);
 
-  //     setTrend(formatAvatarData(trend));
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+      dispatch({
+        type: "UPDATE_TREND",
+        trend
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  // const handleChangedPrice = async (newPrice) => {
-  //   try {
-  //     const trend = await setOwnedPrice(getLastSunday(), newPrice);
+  const handleChangedPrice = async (newPrice) => {
+    try {
+      const trend = await setOwnedPrice(getLastSunday(), newPrice);
 
-  //     setTrend(formatAvatarData(trend));
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+      dispatch({
+        type: "UPDATE_TREND",
+        trend
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  // const handleChangedSundayPrice = async (sundayPrice) => {
-  //   try {
-  //     const trend = await setSundayPrice(getLastSunday(), sundayPrice);
+  const handleChangedSundayPrice = async (sundayPrice) => {
+    try {
+      const trend = await setSundayPrice(getLastSunday(), sundayPrice);
 
-  //     setTrend(formatAvatarData(trend));
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+      dispatch({
+        type: "UPDATE_TREND",
+        trend
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const goToTurnipProphet = () => {
     const f = (day) => [day.AM, day.PM];
@@ -163,17 +147,13 @@ const DetailedView = ({
     window.open(`https://turnipprophet.io/?prices=${valueParams.join(".")}`);
   };
 
-  // useEffect(() => {
-  //   fetchUserTrend(pseudo);
-  // }, []);
-
   if (backToDetailed) return <Redirect to={"/turnip-trend"} push />;
   if (redirectToProfile)
     return <Redirect to={`/profile/${redirectToProfile}`} push />;
 
   return (
     <div>
-      <WithLoader
+      {/* <WithLoader
         active={isLoading}
         content={
           <>
@@ -183,7 +163,7 @@ const DetailedView = ({
             </span>
           </>
         }
-      >
+      > */}
         <div className="detailled-view--container">
           {allowBackTo && (
             <div
@@ -221,16 +201,16 @@ const DetailedView = ({
 
                   <TurnipsOwned
                     trend={trend}
-                    // handleChangedQuantity={handleChangedQuantity}
-                    // handleChangedPrice={handleChangedPrice}
-                    // handleChangedSundayPrice={handleChangedSundayPrice}
+                    handleChangedQuantity={handleChangedQuantity}
+                    handleChangedPrice={handleChangedPrice}
+                    handleChangedSundayPrice={handleChangedSundayPrice}
                   />
                 </>
               )}
             </>
           )}
         </div>
-      </WithLoader>
+      {/* </WithLoader> */}
     </div>
   );
 };

@@ -2,12 +2,26 @@ import React, { useContext } from "react";
 import { Loader } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 
-import { AppContext, TurnipProvider } from "../contexts";
-import {
-  DetailedView,
-  MainView,
-} from "../components/turnip-trend";
+import { AppContext, TurnipProvider, TurnipContext } from "../contexts";
+import { DetailedView, MainView } from "../components/turnip-trend";
 import "./TurnipTrend.css";
+import { WithLoader } from "../components/lib";
+
+const OtherPlayerView = ({ pseudo, children }) => {
+  const {
+    state: { trends, isLoadingTrends },
+  } = useContext(TurnipContext);
+
+  return (
+    <WithLoader active={isLoadingTrends} content="Attends frero">
+      {trends && (
+        <DetailedView
+          trend={trends.find((trend) => trend.author.pseudo === pseudo)}
+        />
+      )}
+    </WithLoader>
+  );
+};
 
 const TurnipTrend = () => {
   const {
@@ -31,7 +45,11 @@ const TurnipTrend = () => {
   return (
     <>
       <TurnipProvider>
-        {pseudo ? <DetailedView pseudo={pseudo} /> : <MainView pseudo={pseudo} />}
+        {pseudo ? (
+          <OtherPlayerView pseudo={pseudo} />
+        ) : (
+          <MainView pseudo={pseudo} />
+        )}
       </TurnipProvider>
     </>
   );
