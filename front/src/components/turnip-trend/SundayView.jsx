@@ -26,7 +26,7 @@ const SundayView = ({ onSelfTrendClick }) => {
       setIsLoading(true);
 
       let [fetchedTrends, fetchedSelfTrend] = await Promise.all([
-        fetchAllTrends(getLastSunday()),
+        fetchAllTrends(getLastSunday(), true),
         fetchTrend(currentUser._id, getLastSunday()),
       ]);
 

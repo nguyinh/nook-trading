@@ -2,7 +2,7 @@ import React, { useRef, useState, useContext } from "react";
 import Slider from "react-slick";
 
 import { AppContext } from "../../contexts";
-import { WeekView, SundayView, DetailedView } from ".";
+import { WeekView, SundayView, DetailedView, WeekGraphsView } from ".";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -73,6 +73,7 @@ const MainView = () => {
         ) : (
           <WeekView onSelfTrendClick={handleSelfTrendClick} />
         )}
+        <WeekGraphsView/>
       </Slider>
     </div>
   );

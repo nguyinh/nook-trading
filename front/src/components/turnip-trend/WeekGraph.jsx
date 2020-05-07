@@ -21,7 +21,7 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
 
   const xScale = scaleLinear({
     range: [0, parentWidth],
-    domain: [1, 12]
+    domain: [1, 12],
   });
 
   const yScale = scaleLinear({
@@ -33,12 +33,16 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
   return (
     <svg width={parentWidth} height={parentHeight}>
       <defs>
-        <LinearGradient id="gradient"
-        fromOpacity={0.8}
-        toOpacity={0.1}
-        x1="0%" y1="0%" x2="100%" y2="100%"
-        from="#87C9A1"
-        to="#8ED680"
+        <LinearGradient
+          id="gradient"
+          fromOpacity={0.8}
+          toOpacity={0.1}
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+          from="#87C9A1"
+          to="#8ED680"
         />
       </defs>
 
@@ -68,7 +72,7 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
   );
 });
 
-const WeekGraph = ({ trend }) => {
+const WeekGraph = ({ trend, withPseudo }) => {
   const f = (day) => [day[1].AM, day[1].PM];
   let weekValues = Object.entries(trend.prices);
   weekValues = weekValues.map((pair) => f(pair)).flat();
@@ -79,6 +83,11 @@ const WeekGraph = ({ trend }) => {
 
   return (
     <div style={{ height: 150 }} className="detailed-view--graph-container">
+      {withPseudo && (
+        <span className="detailed-view--graph-container--pseudo">
+          {trend.author.pseudo}
+        </span>
+      )}
       <Graph weekValues={weekValues} />
     </div>
   );

@@ -393,8 +393,16 @@ svg.bells-svg {
   min-width: 600px;
   height: 200px;
   overflow: hidden;
+  position: relative;
 }
 
+.detailed-view--graph-container--pseudo {
+  position: absolute;
+  right: 7%;
+  top: 8%;
+  font-weight: 700;
+  color: #D9CFB8;
+}
 @media (max-width : 768px) {
   .detailed-view--graph-container {
     width: calc(100% - 0.5rem);

@@ -237,11 +237,11 @@ export async function fetchTrend(authorId, thisSunday) {
   return trend;
 };
 
-export async function fetchAllTrends(thisSunday) {
+export async function fetchAllTrends(thisSunday, withSundayPrices) {
   const {
     data: { trends },
   } = await axios.get("/api/turnipTrends", {
-    params: { thisSunday, withSundayPrices: true },
+    params: { thisSunday, withSundayPrices },
   });
 
   return trends;
