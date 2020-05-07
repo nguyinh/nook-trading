@@ -1,7 +1,7 @@
 import React, { useRef, useState, useContext } from "react";
 import Slider from "react-slick";
 
-import { AppContext } from "../../contexts";
+import { AppContext, TurnipContext } from "../../contexts";
 import { WeekView, SundayView, DetailedView, WeekGraphsView } from ".";
 
 import "slick-carousel/slick/slick.css";
@@ -11,6 +11,10 @@ const MainView = () => {
   const {
     state: { currentUser },
   } = useContext(AppContext);
+
+  const {
+    state: { trends, selfTrend, isLoadingSelfTrend },
+  } = useContext(TurnipContext);
 
   const sliderRef = useRef(null);
 
@@ -67,7 +71,7 @@ const MainView = () => {
   return (
     <div className="turnip-trend--slick">
       <Slider {...settings} ref={sliderRef}>
-        <DetailedView pseudo={currentUser.pseudo} allowBackTo={false} />
+        <DetailedView trend={selfTrend} isLoading={isLoadingSelfTrend} isSelf pseudo={currentUser.pseudo} allowBackTo={false} />
         {isSunday ? (
           <SundayView onSelfTrendClick={handleSelfTrendClick} />
         ) : (

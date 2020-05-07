@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
 import { Icon } from "semantic-ui-react";
-import { AppContext } from "../../contexts";
+import { AppContext, TurnipContext } from "../../contexts";
 import {
   getUser,
   fetchTrend,
@@ -29,34 +29,42 @@ const Avatar = ({ trend, onClick }) => (
   </div>
 );
 
-const DetailedView = ({ pseudo, allowBackTo = true }) => {
+const DetailedView = ({
+  trend,
+  isLoading,
+  isSelf,
+  pseudo,
+  allowBackTo = true,
+}) => {
   const {
     state: { currentUser },
+    dispatch,
   } = useContext(AppContext);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSelf, setIsSelf] = useState(false);
-  const [trend, setTrend] = useState(null);
+  // const [isLoading, setIsLoading] = useState(true);
+
+  // const [isSelf, setIsSelf] = useState(false);
+  // const [trend, setTrend] = useState(trend);
   const [timer, setTimer] = useState(null);
   const [backToDetailed, setBackToDetailed] = useState(null);
   const [redirectToProfile, setRedirectToProfile] = useState(null);
 
-  const fetchUserTrend = async (pseudo) => {
-    setIsLoading(true);
-    try {
-      const { _id } = await getUser(pseudo);
+  // const fetchUserTrend = async (pseudo) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const { _id } = await getUser(pseudo);
 
-      setIsSelf(currentUser._id === _id);
+  //     setIsSelf(currentUser._id === _id);
 
-      const fetchedTrend = await fetchTrend(_id, getLastSunday());
+  //     const fetchedTrend = await fetchTrend(_id, getLastSunday());
 
-      setTrend(formatAvatarData(fetchedTrend));
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     setTrend(formatAvatarData(fetchedTrend));
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const setWeekPrice = async (day, moment, price) => {
     let { _id, prices } = trend;
@@ -75,9 +83,12 @@ const DetailedView = ({ pseudo, allowBackTo = true }) => {
 
       prices[day].isUpdated = moment;
 
-      setTrend({
-        ...trend,
-        prices,
+      dispatch({
+        type: "SET_SELF_TREND",
+        trend: {
+          ...trend,
+          prices,
+        },
       });
 
       if (timer) clearTimeout(timer);
@@ -85,9 +96,12 @@ const DetailedView = ({ pseudo, allowBackTo = true }) => {
       setTimer(
         setTimeout(() => {
           prices[day].isUpdated = undefined;
-          setTrend({
-            ...trend,
-            prices,
+          dispatch({
+            type: "SET_SELF_TREND",
+            trend: {
+              ...trend,
+              prices,
+            },
           });
         }, 2000)
       );
@@ -96,35 +110,35 @@ const DetailedView = ({ pseudo, allowBackTo = true }) => {
     }
   };
 
-  const handleChangedQuantity = async (newQuantity) => {
-    try {
-      const trend = await setOwnedQuantity(getLastSunday(), newQuantity);
+  // const handleChangedQuantity = async (newQuantity) => {
+  //   try {
+  //     const trend = await setOwnedQuantity(getLastSunday(), newQuantity);
 
-      setTrend(formatAvatarData(trend));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     setTrend(formatAvatarData(trend));
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  const handleChangedPrice = async (newPrice) => {
-    try {
-      const trend = await setOwnedPrice(getLastSunday(), newPrice);
+  // const handleChangedPrice = async (newPrice) => {
+  //   try {
+  //     const trend = await setOwnedPrice(getLastSunday(), newPrice);
 
-      setTrend(formatAvatarData(trend));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     setTrend(formatAvatarData(trend));
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  const handleChangedSundayPrice = async (sundayPrice) => {
-    try {
-      const trend = await setSundayPrice(getLastSunday(), sundayPrice);
+  // const handleChangedSundayPrice = async (sundayPrice) => {
+  //   try {
+  //     const trend = await setSundayPrice(getLastSunday(), sundayPrice);
 
-      setTrend(formatAvatarData(trend));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     setTrend(formatAvatarData(trend));
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const goToTurnipProphet = () => {
     const f = (day) => [day.AM, day.PM];
@@ -149,9 +163,9 @@ const DetailedView = ({ pseudo, allowBackTo = true }) => {
     window.open(`https://turnipprophet.io/?prices=${valueParams.join(".")}`);
   };
 
-  useEffect(() => {
-    fetchUserTrend(pseudo);
-  }, []);
+  // useEffect(() => {
+  //   fetchUserTrend(pseudo);
+  // }, []);
 
   if (backToDetailed) return <Redirect to={"/turnip-trend"} push />;
   if (redirectToProfile)
@@ -171,9 +185,14 @@ const DetailedView = ({ pseudo, allowBackTo = true }) => {
         }
       >
         <div className="detailled-view--container">
-          {allowBackTo && <div className="back-button" onClick={() => setBackToDetailed(true)}>
-            <Icon name="angle left" size="big" />
-          </div>}
+          {allowBackTo && (
+            <div
+              className="back-button"
+              onClick={() => setBackToDetailed(true)}
+            >
+              <Icon name="angle left" size="big" />
+            </div>
+          )}
 
           {trend && (
             <>
@@ -202,9 +221,9 @@ const DetailedView = ({ pseudo, allowBackTo = true }) => {
 
                   <TurnipsOwned
                     trend={trend}
-                    handleChangedQuantity={handleChangedQuantity}
-                    handleChangedPrice={handleChangedPrice}
-                    handleChangedSundayPrice={handleChangedSundayPrice}
+                    // handleChangedQuantity={handleChangedQuantity}
+                    // handleChangedPrice={handleChangedPrice}
+                    // handleChangedSundayPrice={handleChangedSundayPrice}
                   />
                 </>
               )}
