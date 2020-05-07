@@ -1,17 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 
 import { AppContext, TurnipContext } from "../../contexts";
+import { DAY_CODES } from "../../utils/constants";
 import { BuyingPrices, TrendInput } from "./";
-
-const DAY_CODES = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
 
 const byPriceAmount = (a, b) => (a.price < b.price ? 1 : -1);
 

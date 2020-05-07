@@ -7,7 +7,7 @@ import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-tur
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
 import { getLastSunday } from "../../utils";
 
-const SundayInput = ({ price, updateTrends }) => {
+const SundayInput = ({ price }) => {
   const { dispatch } = useContext(TurnipContext);
 
   const [isSavingPrice, setIsSavingPrice] = useState(false);

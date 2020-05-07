@@ -8,7 +8,7 @@ import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-tur
 import { ReactComponent as Turnip } from "../../res/images/turnip-flat.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
 
-const TurnipOwnedInput = ({ updateTrends, turnipsOwned, turnipsOwnedValue }) => {
+const TurnipOwnedInput = ({ turnipsOwned, turnipsOwnedValue }) => {
   const { dispatch } = useContext(TurnipContext);
   
   const [isSavingQuantity, setIsSavingQuantity] = useState(false);

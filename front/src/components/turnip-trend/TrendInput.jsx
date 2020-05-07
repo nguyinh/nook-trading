@@ -4,20 +4,11 @@ import { Loader } from "semantic-ui-react";
 import { TurnipContext } from "../../contexts";
 import { addCurrentPrice } from "../../services";
 import { getLastSunday } from "../../utils";
+import { DAY_LABELS } from "../../utils/constants";
 import { ReactComponent as BellsPerTurnip } from "../../res/images/bells-per-turnip-2.svg";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
 
-const DAYS = [
-  "Dimanche",
-  "Lundi",
-  "Mardi",
-  "Mercredi",
-  "Jeudi",
-  "Vendredi",
-  "Samedi",
-];
-
-const TrendInput = ({ updatePrices, day }) => {
+const TrendInput = ({ day }) => {
   const {
     state: { selfTrend },
     dispatch,
@@ -58,7 +49,7 @@ const TrendInput = ({ updatePrices, day }) => {
 
   return (
     <div className="turnip-input--container">
-      <span>{`Quel est ton cours du navet ce ${DAYS[new Date().getDay()]} ${
+      <span>{`Quel est ton cours du navet ce ${DAY_LABELS[new Date().getDay()]} ${
         isMorning ? "matin" : "apres-midi"
       } ?`}</span>
 

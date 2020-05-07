@@ -2,17 +2,8 @@ import React, { useState, useMemo, useEffect } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 import { getLastSunday } from "../../utils";
+import { DAY_LABELS } from "../../utils/constants";
 import { ReactComponent as Check } from "../../res/images/little-check.svg";
-
-const DAYS = [
-  "Dimanche",
-  "Lundi",
-  "Mardi",
-  "Mercredi",
-  "Jeudi",
-  "Vendredi",
-  "Samedi",
-];
 
 const DayEntryInput = ({
   price,
@@ -140,7 +131,7 @@ const WeekPrices = ({ trend, setWeekPrice, isEditable }) => {
 
   prices = prices.map((price, i) => ({
     ...price,
-    label: DAYS[i + 1],
+    label: DAY_LABELS[i + 1],
     code: dayCodes[i],
     isPast: i < dayCount,
     isFuture: i > dayCount,
