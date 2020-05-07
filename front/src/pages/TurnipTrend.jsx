@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { Loader } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 
-import "./TurnipTrend.css";
-import { AppContext } from "../contexts";
+import { AppContext, TurnipProvider } from "../contexts";
 import {
   DetailedView,
   MainView,
 } from "../components/turnip-trend";
+import "./TurnipTrend.css";
 
 const TurnipTrend = () => {
   const {
@@ -30,7 +30,9 @@ const TurnipTrend = () => {
 
   return (
     <>
-      {pseudo ? <DetailedView pseudo={pseudo} /> : <MainView pseudo={pseudo} />}
+      <TurnipProvider>
+        {pseudo ? <DetailedView pseudo={pseudo} /> : <MainView pseudo={pseudo} />}
+      </TurnipProvider>
     </>
   );
   // TODO: if no user do something
