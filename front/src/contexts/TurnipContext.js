@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect, useContext } from "react";
 
 import { AppContext } from './';
-import { fetchAllTrends, fetchTrend } from '../services';
+import { fetchAllTrends } from '../services';
 import { getLastSunday, formatAvatarData } from '../utils';
 
 let reducer = (state, action) => {
@@ -12,6 +12,8 @@ let reducer = (state, action) => {
       return { ...state, selfTrend: formatAvatarData(action.trend) };
     case "UPDATE_TREND":
       return updateTrends(state, action.trend);
+    case "UPDATE_SELF_TREND":
+      return updateSelfTrend(state, action.author);
     case "SET_DISABLE_TRENDS_LOADING":
       return { ...state, isLoadingTrends: action.isLoading };
     case "SET_DISABLE_SELF_TREND_LOADING":
@@ -26,6 +28,14 @@ const updateTrends = (state, updatedTrend) => ({
   trends: state.trends.map(trend => trend._id === updatedTrend._id ? formatAvatarData(updatedTrend) : trend),
   selfTrend: state.selfTrend._id === updatedTrend._id ? formatAvatarData(updatedTrend) : state.selfTrend,
 });
+
+const updateSelfTrend = (state, author) => {
+  const selfTrend = state.trends.find((trend) => trend.author._id === author);
+
+  return {
+  ...state,
+  selfTrend
+}};
 
 const initialState = {
   trends: null,
@@ -48,8 +58,6 @@ function TurnipProvider(props) {
       try {
         const trends = await fetchAllTrends(getLastSunday());
 
-        // const trends = await fetchAllTrends(getLastSunday());
-
         dispatch({ type: "SET_TRENDS", trends });
 
       } catch (err) {
@@ -57,28 +65,13 @@ function TurnipProvider(props) {
       } finally {
         dispatch({ type: "SET_DISABLE_TRENDS_LOADING", isLoading: false });
       }
+
+      dispatch({ type: "UPDATE_SELF_TREND", author: currentUser._id });
+      dispatch({ type: "SET_DISABLE_SELF_TREND_LOADING", isLoading: false });
     }
 
     initiateTrends();
   }, []);
-
-  useEffect(() => {
-    async function initiateSelfTrend() {
-      try {
-        const trend = await fetchTrend(currentUser._id, getLastSunday());
-        console.log(trend);
-
-        dispatch({ type: "SET_SELF_TREND", trend });
-
-      } catch (err) {
-        console.log(err);
-      } finally {
-        dispatch({ type: "SET_DISABLE_SELF_TREND_LOADING", isLoading: false });
-      }
-    }
-
-    initiateSelfTrend();
-  }, [currentUser]);
 
   return (
     <TurnipContext.Provider value={{ state, dispatch }}>

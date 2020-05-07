@@ -14,7 +14,7 @@ const MainView = () => {
   } = useContext(AppContext);
 
   const {
-    state: { trends, selfTrend, isLoadingTrends },
+    state: { trends, selfTrend, isLoadingTrends, isLoadingSelfTrend },
   } = useContext(TurnipContext);
 
   const sliderRef = useRef(null);
@@ -78,10 +78,10 @@ const MainView = () => {
           pseudo={currentUser.pseudo}
           allowBackTo={false}
         />
-        <WithLoader active={isLoadingTrends}>
+        <WithLoader active={isLoadingTrends || isLoadingSelfTrend}>
           {trends ? (
             <>
-              {isSunday ? (
+              {true || isSunday ? (
                 <SundayView onSelfTrendClick={handleSelfTrendClick} />
               ) : (
                 <WeekView onSelfTrendClick={handleSelfTrendClick} />

@@ -43,6 +43,21 @@ const turnipTrendScheme = mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
+  },
+});
+
+turnipTrendScheme.pre("validate", async (next) => {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const thisSunday = new Date(today.setDate(today.getDate() - today.getDay()));
+  const result = await TurnipTrend.findOne({
+    createdAt: { $gte: thisSunday },
+    author: this.author,
+  });
+  if (result) {
+    next(new Error("Another Turnip Trend is already created for this week"));
+  } else {
+    next();
   }
 });
 

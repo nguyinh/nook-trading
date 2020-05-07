@@ -1,7 +1,7 @@
 const Boom = require("@hapi/boom");
 require("dotenv").config();
 const { turnips } = require("../services");
-const logger = require('./logger');
+const logger = require("./logger");
 
 module.exports = async (req, res, next) => {
   try {
@@ -11,18 +11,19 @@ module.exports = async (req, res, next) => {
     if (!thisSunday) {
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      thisSunday = new Date(
-        today.setDate(today.getDate() - today.getDay())
-      );
+      thisSunday = new Date(today.setDate(today.getDate() - today.getDay()));
     }
 
     const latestTrend = await turnips.findLatestTrend(_id, thisSunday);
-    
-    if (!latestTrend) {
-      logger.info(`[MIDDLEWARES] createTrend | ${_id}`);
+    try {
+      if (!latestTrend) {
+        logger.info(`[MIDDLEWARES] createTrend | ${_id}`);
 
-      const trend = await turnips.add(_id);
-      req.trend = trend;
+        const trend = await turnips.add(_id);
+        req.trend = trend;
+      }
+    } catch (err) {
+      logger.error(`[MIDDLEWARES] createTrend | ${_id} ${err}`);
     }
 
     return next();

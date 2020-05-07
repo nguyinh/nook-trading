@@ -1,35 +1,13 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useContext } from "react";
 
-import {fetchAllTrends} from '../../services';
-import { AppContext } from "../../contexts";
-import { getLastSunday } from "../../utils";
+import { TurnipContext } from "../../contexts";
 import { WeekGraph } from './';
 
-const WeekGraphsView = ({  }) => {
+const WeekGraphsView = () => {
   const {
-    state: { currentUser },
-  } = useContext(AppContext);
+    state: { trends },
+  } = useContext(TurnipContext);
 
-  const [trends, setTrends] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
-
-  const fetchUserTrend = async (pseudo) => {
-    setIsLoading(true);
-    try {
-      const fetechedTrends = await fetchAllTrends(getLastSunday());
-
-      setTrends(fetechedTrends);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserTrend();
-  }, []);
 
   return <>
   {

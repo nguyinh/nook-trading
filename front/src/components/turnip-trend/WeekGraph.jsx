@@ -5,6 +5,7 @@ import { AreaClosed, LinePath } from "@vx/shape";
 import { Group } from "@vx/group";
 import { curveMonotoneX } from "@vx/curve";
 import { LinearGradient } from "@vx/gradient";
+import { Redirect } from "react-router-dom";
 
 const extent = (arr, fn) => [min(arr, fn), max(arr, fn)];
 const addPadding = (arr, lowOffset, highOffset) => [
