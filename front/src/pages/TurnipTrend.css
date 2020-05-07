@@ -1,3 +1,12 @@
+.turnip-trend--slick .slick-dots {
+  top: -25px;
+  height: fit-content;
+}
+
+.turnip-trend--slick .slick-list {
+  margin-top: 25px;
+}
+
 .turnip-input--container {
   display: flex;
   flex-direction: column;

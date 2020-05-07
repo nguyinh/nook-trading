@@ -13,3 +13,5 @@ export { default as WeekPrices } from './WeekPrices';
 export { default as TurnipsOwned } from './TurnipsOwned';
 
 export { default as WeekGraph } from './WeekGraph';
+
+export { default as MainView } from './MainView';

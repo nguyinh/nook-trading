@@ -29,7 +29,7 @@ const Avatar = ({ trend, onClick }) => (
   </div>
 );
 
-const DetailedView = ({ pseudo }) => {
+const DetailedView = ({ pseudo, allowBackTo = true }) => {
   const {
     state: { currentUser },
   } = useContext(AppContext);
@@ -171,9 +171,9 @@ const DetailedView = ({ pseudo }) => {
         }
       >
         <div className="detailled-view--container">
-          <div className="back-button" onClick={() => setBackToDetailed(true)}>
+          {allowBackTo && <div className="back-button" onClick={() => setBackToDetailed(true)}>
             <Icon name="angle left" size="big" />
-          </div>
+          </div>}
 
           {trend && (
             <>
@@ -182,7 +182,7 @@ const DetailedView = ({ pseudo }) => {
                 onClick={() => setRedirectToProfile(trend.author.pseudo)}
               />
 
-              <WeekGraph trend={trend}/>
+              <WeekGraph trend={trend} />
 
               <WeekPrices
                 trend={trend}

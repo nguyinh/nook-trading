@@ -4,7 +4,10 @@ import { useParams } from "react-router-dom";
 
 import "./TurnipTrend.css";
 import { AppContext } from "../contexts";
-import { WeekView, SundayView, DetailedView } from "../components/turnip-trend";
+import {
+  DetailedView,
+  MainView,
+} from "../components/turnip-trend";
 
 const TurnipTrend = () => {
   const {
@@ -18,14 +21,19 @@ const TurnipTrend = () => {
   if (isAutoConnecting)
     return (
       <Loader active inline="centered" size="big" style={{ marginTop: "5rem" }}>
-        Chargement de l'app <span role='img' aria-label='hold-emoji'>✋</span>
+        Chargement de l'app{" "}
+        <span role="img" aria-label="hold-emoji">
+          ✋
+        </span>
       </Loader>
     );
 
-  if (pseudo)
-    return <DetailedView pseudo={pseudo}/>;
-    // TODO: if no user do something
-  return <div>{isSunday ? <SundayView /> : <WeekView />}</div>;
+  return (
+    <>
+      {pseudo ? <DetailedView pseudo={pseudo} /> : <MainView pseudo={pseudo} />}
+    </>
+  );
+  // TODO: if no user do something
 };
 
 export default TurnipTrend;
