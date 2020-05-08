@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
-  process.env.NODE_ENV === "development" && "http://172.20.10.3:2020";
+  process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
 // TODO: handle PROD env
 
 /* USERS */

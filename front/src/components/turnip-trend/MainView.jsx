@@ -81,7 +81,7 @@ const MainView = () => {
         <WithLoader active={isLoadingTrends || isLoadingSelfTrend}>
           {trends ? (
             <>
-              {true || isSunday ? (
+              {isSunday ? (
                 <SundayView onSelfTrendClick={handleSelfTrendClick} />
               ) : (
                 <WeekView onSelfTrendClick={handleSelfTrendClick} />
