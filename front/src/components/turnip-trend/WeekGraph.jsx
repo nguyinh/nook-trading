@@ -70,6 +70,18 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
           strokeWidth={2}
           curve={curveMonotoneX}
         />
+
+        {weekValues.filter(y).map((d) => (
+          <circle
+            cx={xScale(x(d))}
+            cy={yScale(y(d))}
+            r={3}
+            fill="#87C9A1"
+            stroke="white"
+            strokeWidth={1}
+            style={{ pointerEvents: "none" }}
+          />
+        ))}
       </Group>
     </svg>
   );
