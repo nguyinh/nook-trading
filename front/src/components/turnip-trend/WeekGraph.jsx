@@ -1,13 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo} from "react";
 
 import { TurnipContext } from "../../contexts";
 import { withParentSize } from "@vx/responsive";
 import { scaleLinear } from "@vx/scale";
 import { AreaClosed, LinePath } from "@vx/shape";
 import { Group } from "@vx/group";
-import { GridColumns } from '@vx/grid';
+import { GridColumns } from "@vx/grid";
 import { curveMonotoneX } from "@vx/curve";
 import { LinearGradient } from "@vx/gradient";
+import { Text } from "@vx/text";
 import { Redirect } from "react-router-dom";
 
 const extent = (arr, fn) => [min(arr, fn), max(arr, fn)];
@@ -19,7 +20,18 @@ const addPadding = (arr, lowOffset, highOffset) => [
 const min = (arr, fn) => Math.min(...arr.map(fn));
 const max = (arr, fn) => Math.max(...arr.map(fn));
 
+const DAY_SHORT_LABELS = ["LU", "MA", "ME", "JE", "VE", "SA"];
+
 const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
+  const formattedValues = useMemo(() =>
+    weekValues.map((val) => ({
+      ...val,
+      dayLabel:
+        (val.day + 1) % 2 === 0 ? DAY_SHORT_LABELS[(val.day + 1) / 2 - 1] : "",
+    })),
+    [weekValues]
+  );
+
   const x = (d) => d.day;
   const y = (d) => d.value;
 
@@ -28,9 +40,19 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
     domain: [1, 12],
   });
 
+  const dayScale = scaleLinear({
+    range: [0, parentWidth],
+    domain: [0.5, 11.5],
+  });
+
+  const colScale = scaleLinear({
+    range: [0 - parentWidth / 2, parentWidth + parentWidth / 2],
+    domain: [0.5, 11.5],
+  });
+
   const yScale = scaleLinear({
     range: [parentHeight, 0],
-    domain: addPadding(extent(weekValues, y), 20, 20),
+    domain: addPadding(extent(formattedValues, y), 20, 20),
     // nice: true
   });
 
@@ -51,17 +73,17 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
       </defs>
 
       <Group top={0} left={0}>
-      <GridColumns
-          lineStyle={{ pointerEvents: 'none' }}
-          scale={xScale}
+        <GridColumns
+          lineStyle={{ pointerEvents: "none" }}
+          scale={colScale}
           height={200}
           strokeDasharray="2,2"
           // strokeWidth="2,2"
-          stroke="#80808010"
+          stroke="#80808040"
         />
 
         <AreaClosed
-          data={weekValues}
+          data={formattedValues}
           fill={"url(#gradient)"}
           x={(d) => xScale(x(d))}
           y={(d) => yScale(y(d))}
@@ -72,7 +94,7 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
         />
 
         <LinePath
-          data={weekValues}
+          data={formattedValues}
           x={(d) => xScale(x(d))}
           y={(d) => yScale(y(d))}
           defined={(d) => y(d)}
@@ -81,7 +103,7 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
           curve={curveMonotoneX}
         />
 
-        {weekValues.filter(y).map((d) => (
+        {formattedValues.filter(y).map((d) => (
           <circle
             cx={xScale(x(d))}
             cy={yScale(y(d))}
@@ -92,7 +114,22 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
             style={{ pointerEvents: "none" }}
           />
         ))}
-        
+        {formattedValues.map((d, i) => (
+          <Text
+            x={
+              i === 0
+                ? dayScale(x(d)) + 10
+                : i === formattedValues.length - 2
+                ? dayScale(x(d)) - 10
+                : dayScale(x(d))
+            }
+            y={parentHeight - parentHeight * 0.1}
+            fill="#80808040"
+            textAnchor="middle"
+          >
+            {d.dayLabel}
+          </Text>
+        ))}
       </Group>
     </svg>
   );
