@@ -22,12 +22,12 @@ const turnipTrendScheme = mongoose.Schema({
   },
   trendType: {
     type: String,
-    enum: ['UNKNOWN', 'VARIABLE', 'SMALL_SPIKE', 'BIG_SKIPE', 'DECREASING', null],
+    enum: ['UNKNOWN', 'VARIABLE', 'SMALL_SPIKE', 'BIG_SPIKE', 'DECREASING', null],
     default: null,
   },
   previousTrendType: {
     type: String,
-    enum: ['UNKNOWN', 'VARIABLE', 'SMALL_SPIKE', 'BIG_SKIPE', 'DECREASING', null],
+    enum: ['UNKNOWN', 'VARIABLE', 'SMALL_SPIKE', 'BIG_SPIKE', 'DECREASING', null],
     default: null,
   },
   turnipsOwned: {
@@ -62,7 +62,7 @@ turnipTrendScheme.pre("validate", async function (next) {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const lastSunday = new Date(today.setDate(today.getDate() - today.getDay()));
-  console.log(lastSunday);
+
   const result = await TurnipTrend.findOne({
     createdAt: { $gte: lastSunday },
     author: this.author,
