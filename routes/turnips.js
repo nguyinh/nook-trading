@@ -15,6 +15,10 @@ router
   .put(verifyJWT, findUser, createTrend, turnips.updatePrices);
 
 router
+  .route("/turnipTrends/types")
+  .put(verifyJWT, findUser, turnips.updateType);
+
+router
   .route("/turnipTrends/ownedQuantity")
   .post(verifyJWT, findUser, createTrend, turnips.updateOwnedQuantity);
 

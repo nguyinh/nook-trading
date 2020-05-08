@@ -124,6 +124,41 @@ exports.updatePrices = async (req, res, next) => {
   }
 };
 
+exports.updateType = async (req, res, next) => {
+  const { _id: authorId } = req.user;
+  const { trendId, currentDate, trendType } = req.body;
+
+  logger.info(`[CONTROLLERS | turnips] updateType | ${authorId} ${trendId || currentDate} ${trendType}`);
+
+  try {
+    let trend = null;
+
+    if (trendId) 
+      trend = await turnips.setTypeById(authorId, trendId, trendType);
+    else {
+      if (!currentDate) return next(Boom.badRequest('Missing currentDate in body'));
+
+      const now = new Date(currentDate);
+      const today = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+      );
+      const lastSunday = new Date(
+        today.setDate(today.getDate() - today.getDay())
+      );
+      const incomingSunday = new Date(
+        today.setDate(today.getDate() + 7 - today.getDay())
+      );
+      trend = await turnips.setTypeByDate(authorId, lastSunday, incomingSunday, trendType);
+    }
+
+    return res.send({ trend });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 // SUNDAY WITH PORCELETTE
 exports.createSundayPrice = async (req, res, next) => {
   const { _id: authorId } = req.user;
