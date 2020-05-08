@@ -25,6 +25,11 @@ const turnipTrendScheme = mongoose.Schema({
     enum: ['UNKNOWN', 'VARIABLE', 'SMALL_SPIKE', 'BIG_SKIPE', 'DECREASING', null],
     default: null,
   },
+  previousTrendType: {
+    type: String,
+    enum: ['UNKNOWN', 'VARIABLE', 'SMALL_SPIKE', 'BIG_SKIPE', 'DECREASING', null],
+    default: null,
+  },
   turnipsOwned: {
     type: Number,
     default: null,
@@ -51,19 +56,32 @@ const turnipTrendScheme = mongoose.Schema({
   },
 });
 
-turnipTrendScheme.pre("validate", async (next) => {
+// Middleware when new TurnipTrend is created
+turnipTrendScheme.pre("validate", async function (next) {
+  // Check if existing trend for an author
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const thisSunday = new Date(today.setDate(today.getDate() - today.getDay()));
+  const lastSunday = new Date(today.setDate(today.getDate() - today.getDay()));
+  console.log(lastSunday);
   const result = await TurnipTrend.findOne({
-    createdAt: { $gte: thisSunday },
+    createdAt: { $gte: lastSunday },
     author: this.author,
   });
   if (result) {
     next(new Error("Another Turnip Trend is already created for this week"));
-  } else {
-    next();
-  }
+  } 
+
+  // Pre-fill previousTrendType field for new doc
+  const lastlastSunday = new Date(today.setDate(today.getDate() - 7));
+
+  const { trendType } = await TurnipTrend.findOne({
+    createdAt: { $gte: lastlastSunday, $lte: lastSunday },
+    author: this.author,
+  });
+
+  this.previousTrendType = trendType || null;
+
+  next();
 });
 
 const TurnipTrend = mongoose.model("TurnipTrend", turnipTrendScheme);
