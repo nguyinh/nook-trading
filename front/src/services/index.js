@@ -2,6 +2,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL =
+  // process.env.NODE_ENV === "development" && "http://localhost:2020";
   process.env.NODE_ENV === "development" && "http://172.20.10.4:2020";
 // TODO: handle PROD env
 
@@ -12,7 +13,7 @@ export async function checkAvailability(pseudo) {
   } = await axios.get(`/api/auth/checkAvailability/${pseudo}`);
 
   return isAvailable;
-};
+}
 
 export async function getUser(pseudo) {
   const {
@@ -20,7 +21,7 @@ export async function getUser(pseudo) {
   } = await axios.get(`/api/users`, { params: { pseudo } });
 
   return user;
-};
+}
 
 export async function updateUser(
   nativeFruit,
@@ -40,7 +41,7 @@ export async function updateUser(
   });
 
   return user;
-};
+}
 
 export async function signUpUser(
   pseudo,
@@ -62,7 +63,7 @@ export async function signUpUser(
   });
 
   return user;
-};
+}
 
 export async function logInUser(pseudo, password) {
   const {
@@ -73,7 +74,7 @@ export async function logInUser(pseudo, password) {
   });
 
   return user;
-};
+}
 
 export async function connectUser() {
   const {
@@ -81,13 +82,13 @@ export async function connectUser() {
   } = await axios.post("/api/auth/connect");
 
   return { user, currentVersion };
-};
+}
 
 export async function logOutUser() {
   await axios.post("/api/auth/logout");
 
   return;
-};
+}
 
 export async function uploadAvatar(avatarData) {
   const {
@@ -95,8 +96,7 @@ export async function uploadAvatar(avatarData) {
   } = await axios.post(`/api/users/avatar`, { avatarData });
 
   return user;
-};
-
+}
 
 /* MARKET */
 export async function getDailyPosts() {
@@ -105,14 +105,14 @@ export async function getDailyPosts() {
   } = await axios.get("/api/posts", { params: { onlyDaily: "true" } });
 
   return posts.reverse();
-};
+}
 
-export async function createPost (items, shopPicture) {
+export async function createPost(items, shopPicture) {
   return axios.post("/api/posts", {
     items,
     shopPicture,
   });
-};
+}
 
 export async function deletePost(postId, authorId) {
   const {
@@ -124,7 +124,7 @@ export async function deletePost(postId, authorId) {
   });
 
   return post;
-};
+}
 
 export async function bookItem(itemId) {
   const {
@@ -132,7 +132,7 @@ export async function bookItem(itemId) {
   } = await axios.post(`/api/items/${itemId}/bookings`);
 
   return item;
-};
+}
 
 export async function unbookItem(itemId) {
   const {
@@ -140,7 +140,7 @@ export async function unbookItem(itemId) {
   } = await axios.delete(`/api/items/${itemId}/bookings`);
 
   return item;
-};
+}
 
 export async function bookPost(postId) {
   const {
@@ -148,7 +148,7 @@ export async function bookPost(postId) {
   } = await axios.post(`/api/posts/${postId}/bookings`);
 
   return post;
-};
+}
 
 export async function unbookPost(postId) {
   const {
@@ -156,7 +156,7 @@ export async function unbookPost(postId) {
   } = await axios.delete(`/api/posts/${postId}/bookings`);
 
   return post;
-};
+}
 
 /* TURNIP TREND */
 export async function fetchTurnipPrices(day, hour, thisSunday) {
@@ -167,7 +167,7 @@ export async function fetchTurnipPrices(day, hour, thisSunday) {
   });
 
   return trends;
-};
+}
 
 export async function addCurrentPrice(day, hour, thisSunday, newPrice) {
   const {
@@ -180,18 +180,18 @@ export async function addCurrentPrice(day, hour, thisSunday, newPrice) {
   });
 
   return trend;
-};
+}
 
 export async function setWeekPrices(trendId, prices) {
   const {
     data: { trend },
   } = await axios.put("/api/turnipTrends/prices", {
     trendId,
-    prices
+    prices,
   });
 
   return trend;
-};
+}
 
 export async function setSundayPrice(thisSunday, price) {
   const {
@@ -202,7 +202,7 @@ export async function setSundayPrice(thisSunday, price) {
   });
 
   return trend;
-};
+}
 
 export async function setOwnedQuantity(thisSunday, quantity) {
   const {
@@ -213,7 +213,7 @@ export async function setOwnedQuantity(thisSunday, quantity) {
   });
 
   return trend;
-};
+}
 
 export async function setOwnedPrice(thisSunday, price) {
   const {
@@ -224,8 +224,19 @@ export async function setOwnedPrice(thisSunday, price) {
   });
 
   return trend;
-};
+}
 
+export async function setTrendType(trendId, currentDate, trendType) {
+  const {
+    data: { trend },
+  } = await axios.put("/api/turnipTrends/types", {
+    trendId,
+    currentDate,
+    trendType,
+  });
+
+  return trend;
+}
 
 export async function fetchTrend(authorId, thisSunday) {
   const {
@@ -235,7 +246,7 @@ export async function fetchTrend(authorId, thisSunday) {
   });
 
   return trend;
-};
+}
 
 export async function fetchAllTrends(thisSunday, withSundayPrices) {
   const {
@@ -245,4 +256,4 @@ export async function fetchAllTrends(thisSunday, withSundayPrices) {
   });
 
   return trends;
-};
+}

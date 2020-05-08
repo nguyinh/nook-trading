@@ -418,6 +418,44 @@ svg.bells-svg {
 }
 
 
+.trend-type--container {
+  display: flex;
+  flex-direction: column;
+  background: #f7f4e6;
+  border-radius: 60px;
+  padding: 1rem;
+  margin: 0.5rem;
+  align-items: center;
+  font-family: FinkHeavy;
+  font-size: 1.2rem;
+  text-align: center;
+  max-width: 600px;
+  position: relative;
+  overflow: hidden;
+}
+
+.trend-type--buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1rem; 
+}
+
+.trend-type--button {
+  background: #f3eeda;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0.5rem;
+  outline: none;
+  border: 3px solid transparent;
+}
+
+.trend-type--button.active {
+  background: #e2d9aa;
+  border: 3px solid #f1c259;
+}
 
 
 .entry-validation-anim-enter {

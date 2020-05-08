@@ -17,3 +17,10 @@ exports.DAY_LABELS = [
   "Vendredi",
   "Samedi",
 ];
+
+exports.PATTERN_CODES = {
+  VARIABLE: 0,
+  BIG_SPIKE: 1,
+  DECREASING: 2,
+  SMALL_SPIKE: 3,
+};

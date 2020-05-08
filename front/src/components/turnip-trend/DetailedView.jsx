@@ -10,8 +10,10 @@ import {
   setSundayPrice,
 } from "../../services";
 import AvatarDefault from "../../res/images/avatar-default.png";
-import { WeekPrices, TurnipsOwned, WeekGraph } from "./";
+import { WeekPrices, TurnipsOwned, WeekGraph, TrendTypeInput } from "./";
 import { getLastSunday } from "../../utils";
+import { PATTERN_CODES } from "../../utils/constants";
+
 
 const Avatar = ({ trend, onClick }) => (
   <div className="avatar-header--container" onClick={onClick}>
@@ -25,16 +27,8 @@ const Avatar = ({ trend, onClick }) => (
   </div>
 );
 
-const DetailedView = ({
-  trend,
-  isLoading,
-  isSelf,
-  pseudo,
-  allowBackTo = true,
-}) => {
-  const {
-    dispatch,
-  } = useContext(TurnipContext);
+const DetailedView = ({ trend, isSelf, allowBackTo = true }) => {
+  const { dispatch } = useContext(TurnipContext);
 
   const [timer, setTimer] = useState(null);
   const [backToDetailed, setBackToDetailed] = useState(null);
@@ -90,7 +84,7 @@ const DetailedView = ({
 
       dispatch({
         type: "UPDATE_TREND",
-        trend
+        trend,
       });
     } catch (err) {
       console.log(err);
@@ -103,7 +97,7 @@ const DetailedView = ({
 
       dispatch({
         type: "UPDATE_TREND",
-        trend
+        trend,
       });
     } catch (err) {
       console.log(err);
@@ -116,7 +110,7 @@ const DetailedView = ({
 
       dispatch({
         type: "UPDATE_TREND",
-        trend
+        trend,
       });
     } catch (err) {
       console.log(err);
@@ -143,76 +137,69 @@ const DetailedView = ({
       ...f(saturday),
     ];
 
-    window.open(`https://turnipprophet.io/?prices=${valueParams.join(".")}`);
+    const { previousTrendType: type } = trend;
+
+    window.open(
+      `https://turnipprophet.io/?prices=${valueParams.join(".")}${
+        type && type !== "UNKNOWN" ? "&pattern=" + PATTERN_CODES[type] : ""
+      }`
+    );
   };
 
   if (backToDetailed) return <Redirect to={"/turnip-trend"} push />;
   if (redirectToProfile)
     return <Redirect to={`/profile/${redirectToProfile}`} push />;
-    
+
   return (
     <div>
-      {/* <WithLoader
-        active={isLoading}
-        content={
+      <div className="detailled-view--container">
+        {allowBackTo && (
+          <div className="back-button" onClick={() => setBackToDetailed(true)}>
+            <Icon name="angle left" size="big" />
+          </div>
+        )}
+
+        {trend && (
           <>
-            Recherche du correspondant{" "}
-            <span role="img" aria-label="hold-emoji">
-              ✋
-            </span>
-          </>
-        }
-      > */}
-        <div className="detailled-view--container">
-          {allowBackTo && (
-            <div
-              className="back-button"
-              onClick={() => setBackToDetailed(true)}
+            <Avatar
+              trend={trend}
+              onClick={() => setRedirectToProfile(trend.author.pseudo)}
+            />
+
+            <WeekGraph trend={trend} />
+
+            <WeekPrices
+              trend={trend}
+              setWeekPrice={setWeekPrice}
+              isEditable={isSelf}
+            />
+
+            <button
+              className="turnip-prophet-button"
+              onClick={goToTurnipProphet}
             >
-              <Icon name="angle left" size="big" />
-            </div>
-          )}
+              Simuler sur Turnip Prophet
+              <Icon name="external" />
+            </button>
 
-          {trend && (
-            <>
-              <Avatar
-                trend={trend}
-                onClick={() => setRedirectToProfile(trend.author.pseudo)}
-              />
+            {isSelf && (
+              <>
+                <TrendTypeInput trend={trend} />
 
-              <WeekGraph trend={trend} />
-
-              <WeekPrices
-                trend={trend}
-                setWeekPrice={setWeekPrice}
-                isEditable={isSelf}
-              />
-
-              {isSelf && (
-                <>
-                  <button
-                    className="turnip-prophet-button"
-                    onClick={goToTurnipProphet}
-                  >
-                    Simuler sur Turnip Prophet
-                    <Icon name="external" />
-                  </button>
-
-                  <TurnipsOwned
-                    trend={trend}
-                    defaultQuantity={trend.turnipsOwned}
-                    handleChangedQuantity={handleChangedQuantity}
-                    defaultValue={trend.turnipsOwnedValue}
-                    handleChangedPrice={handleChangedPrice}
-                    defaultSundayPrice={trend.sundayPrice}
-                    handleChangedSundayPrice={handleChangedSundayPrice}
-                  />
-                </>
-              )}
-            </>
-          )}
-        </div>
-      {/* </WithLoader> */}
+                <TurnipsOwned
+                  trend={trend}
+                  defaultQuantity={trend.turnipsOwned}
+                  handleChangedQuantity={handleChangedQuantity}
+                  defaultValue={trend.turnipsOwnedValue}
+                  handleChangedPrice={handleChangedPrice}
+                  defaultSundayPrice={trend.sundayPrice}
+                  handleChangedSundayPrice={handleChangedSundayPrice}
+                />
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
