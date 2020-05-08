@@ -5,6 +5,7 @@ import { withParentSize } from "@vx/responsive";
 import { scaleLinear } from "@vx/scale";
 import { AreaClosed, LinePath } from "@vx/shape";
 import { Group } from "@vx/group";
+import { GridColumns } from '@vx/grid';
 import { curveMonotoneX } from "@vx/curve";
 import { LinearGradient } from "@vx/gradient";
 import { Redirect } from "react-router-dom";
@@ -50,6 +51,15 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
       </defs>
 
       <Group top={0} left={0}>
+      <GridColumns
+          lineStyle={{ pointerEvents: 'none' }}
+          scale={xScale}
+          height={200}
+          strokeDasharray="2,2"
+          // strokeWidth="2,2"
+          stroke="#80808010"
+        />
+
         <AreaClosed
           data={weekValues}
           fill={"url(#gradient)"}
@@ -82,6 +92,7 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
             style={{ pointerEvents: "none" }}
           />
         ))}
+        
       </Group>
     </svg>
   );
