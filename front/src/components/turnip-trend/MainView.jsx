@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useContext } from "react";
 import Slider from "react-slick";
 
 import { AppContext, TurnipContext } from "../../contexts";
@@ -14,10 +14,14 @@ const MainView = () => {
   } = useContext(AppContext);
 
   const {
-    state: { trends, selfTrend, isLoadingTrends, isLoadingSelfTrend },
+    state: {
+      trends,
+      selfTrend,
+      isLoadingTrends,
+      isLoadingSelfTrend,
+      sliderRef,
+    },
   } = useContext(TurnipContext);
-
-  const sliderRef = useRef(null);
 
   const settings = {
     dots: true,
@@ -31,10 +35,6 @@ const MainView = () => {
   };
 
   const isSunday = new Date().getDay() === 0;
-
-  const handleSelfTrendClick = () => {
-    sliderRef.current.slickGoTo(0);
-  };
 
   // const [firstClientX, setFirstClientX] = useState();
   // const [firstClientY, setFirstClientY] = useState();
@@ -79,15 +79,7 @@ const MainView = () => {
           allowBackTo={false}
         />
         <WithLoader active={isLoadingTrends || isLoadingSelfTrend}>
-          {trends ? (
-            <>
-              {isSunday ? (
-                <SundayView onSelfTrendClick={handleSelfTrendClick} />
-              ) : (
-                <WeekView onSelfTrendClick={handleSelfTrendClick} />
-              )}
-            </>
-          ) : null}
+          {trends ? <>{isSunday ? <SundayView /> : <WeekView />}</> : null}
         </WithLoader>
         <WeekGraphsView />
       </Slider>

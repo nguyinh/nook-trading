@@ -8,7 +8,7 @@ const byPriceAmount = (a, b) => (a.price < b.price ? 1 : -1);
 
 const emptyPrices = (trend) => !!trend.price;
 
-const WeekView = ({ onSelfTrendClick }) => {
+const WeekView = () => {
   const {
     state: { currentUser },
   } = useContext(AppContext);
@@ -47,7 +47,6 @@ const WeekView = ({ onSelfTrendClick }) => {
         currentUserId={currentUser._id}
         turnipsOwnedValue={selfTrend && selfTrend.turnipsOwnedValue}
         turnipsOwned={selfTrend && selfTrend.turnipsOwned}
-        onSelfTrendClick={onSelfTrendClick}
       />
     </>
   );

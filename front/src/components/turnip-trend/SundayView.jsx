@@ -11,7 +11,7 @@ const bySundayPriceAmount = (a, b) => (a.sundayPrice < b.sundayPrice ? -1 : 1);
 
 const emptySundayPrices = (trend) => !!trend.sundayPrice;
 
-const SundayView = ({ onSelfTrendClick }) => {
+const SundayView = () => {
   const {
     state: { currentUser },
   } = useContext(AppContext);
@@ -39,11 +39,7 @@ const SundayView = ({ onSelfTrendClick }) => {
   return (
     <>
       <div>
-        {askForPrice && (
-          <SundayInput
-            price={selfTrend.sundayPrice}
-          />
-        )}
+        {askForPrice && <SundayInput price={selfTrend.sundayPrice} />}
 
         {askForTurnips && (
           <TurnipOwnedInput
@@ -63,7 +59,6 @@ const SundayView = ({ onSelfTrendClick }) => {
             .sort(bySundayPriceAmount)
             .filter(emptySundayPrices)}
           currentUserId={currentUser._id}
-          onSelfTrendClick={onSelfTrendClick}
         />
       </div>
     </>

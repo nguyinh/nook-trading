@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
 import { Price, PriceAvatar } from ".";
+import { TurnipContext } from "../../contexts";
 import { ReactComponent as Bells } from "../../res/images/bells-flat.svg";
 import { ReactComponent as TriangleUp } from "../../res/images/triangle-green.svg";
 import { ReactComponent as TriangleDown } from "../../res/images/triangle-red.svg";
@@ -54,8 +55,9 @@ const BuyingPrices = ({
   currentUserId,
   turnipsOwnedValue,
   turnipsOwned,
-  onSelfTrendClick,
 }) => {
+  const { dispatch } = useContext(TurnipContext);
+
   const [redirectToDetailed, setRedirectToDetailed] = useState(null);
   const isSelfPrice = (trend) => currentUserId === trend.author._id;
 
@@ -70,7 +72,7 @@ const BuyingPrices = ({
           key={trend._id}
           onClick={() =>
             isSelfPrice(trend)
-              ? onSelfTrendClick()
+              ? dispatch({ type: "GO_TO_PAGE", page: 0 })
               : setRedirectToDetailed(trend.author.pseudo)
           }
         >

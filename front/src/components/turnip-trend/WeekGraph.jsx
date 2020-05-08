@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+
+import { TurnipContext } from "../../contexts";
 import { withParentSize } from "@vx/responsive";
 import { scaleLinear } from "@vx/scale";
 import { AreaClosed, LinePath } from "@vx/shape";
@@ -73,7 +75,11 @@ const Graph = withParentSize(({ weekValues, parentHeight, parentWidth }) => {
   );
 });
 
-const WeekGraph = ({ trend, withPseudo }) => {
+const WeekGraph = ({ trend, withPseudo, currentUserId }) => {
+  const { dispatch } = useContext(TurnipContext);
+
+  const [redirectToDetailed, setRedirectToDetailed] = useState(null);
+  const isSelfGraph = (trend) => currentUserId === trend.author._id;
   const f = (day) => [day[1].AM, day[1].PM];
   let weekValues = Object.entries(trend.prices);
   weekValues = weekValues.map((pair) => f(pair)).flat();
@@ -82,8 +88,20 @@ const WeekGraph = ({ trend, withPseudo }) => {
     value,
   }));
 
+  if (redirectToDetailed)
+    return <Redirect to={`/turnip-trend/${redirectToDetailed}`} push />;
+
   return (
-    <div style={{ height: 150 }} className="detailed-view--graph-container">
+    <div
+      style={{ height: 150 }}
+      className="detailed-view--graph-container"
+      onClick={() =>
+        withPseudo &&
+        (isSelfGraph(trend)
+          ? dispatch({ type: "GO_TO_PAGE", page: 0 })
+          : setRedirectToDetailed(trend.author.pseudo))
+      }
+    >
       {withPseudo && (
         <span className="detailed-view--graph-container--pseudo">
           {trend.author.pseudo}

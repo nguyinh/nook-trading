@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
+import { TurnipContext } from "../../contexts";
 import { Price, PriceAvatar } from "./";
 
-const SundayPrices = ({ prices, currentUserId, onSelfTrendClick }) => {
+const SundayPrices = ({ prices, currentUserId }) => {
+  const { dispatch } = useContext(TurnipContext);
+
   const [redirectToDetailed, setRedirectToDetailed] = useState(null);
   const [redirectToProfile, setRedirectToProfile] = useState(null);
   const isSelfPrice = (trend) => currentUserId === trend.author._id;
@@ -26,7 +29,7 @@ const SundayPrices = ({ prices, currentUserId, onSelfTrendClick }) => {
             className="price--informations--container"
             onClick={() =>
               isSelfPrice(trend)
-                ? onSelfTrendClick()
+                ? dispatch({ type: "GO_TO_PAGE", page: 0 })
                 : setRedirectToDetailed(trend.author.pseudo)
             }
           >

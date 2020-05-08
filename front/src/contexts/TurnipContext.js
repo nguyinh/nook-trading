@@ -1,8 +1,8 @@
-import React, { useReducer, useEffect, useContext } from "react";
+import React, { useReducer, useEffect, useContext, useRef } from "react";
 
-import { AppContext } from './';
-import { fetchAllTrends } from '../services';
-import { getLastSunday, formatAvatarData } from '../utils';
+import { AppContext } from "./";
+import { fetchAllTrends } from "../services";
+import { getLastSunday, formatAvatarData } from "../utils";
 
 let reducer = (state, action) => {
   switch (action.type) {
@@ -14,6 +14,10 @@ let reducer = (state, action) => {
       return updateTrends(state, action.trend);
     case "UPDATE_SELF_TREND":
       return updateSelfTrend(state, action.author);
+    case "SET_SLIDER_REF":
+      return { ...state, sliderRef: action.ref };
+    case "GO_TO_PAGE":
+      goToPage(state.sliderRef, action.page);
     case "SET_DISABLE_TRENDS_LOADING":
       return { ...state, isLoadingTrends: action.isLoading };
     case "SET_DISABLE_SELF_TREND_LOADING":
@@ -25,29 +29,41 @@ let reducer = (state, action) => {
 
 const updateTrends = (state, updatedTrend) => ({
   ...state,
-  trends: state.trends.map(trend => trend._id === updatedTrend._id ? formatAvatarData(updatedTrend) : trend),
-  selfTrend: state.selfTrend._id === updatedTrend._id ? formatAvatarData(updatedTrend) : state.selfTrend,
+  trends: state.trends.map((trend) =>
+    trend._id === updatedTrend._id ? formatAvatarData(updatedTrend) : trend
+  ),
+  selfTrend:
+    state.selfTrend._id === updatedTrend._id
+      ? formatAvatarData(updatedTrend)
+      : state.selfTrend,
 });
 
 const updateSelfTrend = (state, author) => {
   const selfTrend = state.trends.find((trend) => trend.author._id === author);
 
   return {
-  ...state,
-  selfTrend
-}};
+    ...state,
+    selfTrend,
+  };
+};
+
+const goToPage = (sliderRef, page) => {
+  sliderRef.current.slickGoTo(page);
+};
 
 const initialState = {
   trends: null,
   isLoadingTrends: true,
   selfTrend: null,
   isLoadingSelfTrend: true,
+  sliderRef: null,
 };
 
 const TurnipContext = React.createContext(initialState);
 
 function TurnipProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const sliderRef = useRef(null);
 
   const {
     state: { currentUser },
@@ -59,7 +75,6 @@ function TurnipProvider(props) {
         const trends = await fetchAllTrends(getLastSunday());
 
         dispatch({ type: "SET_TRENDS", trends });
-
       } catch (err) {
         console.log(err);
       } finally {
@@ -70,7 +85,10 @@ function TurnipProvider(props) {
       dispatch({ type: "SET_DISABLE_SELF_TREND_LOADING", isLoading: false });
     }
 
+    dispatch({ type: "SET_SLIDER_REF", ref: sliderRef });
+
     initiateTrends();
+    // TODO: Check if ref is in memory after unmount
   }, []);
 
   return (
