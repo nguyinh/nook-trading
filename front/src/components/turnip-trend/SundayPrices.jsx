@@ -29,7 +29,7 @@ const SundayPrices = ({ prices, currentUserId }) => {
             className="price--informations--container"
             onClick={() =>
               isSelfPrice(trend)
-                ? dispatch({ type: "GO_TO_PAGE", page: 0 })
+                ? dispatch({ type: "GO_TO_PAGE", page: 2 })
                 : setRedirectToDetailed(trend.author.pseudo)
             }
           >

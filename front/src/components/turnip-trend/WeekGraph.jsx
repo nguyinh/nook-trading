@@ -98,7 +98,7 @@ const WeekGraph = ({ trend, withPseudo, currentUserId }) => {
       onClick={() =>
         withPseudo &&
         (isSelfGraph(trend)
-          ? dispatch({ type: "GO_TO_PAGE", page: 0 })
+          ? dispatch({ type: "GO_TO_PAGE", page: 2 })
           : setRedirectToDetailed(trend.author.pseudo))
       }
     >

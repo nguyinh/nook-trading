@@ -72,16 +72,18 @@ const MainView = () => {
   return (
     <div className="turnip-trend--slick">
       <Slider {...settings} ref={sliderRef}>
+        <WeekGraphsView />
+
+        <WithLoader active={isLoadingTrends || isLoadingSelfTrend}>
+          {trends ? <>{isSunday ? <SundayView /> : <WeekView />}</> : null}
+        </WithLoader>
+
         <DetailedView
           trend={selfTrend}
           isSelf
           pseudo={currentUser.pseudo}
           allowBackTo={false}
         />
-        <WithLoader active={isLoadingTrends || isLoadingSelfTrend}>
-          {trends ? <>{isSunday ? <SundayView /> : <WeekView />}</> : null}
-        </WithLoader>
-        <WeekGraphsView />
       </Slider>
     </div>
   );
