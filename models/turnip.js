@@ -23,6 +23,7 @@ const turnipTrendScheme = mongoose.Schema({
   trendType: {
     type: String,
     enum: ['UNKNOWN', 'VARIABLE', 'SMALL_SPIKE', 'BIG_SKIPE', 'DECREASING', null],
+    default: null,
   },
   turnipsOwned: {
     type: Number,
