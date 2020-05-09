@@ -87,9 +87,9 @@ function TurnipProvider(props) {
 
     dispatch({ type: "SET_SLIDER_REF", ref: sliderRef });
 
-    initiateTrends();
+    if (currentUser) initiateTrends();
     // TODO: Check if ref is in memory after unmount
-  }, []);
+  }, [currentUser]);
 
   return (
     <TurnipContext.Provider value={{ state, dispatch }}>

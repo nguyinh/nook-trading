@@ -1,11 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Loader } from "semantic-ui-react";
 
 import { AppContext, TurnipContext } from "../../contexts";
-import { fetchAllTrends, fetchTrend } from "../../services";
-import { WithLoader } from "../lib";
 import { SundayInput, SundayPrices, TurnipOwnedInput } from "./";
-import { getLastSunday, formatAvatarData } from "../../utils";
+import { formatAvatarData } from "../../utils";
 
 const bySundayPriceAmount = (a, b) => (a.sundayPrice < b.sundayPrice ? -1 : 1);
 

@@ -7,10 +7,11 @@ import { WeekView, SundayView, DetailedView, WeekGraphsView } from ".";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { WithLoader } from "../lib";
+import { Redirect } from "react-router-dom";
 
 const MainView = () => {
   const {
-    state: { currentUser },
+    state: { currentUser, isAutoConnecting },
   } = useContext(AppContext);
 
   const {
@@ -19,7 +20,7 @@ const MainView = () => {
       selfTrend,
       isLoadingTrends,
       isLoadingSelfTrend,
-      sliderRef
+      sliderRef,
     },
   } = useContext(TurnipContext);
 
@@ -70,22 +71,28 @@ const MainView = () => {
   // }, [clientX, firstClientX, firstClientY]);
 
   return (
-    <div className="turnip-trend--slick">
-      <Slider {...settings} ref={sliderRef}>
-        <WeekGraphsView />
+    <WithLoader active={isAutoConnecting}>
+      {currentUser ? (
+        <div className="turnip-trend--slick">
+          <Slider {...settings} ref={sliderRef}>
+            <WeekGraphsView />
 
-        <WithLoader active={isLoadingTrends || isLoadingSelfTrend}>
-          {trends ? <>{isSunday ? <SundayView /> : <WeekView />}</> : null}
-        </WithLoader>
+            <WithLoader active={isLoadingTrends || isLoadingSelfTrend}>
+              {trends ? <>{isSunday ? <SundayView /> : <WeekView />}</> : null}
+            </WithLoader>
 
-        <DetailedView
-          trend={selfTrend}
-          isSelf
-          pseudo={currentUser.pseudo}
-          allowBackTo={false}
-        />
-      </Slider>
-    </div>
+            <DetailedView
+              trend={selfTrend}
+              isSelf
+              pseudo={currentUser.pseudo}
+              allowBackTo={false}
+            />
+          </Slider>
+        </div>
+      ) : (
+        <Redirect to={"/profile"} push />
+      )}
+    </WithLoader>
   );
 };
 
