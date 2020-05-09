@@ -432,6 +432,7 @@ svg.bells-svg {
   max-width: 600px;
   position: relative;
   overflow: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black); /* iOS border-radius & overflow bug */
 }
 
 .trend-type--buttons {
