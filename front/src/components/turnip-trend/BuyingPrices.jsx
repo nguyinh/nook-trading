@@ -97,8 +97,10 @@ const BuyingPrices = ({
           </div>
         ))
       ) : (
-        <div className="no-data">
-          Personne n'a publié son cours pour le moment
+        <div style={{ width: "100%" }}>
+          <div className="no-data">
+            Personne n'a publié son cours pour le moment
+          </div>
         </div>
       )}
     </div>
