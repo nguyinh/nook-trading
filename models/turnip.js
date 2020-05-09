@@ -22,12 +22,26 @@ const turnipTrendScheme = mongoose.Schema({
   },
   trendType: {
     type: String,
-    enum: ['UNKNOWN', 'VARIABLE', 'SMALL_SPIKE', 'BIG_SPIKE', 'DECREASING', null],
+    enum: [
+      "UNKNOWN",
+      "VARIABLE",
+      "SMALL_SPIKE",
+      "BIG_SPIKE",
+      "DECREASING",
+      null,
+    ],
     default: null,
   },
   previousTrendType: {
     type: String,
-    enum: ['UNKNOWN', 'VARIABLE', 'SMALL_SPIKE', 'BIG_SPIKE', 'DECREASING', null],
+    enum: [
+      "UNKNOWN",
+      "VARIABLE",
+      "SMALL_SPIKE",
+      "BIG_SPIKE",
+      "DECREASING",
+      null,
+    ],
     default: null,
   },
   turnipsOwned: {
@@ -69,17 +83,17 @@ turnipTrendScheme.pre("validate", async function (next) {
   });
   if (result) {
     next(new Error("Another Turnip Trend is already created for this week"));
-  } 
+  }
 
   // Pre-fill previousTrendType field for new doc
   const lastlastSunday = new Date(today.setDate(today.getDate() - 7));
 
-  const { trendType } = await TurnipTrend.findOne({
+  const lastWeekTrend = await TurnipTrend.findOne({
     createdAt: { $gte: lastlastSunday, $lte: lastSunday },
     author: this.author,
   });
 
-  this.previousTrendType = trendType || null;
+  if (lastWeekTrend) this.previousTrendType = lastWeekTrend.trendType || null;
 
   next();
 });
