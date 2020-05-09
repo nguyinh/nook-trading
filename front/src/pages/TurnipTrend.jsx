@@ -25,7 +25,7 @@ const NotFoundUser = ({ pseudo, allowBackTo }) => {
   );
 };
 
-const OtherPlayerView = ({ pseudo }) => {
+const OtherPlayerView = ({ pseudo, currentUserId }) => {
   const {
     state: { trends, isLoadingTrends },
   } = useContext(TurnipContext);
@@ -39,7 +39,7 @@ const OtherPlayerView = ({ pseudo }) => {
   return (
     <WithLoader active={isLoadingTrends} content="Nous demandons à Marie 🐩">
       {userTrend ? (
-        <DetailedView trend={userTrend} />
+        <DetailedView trend={userTrend} isSelf={userTrend.author._id === currentUserId} />
       ) : (
         <NotFoundUser pseudo={pseudo} allowBackTo />
       )}
@@ -70,7 +70,7 @@ const TurnipTrend = () => {
     <>
       <TurnipProvider>
         {pseudo ? (
-          <OtherPlayerView pseudo={pseudo} />
+          <OtherPlayerView pseudo={pseudo} currentUserId={currentUser._id}/>
         ) : (
           <MainView pseudo={pseudo} />
         )}
