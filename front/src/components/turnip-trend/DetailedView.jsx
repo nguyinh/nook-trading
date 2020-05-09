@@ -166,7 +166,7 @@ const DetailedView = ({ trend, isSelf, allowBackTo = true }) => {
               onClick={() => setRedirectToProfile(trend.author.pseudo)}
             />
 
-            <WeekGraph trend={trend} />
+            <WeekGraph trend={trend} withTooltip/>
 
             <WeekPrices
               trend={trend}

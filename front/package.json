@@ -7,6 +7,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@vx/curve": "0.0.196",
+    "@vx/event": "0.0.196",
     "@vx/gradient": "0.0.196",
     "@vx/grid": "0.0.196",
     "@vx/group": "0.0.196",

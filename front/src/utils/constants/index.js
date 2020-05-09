@@ -24,3 +24,5 @@ exports.PATTERN_CODES = {
   DECREASING: 2,
   SMALL_SPIKE: 3,
 };
+
+exports.DAY_SHORT_LABELS = ["LU", "MA", "ME", "JE", "VE", "SA"];

@@ -56,7 +56,7 @@ const initialState = {
   isLoadingTrends: true,
   selfTrend: null,
   isLoadingSelfTrend: true,
-  sliderRef: null,
+  sliderRef: null
 };
 
 const TurnipContext = React.createContext(initialState);

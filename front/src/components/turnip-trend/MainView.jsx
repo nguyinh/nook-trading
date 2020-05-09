@@ -19,7 +19,7 @@ const MainView = () => {
       selfTrend,
       isLoadingTrends,
       isLoadingSelfTrend,
-      sliderRef,
+      sliderRef
     },
   } = useContext(TurnipContext);
 
