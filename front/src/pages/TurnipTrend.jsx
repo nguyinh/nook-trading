@@ -1,23 +1,47 @@
-import React, { useContext } from "react";
-import { Loader } from "semantic-ui-react";
-import { useParams } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Loader, Icon } from "semantic-ui-react";
+import { useParams, Redirect } from "react-router-dom";
 
 import { AppContext, TurnipProvider, TurnipContext } from "../contexts";
 import { DetailedView, MainView } from "../components/turnip-trend";
 import "./TurnipTrend.css";
 import { WithLoader } from "../components/lib";
 
-const OtherPlayerView = ({ pseudo, children }) => {
+const NotFoundUser = ({ pseudo, allowBackTo }) => {
+  const [backToDetailed, setBackToDetailed] = useState(null);
+
+  if (backToDetailed) return <Redirect to={"/turnip-trend"} push />;
+
+  return (
+    <div className="detailled-view--container">
+      {allowBackTo && (
+        <div className="back-button" onClick={() => setBackToDetailed(true)}>
+          <Icon name="angle left" size="big" />
+        </div>
+      )}
+
+      <div className='no-data' style={{marginTop: '10rem'}}>Nous ne connaissons pas de {pseudo}</div>
+    </div>
+  );
+};
+
+const OtherPlayerView = ({ pseudo }) => {
   const {
     state: { trends, isLoadingTrends },
   } = useContext(TurnipContext);
 
+  const [userTrend, setUserTrend] = useState(null);
+  useEffect(() => {
+    if (trends)
+      setUserTrend(trends.find((trend) => trend.author.pseudo === pseudo));
+  }, [trends]);
+
   return (
-    <WithLoader active={isLoadingTrends} content="Attends frero">
-      {trends && (
-        <DetailedView
-          trend={trends.find((trend) => trend.author.pseudo === pseudo)}
-        />
+    <WithLoader active={isLoadingTrends} content="Nous demandons à Marie 🐩">
+      {userTrend ? (
+        <DetailedView trend={userTrend} />
+      ) : (
+        <NotFoundUser pseudo={pseudo} allowBackTo />
       )}
     </WithLoader>
   );
@@ -25,12 +49,10 @@ const OtherPlayerView = ({ pseudo, children }) => {
 
 const TurnipTrend = () => {
   const {
-    state: { isAutoConnecting },
+    state: { currentUser, isAutoConnecting },
   } = useContext(AppContext);
 
   const { pseudo } = useParams();
-
-  const isSunday = new Date().getDay() === 0;
 
   if (isAutoConnecting)
     return (
@@ -41,6 +63,8 @@ const TurnipTrend = () => {
         </span>
       </Loader>
     );
+
+  if (!currentUser) return <Redirect to={"/profile"} push />;
 
   return (
     <>

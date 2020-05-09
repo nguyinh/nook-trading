@@ -66,35 +66,41 @@ const BuyingPrices = ({
 
   return (
     <div className="all-prices--container">
-      {prices.map((trend) => (
-        <div
-          className="price--container"
-          key={trend._id}
-          onClick={() =>
-            isSelfPrice(trend)
-              ? dispatch({ type: "GO_TO_PAGE", page: 2 })
-              : setRedirectToDetailed(trend.author.pseudo)
-          }
-        >
-          <PriceAvatar src={trend.author.avatar} />
+      {prices.length ? (
+        prices.map((trend) => (
+          <div
+            className="price--container"
+            key={trend._id}
+            onClick={() =>
+              isSelfPrice(trend)
+                ? dispatch({ type: "GO_TO_PAGE", page: 2 })
+                : setRedirectToDetailed(trend.author.pseudo)
+            }
+          >
+            <PriceAvatar src={trend.author.avatar} />
 
-          <div className="price--informations--container">
-            <span className="nook-pseudo">{trend.author.pseudo}</span>
+            <div className="price--informations--container">
+              <span className="nook-pseudo">{trend.author.pseudo}</span>
 
-            <div className="price--informations--basis">
-              <Price price={trend.price} />
+              <div className="price--informations--basis">
+                <Price price={trend.price} />
 
-              {!!turnipsOwned && (
-                <Profit
-                  price={trend.price}
-                  turnipQuantity={turnipsOwned}
-                  turnipBoughtFor={turnipsOwnedValue}
-                />
-              )}
+                {!!turnipsOwned && (
+                  <Profit
+                    price={trend.price}
+                    turnipQuantity={turnipsOwned}
+                    turnipBoughtFor={turnipsOwnedValue}
+                  />
+                )}
+              </div>
             </div>
           </div>
+        ))
+      ) : (
+        <div className="no-data">
+          Personne n'a publié son cours pour le moment
         </div>
-      ))}
+      )}
     </div>
   );
 };

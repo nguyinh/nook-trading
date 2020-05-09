@@ -11,7 +11,7 @@ import { Redirect } from "react-router-dom";
 
 const MainView = () => {
   const {
-    state: { currentUser, isAutoConnecting },
+    state: { currentUser },
   } = useContext(AppContext);
 
   const {
@@ -71,28 +71,22 @@ const MainView = () => {
   // }, [clientX, firstClientX, firstClientY]);
 
   return (
-    <WithLoader active={isAutoConnecting}>
-      {currentUser ? (
-        <div className="turnip-trend--slick">
-          <Slider {...settings} ref={sliderRef}>
-            <WeekGraphsView />
+    <div className="turnip-trend--slick">
+      <Slider {...settings} ref={sliderRef}>
+        <WeekGraphsView />
 
-            <WithLoader active={isLoadingTrends || isLoadingSelfTrend}>
-              {trends ? <>{isSunday ? <SundayView /> : <WeekView />}</> : null}
-            </WithLoader>
+        <WithLoader active={isLoadingTrends || isLoadingSelfTrend}>
+          {trends ? <>{isSunday ? <SundayView /> : <WeekView />}</> : null}
+        </WithLoader>
 
-            <DetailedView
-              trend={selfTrend}
-              isSelf
-              pseudo={currentUser.pseudo}
-              allowBackTo={false}
-            />
-          </Slider>
-        </div>
-      ) : (
-        <Redirect to={"/profile"} push />
-      )}
-    </WithLoader>
+        <DetailedView
+          trend={selfTrend}
+          isSelf
+          pseudo={currentUser.pseudo}
+          allowBackTo={false}
+        />
+      </Slider>
+    </div>
   );
 };
 

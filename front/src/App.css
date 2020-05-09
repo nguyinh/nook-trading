@@ -117,9 +117,11 @@
 
 .no-data {
   text-align: center;
-  opacity: 0.5;
+  opacity: 0.3;
   margin: 5rem 2rem;
   line-height: 1.5;
+  width: 100%;
+  font-size: 1.1rem;
 }
 
 
