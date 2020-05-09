@@ -43,7 +43,7 @@ const DayEntryInput = ({
   return (
     <input
       className={`day-entry--moment--input ${
-        isPast || (isToday && new Date().getHours() > 12 && AM)
+        isPast || (isToday && new Date().getHours() >= 12 && AM)
           ? "no-background with-little-opacity"
           : ""
       } ${isFuture ? "with-max-opacity" : ""}`}
