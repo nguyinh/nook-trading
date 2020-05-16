@@ -33,7 +33,10 @@ exports.add = (
 };
 
 exports.updateVersion = (_id, currentVersion) => {
-  return User.findOneAndUpdate({ _id }, { currentVersion });
+  return User.findOneAndUpdate(
+    { _id },
+    { currentVersion, updatedAt: Date.now() }
+  );
 };
 
 exports.updateAvatar = (_id, avatar) => {
@@ -60,6 +63,19 @@ exports.update = (
       hemisphere,
       profileDescription,
       updatedAt: Date.now(),
+    }
+  ).select("-password");
+};
+
+exports.setDiscord = (_id, discord) => {
+  return User.findOneAndUpdate(
+    { _id },
+    {
+      discord,
+      updatedAt: Date.now(),
+    },
+    {
+      new: true,
     }
   ).select("-password");
 };

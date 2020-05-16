@@ -2,6 +2,26 @@ const mongoose = require("mongoose");
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
+const discordScheme = mongoose.Schema({
+  accessToken: {
+    type: String,
+    select: false
+  },
+  refreshToken: {
+    type: String,
+    select: false
+  },
+  id: {
+    type: String,
+  },
+  username: {
+    type: String,
+  },
+  discriminator: {
+    type: Number,
+  },
+});
+
 const userScheme = mongoose.Schema({
   _id: ObjectId,
   password: {
@@ -37,6 +57,11 @@ const userScheme = mongoose.Schema({
   },
   profileDescription: {
     data: String
+  },
+  discord: {
+    type: Object,
+    Schema: discordScheme,
+    default: null
   },
   createdAt: {
     type: Date,
