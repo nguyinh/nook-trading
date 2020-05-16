@@ -9,6 +9,10 @@ const routes = require("./routes");
 const app = express();
 const { logger, redirectSecure, errorHandler } = require("./middlewares");
 
+const {
+  discord: { client },
+} = require("./services");
+
 require("dotenv").config();
 
 // CORS handle
@@ -19,7 +23,7 @@ const whitelist = [
   "http://localhost:3000",
   "http://localhost:2020",
   "http://nook-trading.herokuapp.com",
-  "https://nook-trading.herokuapp.com"
+  "https://nook-trading.herokuapp.com",
 ];
 const corsOptions = {
   origin: function (origin, callback) {
@@ -59,8 +63,9 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
-const mongoURL =
-  process.env.MONGODB_URI || "mongodb://localhost/nook-trading";
+
+// MongoDB
+const mongoURL = process.env.MONGODB_URI || "mongodb://localhost/nook-trading";
 mongoose.connect(mongoURL, {
   useNewUrlParser: true,
   bufferCommands: false,
@@ -77,6 +82,15 @@ db.once("open", () => {
   logger.info(`[MongoDB] Connected to ${mongoURL}`);
 });
 
+
+// Discord bot
+client.once("ready", async () => {
+  logger.info(`[Discord] Logged in as ${client.user.tag}`);
+});
+
+client.login(process.env.DISCORD_BOT_TOKEN);
+
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "front/build")));
 
@@ -90,8 +104,8 @@ app.get("/api/*", (req, res) => {
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/front/build/index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/front/build/index.html"));
 });
 
 app.use(errorHandler);

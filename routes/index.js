@@ -5,4 +5,5 @@ module.exports = server => {
   server.use('/api', require('./items'));
   server.use('/api', require('./turnips'));
   server.use('/api', require('./versions'));
+  server.use('/api', require('./discord'));
 };
