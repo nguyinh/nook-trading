@@ -12,7 +12,7 @@ const {
 const baseURL =
   process.env.ENV !== "dev"
     ? "https://nook-trading.herokuapp.com"
-    : "http://localhost:2020";
+    : "http://192.168.1.11:2020";
 const redirect = encodeURIComponent(`${baseURL}/api/discord/callback`);
 
 exports.linkUser = async (req, res, next) => {

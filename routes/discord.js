@@ -8,7 +8,7 @@ const { verifyJWT, findUser } = require("../middlewares");
 const redirect = encodeURIComponent(
   process.env.ENV !== "dev"
     ? "https://nook-trading.herokuapp.com/api/discord/callback"
-    : "http://localhost:2020/api/discord/callback"
+    : "http://192.168.1.11:2020/api/discord/callback"
 );
 
 router.route("/discord").get((req, res, next) => {

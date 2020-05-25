@@ -230,7 +230,7 @@ const UserProfile = ({ userData }) => {
   const linkDiscordAccount = () => {
     window.open(
       process.env.NODE_ENV === "development"
-        ? "http://localhost:2020/api/discord"
+        ? "http://192.168.1.11:2020/api/discord"
         : "/api/discord"
     );
   };
