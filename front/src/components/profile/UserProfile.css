@@ -78,3 +78,91 @@
 .nook-text-area:disabled {
   opacity: 0.45;
 }
+
+.user-profile--discord-link-button {
+  background: #7289DA;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  align-self: center;
+  outline: none;
+  margin-bottom: 2rem;
+}
+
+.user-profile--discord-link-button:active {
+  background: rgb(86, 113, 210);
+  transition: all 200ms ease;
+}
+
+
+.user-profile--discord-link-button--content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.user-profile--discord-link-button--content > svg {
+  margin-right: 0.5rem;
+  height: 1.5rem;
+}
+
+.user-profile--discord-link-button--content > span {
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.user-profile--discord-DM-button {
+  background: #7289DA;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  align-self: center;
+  outline: none;
+  margin-bottom: 2rem;
+}
+
+.user-profile--discord-DM-button:active {
+  background: rgb(86, 113, 210);
+  transition: all 200ms ease;
+}
+
+
+.user-profile--discord-DM-button--content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.user-profile--discord-DM-button--content > svg {
+  margin-right: 0.5rem;
+  height: 1.3rem;
+}
+
+.user-profile--discord-DM-button--content > span {
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.user-profile--discord {
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.user-profile--discord > svg {
+  margin-right: 0.4rem;
+  height: 1.5rem;
+}
+
+.user-profile--discord--username {
+  font-weight: 800;
+}
+
+.user-profile--discord--discriminator {
+  opacity: 0.7;
+}

@@ -19,6 +19,8 @@ import { ReactComponent as Cherry } from "../../res/images/cherry-selection.svg"
 import { ReactComponent as Orange } from "../../res/images/orange-selection.svg";
 import { ReactComponent as Peach } from "../../res/images/peach-selection.svg";
 import { ReactComponent as Pear } from "../../res/images/pear-selection.svg";
+import { ReactComponent as DiscordIconWhite } from "../../res/images/discord-icon-white.svg";
+import { ReactComponent as DiscordIconPurple } from "../../res/images/discord-icon-purple.svg";
 
 const HEMISPHERES = [
   { code: "NORTH", label: "Nord" },
@@ -94,10 +96,16 @@ const ProfilePicture = ({ _id, pseudo, nativeFruit, avatarPicture }) => {
             <img
               src={userAvatar}
               className="user-avatar-image"
-              onClick={() => _id === currentUser._id && inputRef.current.click()}
+              onClick={() =>
+                _id === currentUser._id && inputRef.current.click()
+              }
             />
           ) : currentUser._id === _id ? (
-            <AvatarInput onClick={() => _id === currentUser._id && inputRef.current.click()} />
+            <AvatarInput
+              onClick={() =>
+                _id === currentUser._id && inputRef.current.click()
+              }
+            />
           ) : (
             <AvatarDefault />
           )}
@@ -170,6 +178,7 @@ const UserProfile = ({ userData }) => {
     dispatch,
   } = useContext(AppContext);
 
+  const [isSelf] = useState(!userData);
   const [userProfile, setUserProfile] = useState(userData || currentUser);
 
   const [editMode, setEditMode] = useState(false);
@@ -189,7 +198,9 @@ const UserProfile = ({ userData }) => {
   const updateProfile = async () => {
     try {
       setIsSavingChanges(true);
-      setSavingButtonContent("Transmission des données à des sociétés tierces 👨‍💻");
+      setSavingButtonContent(
+        "Transmission des données à des sociétés tierces 👨‍💻"
+      );
       setSavingButtonDisabled(true);
       const user = await updateUser(
         nativeFruit,
@@ -216,6 +227,22 @@ const UserProfile = ({ userData }) => {
     }
   };
 
+  const linkDiscordAccount = () => {
+    window.open(
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:2020/api/discord"
+        : "/api/discord"
+    );
+  };
+
+  const redirectToGuild = () => {
+    window.open("https://discordapp.com/channels/709446228513128450", "_blank");
+  };
+
+  const goToDiscordProfile = () => {
+    window.open(`https://discordapp.com/users/${userProfile.discord.id}`);
+  };
+
   useEffect(() => {
     setEditMode(
       userProfile.nativeFruit !== nativeFruit ||
@@ -237,6 +264,39 @@ const UserProfile = ({ userData }) => {
         avatarPicture={userProfile.avatar}
       />
 
+      {isSelf ? (
+        userProfile.discord ? (
+          <div className="user-profile--discord" onClick={redirectToGuild}>
+            <DiscordIconPurple />
+            <span className="user-profile--discord--username">{`${userProfile.discord.username}`}</span>
+            <span className="user-profile--discord--discriminator">{`#${userProfile.discord.discriminator}`}</span>
+          </div>
+        ) : (
+          <button
+            className="user-profile--discord-link-button"
+            onClick={linkDiscordAccount}
+          >
+            <div className="user-profile--discord-link-button--content">
+              <DiscordIconWhite />
+              <span>Connexion</span>
+            </div>
+          </button>
+        )
+      ) : (
+        userProfile.discord && (
+          <button
+            className="user-profile--discord-DM-button"
+            onClick={goToDiscordProfile}
+          >
+            <div className="user-profile--discord-DM-button--content">
+              <DiscordIconWhite />
+              <span className="user-profile--discord--username">{`${userProfile.discord.username}`}</span>
+              <span className="user-profile--discord--discriminator">{`#${userProfile.discord.discriminator}`}</span>
+            </div>
+          </button>
+        )
+      )}
+
       {editMode && (
         <Button
           onClick={updateProfile}
@@ -252,7 +312,7 @@ const UserProfile = ({ userData }) => {
       <NookInput
         label="Nom de l'île"
         placeholder="Nom de l'île"
-        disabled={!!userData}
+        disabled={!isSelf}
         value={islandName}
         onChange={setIslandName}
       />
@@ -282,7 +342,7 @@ const UserProfile = ({ userData }) => {
         <NookInput
           label="Hemisphere"
           placeholder="Hemisphere"
-          disabled={!!userData}
+          disabled={!isSelf}
           value={userHemisphere && userHemisphere.label}
           onClick={() => !userData && setHemisphereEdit(true)}
         />
@@ -291,7 +351,7 @@ const UserProfile = ({ userData }) => {
       <NookInput
         label="Code ami"
         placeholder="Code ami"
-        disabled={!!userData}
+        disabled={!isSelf}
         value={friendCode}
         onChange={setFriendCode}
       />
@@ -300,7 +360,7 @@ const UserProfile = ({ userData }) => {
         label="More ?"
         placeholder="Nookazon link / horaires de l'île..."
         textArea
-        disabled={!!userData}
+        disabled={!isSelf}
         value={profileDescription}
         onChange={setProfileDescription}
       />

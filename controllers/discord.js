@@ -9,11 +9,11 @@ const {
   users,
 } = require("../services");
 
-const redirect = encodeURIComponent(
+const baseURL =
   process.env.ENV !== "dev"
-    ? "https://nook-trading.herokuapp.com/api/discord/callback"
-    : "http://localhost:2020/api/discord/callback"
-);
+    ? "https://nook-trading.herokuapp.com"
+    : "http://localhost:2020";
+const redirect = encodeURIComponent(`${baseURL}/api/discord/callback`);
 
 exports.linkUser = async (req, res, next) => {
   const { code } = req.query;
@@ -75,7 +75,8 @@ exports.linkUser = async (req, res, next) => {
     });
 
     // Redirect to guild url
-    return res.redirect(`https://discord.com/channels/${process.env.GUILD_ID}`);
+    // return res.redirect(`https://discord.com/channels/${process.env.GUILD_ID}`);
+    return res.redirect(`${baseURL}/profile`);
   } catch (err) {
     return next(err);
   }
