@@ -20,6 +20,7 @@ const whitelist = [
   "http://172.20.10.3:3000",
   "http://172.20.10.4:3000",
   "http://172.20.10.5:3000",
+  "http://192.168.1.11:3000",
   "http://localhost:3000",
   "http://localhost:2020",
   "http://nook-trading.herokuapp.com",
