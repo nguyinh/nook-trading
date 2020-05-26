@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { createPost } from "../services";
+import { createPost, getNames } from "../services";
 import { Button, Segment, Header, Icon, Input } from "semantic-ui-react";
 import bellsImage from "../res/images/bells-2.png";
 import Compressor from 'compressorjs';
@@ -65,7 +65,6 @@ const PostCreator = ({ backFromCreator }) => {
 
   const onInputChange = async (evt) => {
     const file = evt.target.files[0];
-
     new Compressor(file, {
       maxWidth: 500,
       maxHeight: 500,
@@ -161,7 +160,11 @@ const PostCreator = ({ backFromCreator }) => {
                 e.key === "Enter" && priceInputRef.current.focus()
               }
               ref={nameInputRef}
-              onChange={(_, { value }) => setItemName(value)}
+              onChange={(_, { value }) => {
+                setItemName(value);
+                // Ask to server autocompleting datas
+                console.log(                getNames() );
+              }}
             />
             <Input
               icon="dollar"

@@ -143,6 +143,13 @@ const uploadAvatar = async (avatarData) => {
   return user;
 };
 
+const getNames = async (valuess) => {
+  const {
+    data: { values },
+  } = await axios.get(`/api/items/test`)
+  return values;
+}
+
 export {
   signUpUser,
   logInUser,
@@ -158,4 +165,5 @@ export {
   getUser,
   updateUser,
   uploadAvatar,
+  getNames,
 };
