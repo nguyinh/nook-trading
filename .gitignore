@@ -20,6 +20,7 @@ node_modules/
 
 # dotenv environment variables file
 .env
+client_secret.json
 
 ### VS Code ###
 .vscode/
