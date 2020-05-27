@@ -15,7 +15,7 @@ exports.findAllDaily = () => {
   })
     .populate({
       path: "author",
-      select: "pseudo islandName",
+      select: "pseudo islandName discord.id",
     })
     .populate({
       path: "bookings.author",
