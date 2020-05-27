@@ -19,10 +19,9 @@ exports.add = (_id, authorId, bookingType) => {
           new: true,
         }
       )
-        .select("-shopPicture")
         .populate({
           path: "author",
-          select: "pseudo islandName",
+          select: "pseudo islandName discord.id",
         })
         .populate({
           path: "bookings.author",
