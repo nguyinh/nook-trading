@@ -52,7 +52,7 @@ const PostCreator = ({ backFromCreator }) => {
     }
 
     setIsPublishing(true);
-    await createPost(items, new Buffer(shopPicture, "utf8"));
+    await createPost(items, Buffer.from(shopPicture, "utf8"));
     setIsPublishing(false);
     setIsPublished(true);
 
