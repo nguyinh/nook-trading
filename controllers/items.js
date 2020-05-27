@@ -13,12 +13,16 @@ exports.createBooking = async (req, res, next) => {
   try {
     const update = await bookings.add(itemId, authorId, "item");
 
+    // Send response
+    res.send({ item: update });
+
     // Find item author
     const {
       author: { discord: discordInfo },
       shopPicture,
     } = await posts.findByItemId(itemId);
 
+    // Send DM if Discord linked
     if (discordInfo) {
       // Find booking author pseudo
       const { pseudo: buyerPseudo } = await users.findById(authorId);
@@ -32,8 +36,6 @@ exports.createBooking = async (req, res, next) => {
         shopPicture.data.toObject()
       );
     }
-
-    return res.send({ item: update });
   } catch (err) {
     return next(err);
   }
