@@ -37,7 +37,7 @@ const PostCreator = ({ backFromCreator }) => {
       return;
     }
 
-    setItems([...items, { name: itemName, price: itemPrice && parseInt(itemPrice) }]);
+    setItems([...items, { name: itemName.trim(), price: itemPrice && parseInt(itemPrice) }]);
     setItemName("");
     setItemPrice("");
     setNameError("");
