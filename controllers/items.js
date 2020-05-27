@@ -26,7 +26,7 @@ exports.createBooking = async (req, res, next) => {
       // Send Discord DM to seller
       await discord.sendDM(
         discordInfo.id,
-        `**${update.name}** intéresse **${buyerPseudo}**${
+        `${update.name} intéresse ${buyerPseudo}${
           update.price ? ` pour ${update.price} clochettes` : ""
         } !`,
         shopPicture.data.toObject()
