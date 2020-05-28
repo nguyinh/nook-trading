@@ -29,7 +29,11 @@ const cred = require('../client_secret.json');
   }
 }; */
 
+
+
+
 exports.TEST = async (req, res, next) => {
+  const { startName } = req.params;
 
   const { google } = require('googleapis');
   const keys = require('../client_secret.json');
@@ -49,16 +53,42 @@ exports.TEST = async (req, res, next) => {
       console.log("SUCCES");
       const gsapi = google.sheets({ version: 'v4', auth: client });
     
-      const opt = {
-        spreadsheetId: '1BjqVeqIrfEezvyrWLUrwMjmK_UbY2LXkZ12mttamTtk',
-        range: 'Rugs!H:H'
-      }
-    
-      let data = await gsapi.spreadsheets.values.get(opt);
-      const allRugs = [...data.data.values];
-      console.log(allRugs.filter((rug) => rug.toString().startsWith('tapis T')));
+      const allMatches = [];
+      const frenchColumns = new Map();
+      frenchColumns.set("Furniture", "H");
+      frenchColumns.set("Furniture Variants", "I");
+      frenchColumns.set("Furniture Patterns", "I");
+      frenchColumns.set("Craft", "H");
+      frenchColumns.set("ETC", "H");
+      frenchColumns.set("Event Items", "H");
+      frenchColumns.set("Art", "H");
+      frenchColumns.set("Floors", "H");
+      frenchColumns.set("Walls", "H");
+      frenchColumns.set("Rugs", "H");
+      frenchColumns.set("Fence", "H");
+      frenchColumns.set("Bugs", "H");
+      frenchColumns.set("Fish", "H");
+      frenchColumns.set("Fossils", "H");
+
+      const getPromises = [];
+
+      frenchColumns.forEach((element, index) => {
+        const opt = {
+          spreadsheetId: '1BjqVeqIrfEezvyrWLUrwMjmK_UbY2LXkZ12mttamTtk',
+          range: `${index}!${element}:${element}`
+        }
+        let data = gsapi.spreadsheets.values.get(opt);
+        getPromises.push(data);
+        data.then((data2) => {
+          const filteredDatas = data2.data.values.filter((text) => text.toString().startsWith(startName));
+          allMatches.push(...filteredDatas);
+        })
+      });
+
+      await Promise.all(getPromises);
+      console.log(allMatches);
+      return res.send({ items: allMatches });
     }
   });
-
 
 };

@@ -9,7 +9,7 @@ router
   .delete(verifyJWT, findUser, items.deleteBooking);
 
   router
-  .route('/items/test')
+  .route('/items/autocmplete/:startName')
   .get(verifyJWT, findUser, sheet.TEST)
 
 module.exports = router;
