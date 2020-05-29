@@ -24,20 +24,23 @@ exports.linkUser = async (req, res, next) => {
   if (!user) return Boom.notFound("No user found");
 
   try {
-    const creds = btoa(
-      `${process.env.CLIENT_APP_ID}:${process.env.CLIENT_APP_SECRET}`
-    );
-
     // Ask for user credentials
+    const options = {
+      method: 'POST'
+    };
+    let params = new URLSearchParams();
+    params.append('client_id', process.env.CLIENT_APP_ID);
+    params.append('client_secret', process.env.CLIENT_APP_SECRET);
+    params.append('code', code);
+    params.append('grant_type', 'authorization_code');
+    params.append('scope', 'identify guilds.join');
+    params.append('redirect_uri', `${baseURL}/api/discord/callback`);
+    options.body = params;
+    
     const credResponse = await fetch(
-      `https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${creds}`,
-        },
-      }
+      `https://discordapp.com/api/oauth2/token`, options
     );
+    
     const userCred = await credResponse.json();
     const { access_token, token_type, refresh_token } = userCred;
 
@@ -49,6 +52,7 @@ exports.linkUser = async (req, res, next) => {
       },
     });
     const userInfo = await infoResponse.json();
+
     const { id, username, discriminator } = userInfo;
 
     const nookTradingServer = client.guilds.cache.find(
@@ -63,7 +67,7 @@ exports.linkUser = async (req, res, next) => {
     });
 
     // Send welcome message
-    await currentUser.send(`Hello 👋\nRavi de faire ta connaissance ! Je suis le bot qui te tiendra au courant de ce qu'il se passe sur Nook trading 😄\nN'hésite pas à faire un tour sur le serveur Discord de Nook Trading !`);
+    await currentUser.send("Hello 👋\nRavi de faire ta connaissance ! Je suis le bot qui te tiendra au courant de ce qu'il se passe sur Nook trading 😄\nN'hésite pas à faire un tour sur le serveur Discord de Nook Trading !");
 
     // Save Discord data in user
     const updatedUser = await users.setDiscord(user._id, {
