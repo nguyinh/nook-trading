@@ -282,6 +282,11 @@ svg.bells-svg {
   height: auto;
 }
 
+.avatar-header--discord-icon {
+  position: absolute;
+  right: -6px;
+  top: -6px;
+}
 
 .week-prices--container {
   display: flex;
