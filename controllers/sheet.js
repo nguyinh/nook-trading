@@ -49,11 +49,13 @@ exports.TEST = async (req, res, next) => {
   client.authorize(async (err, tokens) => {
     if (err) {
       console.log(err);
+      next(err);
     } else {
       console.log("SUCCES");
       const gsapi = google.sheets({ version: 'v4', auth: client });
     
       const allMatches = [];
+
       const frenchColumns = new Map();
       frenchColumns.set("Furniture", "H");
       frenchColumns.set("Furniture Variants", "I");
@@ -75,13 +77,21 @@ exports.TEST = async (req, res, next) => {
       frenchColumns.forEach((element, index) => {
         const opt = {
           spreadsheetId: '1BjqVeqIrfEezvyrWLUrwMjmK_UbY2LXkZ12mttamTtk',
-          range: `${index}!${element}:${element}`
+          ranges: [`${index}!${element}2:${element}`, `${index}!A2:A`]
         }
-        let data = gsapi.spreadsheets.values.get(opt);
+        let data = gsapi.spreadsheets.values.batchGet(opt);
         getPromises.push(data);
         data.then((data2) => {
-          const filteredDatas = data2.data.values.filter((text) => text.toString().startsWith(startName));
-          allMatches.push(...filteredDatas);
+          // data2.data.valuesRanges contains an array [{values, range,...}, {{values, range,...}}]: [0] French names, [1] id's
+          const frenchTranslationsArray = data2.data.valueRanges[0].values;
+          const itemsIdsArray = data2.data.valueRanges[1].values;
+
+          frenchTranslationsArray.forEach((translatedText, index) => {
+            if (translatedText.toString().startsWith(startName)) {
+              const computeId = parseInt(itemsIdsArray[index].toString().split("_")[1]);
+              allMatches.push({id: computeId,  text: translatedText[0] });
+            }
+          });
         })
       });
 
