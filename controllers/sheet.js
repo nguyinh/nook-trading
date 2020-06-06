@@ -1,7 +1,4 @@
-const GoogleSpreadsheet = require('google-spreadsheet');
-const { promisify } = require('util');
-
-const cred = require('../client_secret.json');
+require('dotenv').config();
 
 
 
@@ -36,12 +33,13 @@ exports.TEST = async (req, res, next) => {
   const { startName } = req.params;
 
   const { google } = require('googleapis');
-  const keys = require('../client_secret.json');
+
+  const private_key = process.env.PRIVATE_KEY.replace(/\\n/g, '\n');
 
   const client = new google.auth.JWT(
-    keys.client_email,
+    process.env.CLIENT_EMAIL,
     null,
-    keys.private_key,
+    private_key,
     ['https://www.googleapis.com/auth/spreadsheets.readonly']
   );
 
