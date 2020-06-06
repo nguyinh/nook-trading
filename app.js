@@ -16,9 +16,9 @@ const {
 require("dotenv").config();
 
 // Redirect to HTTPS
-if (process.env.ENV !== 'dev') {
-  app.use(redirectSecure);
-}
+// if (process.env.ENV !== 'dev') {
+//   app.use(redirectSecure);
+// }
 
 // CORS handle
 const whitelist = [
@@ -30,6 +30,8 @@ const whitelist = [
   "http://localhost:2020",
   "http://nook-trading.store",
   "https://nook-trading.store",
+  "http://www.nook-trading.store",
+  "https://www.nook-trading.store",
   "http://nook-trading.herokuapp.com",
   "https://nook-trading.herokuapp.com",
 ];
