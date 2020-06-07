@@ -10,10 +10,10 @@ import {
   setSundayPrice,
 } from "../../services";
 import AvatarDefault from "../../res/images/avatar-default.png";
+import { ReactComponent as DiscordIcon } from "../../res/images/discord-icon-purple.svg";
 import { WeekPrices, TurnipsOwned, WeekGraph, TrendTypeInput } from "./";
 import { getLastSunday } from "../../utils";
 import { PATTERN_CODES } from "../../utils/constants";
-
 
 const Avatar = ({ trend, onClick }) => (
   <div className="avatar-header--container" onClick={onClick}>
@@ -24,6 +24,10 @@ const Avatar = ({ trend, onClick }) => (
     />
 
     <span className="nook-pseudo">{trend.author.pseudo}</span>
+
+    {trend.author.discord && (
+      <DiscordIcon className="avatar-header--discord-icon" />
+    )}
   </div>
 );
 
@@ -166,7 +170,7 @@ const DetailedView = ({ trend, isSelf, allowBackTo = true }) => {
               onClick={() => setRedirectToProfile(trend.author.pseudo)}
             />
 
-            <WeekGraph trend={trend} withTooltip/>
+            <WeekGraph trend={trend} withTooltip />
 
             <WeekPrices
               trend={trend}

@@ -65,7 +65,7 @@ const ProfilePicture = ({ _id, pseudo, nativeFruit, avatarPicture }) => {
           try {
             setIsAvatarLoading(true);
 
-            const user = await uploadAvatar(new Buffer(reader.result, "utf8"));
+            const user = await uploadAvatar(Buffer.from(reader.result, "utf8"));
 
             setUserAvatar(reader.result);
 

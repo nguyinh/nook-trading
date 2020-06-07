@@ -15,19 +15,19 @@ exports.findAllDaily = () => {
   })
     .populate({
       path: "author",
-      select: 'pseudo islandName'
+      select: "pseudo islandName discord.id",
     })
     .populate({
       path: "bookings.author",
-      select: 'pseudo islandName'
+      select: "pseudo islandName",
     })
     .populate({
       path: "items",
       populate: [
         {
           path: "bookings.author",
-          select: 'pseudo islandName'
-        }
+          select: "pseudo islandName",
+        },
       ],
     });
 };
@@ -37,6 +37,13 @@ exports.findById = (_id, includeAuthor) => {
     _id,
   }).populate(`${includeAuthor && "author"} item`);
 };
+
+exports.findByItemId = (itemId) =>
+  Post.findOne({
+    items: itemId,
+  })
+    .populate({ path: "author", select: "discord.id" })
+    .populate({ path: "item" });
 
 exports.add = async (author, shopPicture, items) => {
   const itemPromises = items.map((item) =>
@@ -56,5 +63,5 @@ exports.add = async (author, shopPicture, items) => {
 };
 
 exports.remove = async (_id, author) => {
-  return Post.findByIdAndDelete({_id, author});
+  return Post.findByIdAndDelete({ _id, author });
 };

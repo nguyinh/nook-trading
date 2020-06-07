@@ -1,5 +1,5 @@
 const { logger } = require("../middlewares");
-const { posts, bookings } = require("../services");
+const { posts, bookings, users, discord } = require("../services");
 const Boom = require("@hapi/boom");
 
 exports.getAll = async (req, res, next) => {
@@ -12,13 +12,15 @@ exports.getAll = async (req, res, next) => {
     if (onlyDaily) fetchedPosts = await posts.findAllDaily();
     else fetchedPosts = await posts.findAll();
 
-    const formattedPosts = fetchedPosts.map((post) => ({
-      _id: post._id,
-      shopPicture: post.shopPicture,
-      items: post.items,
-      bookings: post.bookings,
-      author: post.author
-    })).filter(({author}) => !!author);
+    const formattedPosts = fetchedPosts
+      .map((post) => ({
+        _id: post._id,
+        shopPicture: post.shopPicture,
+        items: post.items,
+        bookings: post.bookings,
+        author: post.author,
+      }))
+      .filter(({ author }) => !!author);
     // Remove posts without author
 
     return res.send({ posts: formattedPosts });
@@ -50,11 +52,10 @@ exports.delete = async (req, res, next) => {
   const { _id } = req.decoded;
 
   if (!postId) return next(Boom.badRequest("Missing postId in request query"));
-  if (authorId !== _id) return next(Boom.unauthorized("Only post owner can delete this post"));
+  if (authorId !== _id)
+    return next(Boom.unauthorized("Only post owner can delete this post"));
 
-  logger.info(
-    `[CONTROLLERS | bookings] delete | ${authorId} ${postId}`
-  );
+  logger.info(`[CONTROLLERS | bookings] delete | ${authorId} ${postId}`);
 
   try {
     const deletedPost = await posts.remove(postId, authorId);
@@ -71,14 +72,33 @@ exports.createBooking = async (req, res, next) => {
 
   if (!postId) return next(Boom.badRequest("Missing postId in request query"));
 
-  logger.info(
-    `[CONTROLLERS | posts] createBooking | ${authorId} ${postId}`
-  );
+  logger.info(`[CONTROLLERS | posts] createBooking | ${authorId} ${postId}`);
 
   try {
     const update = await bookings.add(postId, authorId, "post");
 
-    return res.send({ post: update });
+    // Remove shopPicture from response
+    const { shopPicture, ...postUpdated } = update.toObject();
+
+    // Send response
+    res.send({ post: postUpdated });
+
+    const {
+      author: { discord: discordInfo },
+    } = update;
+
+    // Send DM if Discord linked
+    if (discordInfo) {
+      // Find booking author pseudo
+      const { pseudo: buyerPseudo } = await users.findById(authorId);
+
+      // Send Discord DM to seller
+      await discord.sendDM(
+        discordInfo.id,
+        `${buyerPseudo} est intéressé par ce que tu proposes !`,
+        shopPicture.data
+      );
+    }
   } catch (err) {
     return next(err);
   }
@@ -90,9 +110,7 @@ exports.deleteBooking = async (req, res, next) => {
 
   if (!postId) return next(Boom.badRequest("Missing postId in request query"));
 
-  logger.info(
-    `[CONTROLLERS | posts] deleteBooking | ${authorId} ${postId}`
-  );
+  logger.info(`[CONTROLLERS | posts] deleteBooking | ${authorId} ${postId}`);
 
   try {
     const update = await bookings.remove(postId, authorId, "post");

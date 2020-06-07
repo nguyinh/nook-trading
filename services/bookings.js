@@ -19,10 +19,9 @@ exports.add = (_id, authorId, bookingType) => {
           new: true,
         }
       )
-        .select("-shopPicture")
         .populate({
           path: "author",
-          select: "pseudo islandName",
+          select: "pseudo islandName discord.id",
         })
         .populate({
           path: "bookings.author",
@@ -51,6 +50,10 @@ exports.remove = (_id, authorId, bookingType) => {
         path: "bookings.author",
         select: "pseudo islandName",
       })
+      .populate({
+        path: "author",
+        select: "discord.id",
+      })
     : Post.findOneAndUpdate(
         { _id },
         { $pull: { bookings: { author: authorId } } },
@@ -61,7 +64,7 @@ exports.remove = (_id, authorId, bookingType) => {
         .select("-shopPicture")
         .populate({
           path: "author",
-          select: "pseudo islandName",
+          select: "pseudo islandName discord.id",
         })
         .populate({
           path: "bookings.author",

@@ -18,7 +18,7 @@ exports.findLatestTrend = (author, thisSunday) => {
 exports.findAll = (lastSunday) => {
   return TurnipTrend.find({ createdAt: { $gte: lastSunday } }).populate({
     path: "author",
-    select: "pseudo avatar",
+    select: "pseudo avatar discord.id",
   });
 };
 
