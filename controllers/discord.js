@@ -67,7 +67,7 @@ exports.linkUser = async (req, res, next) => {
     });
 
     // Send welcome message
-    await currentUser.send("Hello 👋\nRavi de faire ta connaissance ! Je suis le bot qui te tiendra au courant de ce qu'il se passe sur Nook trading 😄\nN'hésite pas à faire un tour sur le serveur Discord de Nook Trading !");
+    await currentUser.send("Hello 👋\nRavi de faire ta connaissance ! Je suis le bot qui te tiendra au courant de ce qu'il se passe sur Nook trading 😄\nN'hésite pas à faire un tour sur le serveur Discord de Nook Trading !\n" + process.env.GUILD_INVITE_URL);
 
     // Save Discord data in user
     const updatedUser = await users.setDiscord(user._id, {
