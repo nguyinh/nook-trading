@@ -102,3 +102,28 @@ if (process.env.ENV === "dev") app.listen(port, "0.0.0.0");
 else app.listen(port);
 
 logger.info(`[Express] Server listening on http://localhost:${port}`);
+
+// Connection to GOOGLE SHEET API
+const { google } = require('googleapis');
+
+const private_key = process.env.PRIVATE_KEY.replace(/\\n/g, '\n');
+
+const sheet_client = new google.auth.JWT(
+  process.env.CLIENT_EMAIL,
+  null,
+  private_key,
+  ['https://www.googleapis.com/auth/spreadsheets.readonly']
+);
+
+// TODO AUTHORIZE ONLY ONCE
+sheet_client.authorize(async (err, tokens) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("GOOGLE SHEET")
+  }
+});
+
+module.exports = {
+  sheet_client: sheet_client
+}
