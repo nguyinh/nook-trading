@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import "./Market.css";
-import { PostHeader } from "../components/market";
+import { PostHeader, PostCreator} from "../components/market";
 import { AppContext } from "../contexts";
 import {
   getDailyPosts,
@@ -14,8 +13,8 @@ import {
   unbookPost,
 } from "../services";
 import { Button, Header, Divider, Loader, Dimmer } from "semantic-ui-react";
-import PostCreator from "./PostCreator";
 import { Redirect } from "react-router-dom";
+import { spacify as s } from "../utils";
 import bellsImage from "../res/images/bells-2.png";
 
 const days = new Array(
@@ -330,7 +329,7 @@ const Market = () => {
                                       </span>
                                       {price && (
                                         <>
-                                          <span className="market-items--creator--item-price">{`${price}`}</span>
+                                          <span className="market-items--creator--item-price">{`${s(price)}`}</span>
                                           <img
                                             src={bellsImage}
                                             className="market-items--bell-image"

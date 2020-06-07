@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
-import { createPost } from "../services";
+import Compressor from "compressorjs";
 import { Button, Segment, Header, Icon, Input } from "semantic-ui-react";
-import bellsImage from "../res/images/bells-2.png";
-import Compressor from 'compressorjs';
+import { createPost } from "../../services";
+import { spacify as s } from "../../utils";
+import bellsImage from "../../res/images/bells-2.png";
 
 const PostCreator = ({ backFromCreator }) => {
   const [shopPicture, setShopPicture] = useState(null);
@@ -37,7 +38,10 @@ const PostCreator = ({ backFromCreator }) => {
       return;
     }
 
-    setItems([...items, { name: itemName.trim(), price: itemPrice && parseInt(itemPrice) }]);
+    setItems([
+      ...items,
+      { name: itemName.trim(), price: itemPrice && parseInt(itemPrice) },
+    ]);
     setItemName("");
     setItemPrice("");
     setNameError("");
@@ -71,7 +75,7 @@ const PostCreator = ({ backFromCreator }) => {
       maxHeight: 1000,
       convertSize: 1000000, // 1000 kB
       quality: 0.8,
-      success: blob => {
+      success: (blob) => {
         const reader = new FileReader();
 
         reader.onload = async () => {
@@ -80,12 +84,12 @@ const PostCreator = ({ backFromCreator }) => {
 
         reader.readAsDataURL(blob);
       },
-      error: err => {
+      error: (err) => {
         console.error(err.message);
-      }
+      },
     });
   };
-  
+
   return (
     <div className="market--post-creator">
       <Header as="h2">Ton annonce du jour</Header>
@@ -128,11 +132,10 @@ const PostCreator = ({ backFromCreator }) => {
               <span className="market-items--creator--item-name">{name}</span>
               {price && (
                 <>
-                  <span className="market-items--creator--item-price">{`${price}`}</span>
-                  <img
-                    src={bellsImage}
-                    className='market-items--bell-image'
-                  />
+                  <span className="market-items--creator--item-price">{`${s(
+                    price
+                  )}`}</span>
+                  <img src={bellsImage} className="market-items--bell-image" />
                 </>
               )}
             </div>
