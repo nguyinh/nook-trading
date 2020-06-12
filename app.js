@@ -125,5 +125,5 @@ sheet_client.authorize(async (err, tokens) => {
 });
 
 module.exports = {
-  sheet_client: sheet_client
+  sheet_client: sheet_client,
 }

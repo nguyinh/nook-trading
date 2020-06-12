@@ -8,8 +8,12 @@ router
   .post(verifyJWT, findUser, items.createBooking)
   .delete(verifyJWT, findUser, items.deleteBooking);
 
-  router
+router
   .route('/items/autocomplete/:startName')
-  .get(verifyJWT, findUser, sheet.getAutocomplete)
+  .get(verifyJWT, findUser, sheet.getAutocomplete);
+
+router
+.route('/items/generateDB')
+.get(verifyJWT, findUser, sheet.generateDB);
 
 module.exports = router;
