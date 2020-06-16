@@ -14,6 +14,10 @@ router
 
 router
 .route('/items/generateDB')
-.get(verifyJWT, findUser, sheet.generateDB);
+  .get(verifyJWT, findUser, sheet.generateDB);
+
+router
+.route('/items/getDB')
+.get(verifyJWT, findUser, sheet.getDB);
 
 module.exports = router;
