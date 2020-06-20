@@ -3,8 +3,9 @@ import { createPost, getNames, getALL } from "../services";
 import { Button, Segment, Header, Icon, Input } from "semantic-ui-react";
 import bellsImage from "../res/images/bells-2.png";
 import Compressor from 'compressorjs';
-import { Dropdown } from 'semantic-ui-react'
-import { get } from "mongoose";
+import { Search } from 'semantic-ui-react'
+const initialState = { isLoading: false, results: [], value: '' }
+var _ = require('lodash');
 
 const PostCreator = ({ backFromCreator }) => {
   const [shopPicture, setShopPicture] = useState(null);
@@ -19,6 +20,9 @@ const PostCreator = ({ backFromCreator }) => {
   const nameInputRef = useRef(null);
   const priceInputRef = useRef(null);
   const [options, setOptions] = useState([]); 
+  const [isLoading, setIsLoading] = useState(false);
+  const [value, setValue] = useState("");
+  const [results, setResults] = useState([]);
 
   const addItemPrice = (price) => {
     const digitRegex = /^\d+$/;
@@ -94,14 +98,13 @@ const PostCreator = ({ backFromCreator }) => {
     // Ask to server autocompleting datas
     getALL().then((data) => {
       data = data.filter((value) => value.french)
-      console.log(data);
       data.forEach((entry) => {
         let computedID = entry.id;
         if (entry.idVariant && entry.idVariant !== "NA") {
           computedID += entry.idVariant
         }
         if (entry.french) {
-          formattedList.push({key: computedID, value: computedID, text: entry.french, image: entry.image })
+          formattedList.push({key: computedID, value: computedID, title: entry.french, image: entry.image, price: entry.sell.toString() })
         }
       });
       setOptions(formattedList);
@@ -112,20 +115,29 @@ const PostCreator = ({ backFromCreator }) => {
     onNameEntered()
   }, []);
 
+  const handleResultSelect = (e, { result }) => this.setState({ value: result.title })
+
+  const handleSearchChange = (e, { value }) => {
+    setIsLoading(true);
+    setValue(value.toLowerCase());
+
+    setTimeout(() => {
+      if (!value) {
+        setIsLoading(initialState.isLoading); 
+        setValue(initialState.value); 
+        setResults(initialState.results);
+        return;
+      }
+      setIsLoading(false);
+      setResults(options.filter((entry) => entry.title.startsWith(value)));
+    }, 300)
+  }
+
 
   
   return (
     <div className="market--post-creator">
       <Header as="h2">Ton annonce du jour</Header>
-
-      <Dropdown
-        placeholder='Select Country'
-        fluid
-        search
-        selection
-        options={options}
-        onChange={onNameEntered}
-      />
 
       <input
         ref={inputRef}
@@ -156,9 +168,19 @@ const PostCreator = ({ backFromCreator }) => {
         </Segment>
       )}
 
+        <Search
+            loading={isLoading}
+            onResultSelect={handleResultSelect}
+            onSearchChange={_.debounce(handleSearchChange, 500, {
+              leading: true,
+            })}
+            results={results}
+            value={value}
+        />
       <div className="market-items--creator">
         <Header as="h3">Ajoute tes items</Header>
-
+        
+        
         {items.map(({ name, price }) => (
           <div className="market-items--input">
             <div className="market-items--creator--item">
