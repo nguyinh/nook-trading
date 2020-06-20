@@ -143,11 +143,19 @@ const uploadAvatar = async (avatarData) => {
   return user;
 };
 
-const getNames = async (valuess) => {
+const getNames = async (startName) => {
+  console.log(startName);
   const {
-    data: { values },
-  } = await axios.get(`/api/items/test`)
-  return values;
+    data: { items },
+  } = await axios.get(`/api/items/autocomplete/${startName}`, { params: { startName } });
+  return items;
+}
+
+const getALL = async () => {
+  const {
+    data
+  } = await axios.get(`/api/items/getDB`);
+  return data;
 }
 
 export {
@@ -166,4 +174,5 @@ export {
   updateUser,
   uploadAvatar,
   getNames,
+  getALL,
 };

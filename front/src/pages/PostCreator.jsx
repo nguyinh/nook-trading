@@ -1,8 +1,10 @@
-import React, { useState, useRef } from "react";
-import { createPost, getNames } from "../services";
+import React, { useState, useRef, useEffect } from "react";
+import { createPost, getNames, getALL } from "../services";
 import { Button, Segment, Header, Icon, Input } from "semantic-ui-react";
 import bellsImage from "../res/images/bells-2.png";
 import Compressor from 'compressorjs';
+import { Dropdown } from 'semantic-ui-react'
+import { get } from "mongoose";
 
 const PostCreator = ({ backFromCreator }) => {
   const [shopPicture, setShopPicture] = useState(null);
@@ -16,6 +18,7 @@ const PostCreator = ({ backFromCreator }) => {
   const inputRef = useRef(null);
   const nameInputRef = useRef(null);
   const priceInputRef = useRef(null);
+  const [options, setOptions] = useState([]); 
 
   const addItemPrice = (price) => {
     const digitRegex = /^\d+$/;
@@ -84,10 +87,45 @@ const PostCreator = ({ backFromCreator }) => {
       }
     });
   };
+
+  const onNameEntered = async () => {
+    console.log(itemName);
+    const formattedList = [];
+    // Ask to server autocompleting datas
+    getALL().then((data) => {
+      data = data.filter((value) => value.french)
+      console.log(data);
+      data.forEach((entry) => {
+        let computedID = entry.id;
+        if (entry.idVariant && entry.idVariant !== "NA") {
+          computedID += entry.idVariant
+        }
+        if (entry.french) {
+          formattedList.push({key: computedID, value: computedID, text: entry.french, image: entry.image })
+        }
+      });
+      setOptions(formattedList);
+    });
+  }
+
+  useEffect(() => {
+    onNameEntered()
+  }, []);
+
+
   
   return (
     <div className="market--post-creator">
       <Header as="h2">Ton annonce du jour</Header>
+
+      <Dropdown
+        placeholder='Select Country'
+        fluid
+        search
+        selection
+        options={options}
+        onChange={onNameEntered}
+      />
 
       <input
         ref={inputRef}
@@ -162,8 +200,6 @@ const PostCreator = ({ backFromCreator }) => {
               ref={nameInputRef}
               onChange={(_, { value }) => {
                 setItemName(value);
-                // Ask to server autocompleting datas
-                console.log(                getNames() );
               }}
             />
             <Input
