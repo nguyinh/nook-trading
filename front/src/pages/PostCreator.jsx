@@ -39,6 +39,7 @@ const PostCreator = ({ backFromCreator }) => {
   };
 
   const addItemToList = () => {
+    setIsCustom(false);
     if (itemName === "") {
       setNameError("Frère tu forces, indique au moins le nom de l'item");
       return;
