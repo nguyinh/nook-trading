@@ -163,7 +163,8 @@ const PostCreator = ({ backFromCreator }) => {
 
   const handleSearchChange = (e, { value }) => {
     setIsLoading(true);
-    setValue(value.toLowerCase());
+    const loweredCasedValue = value.toLowerCase();
+    setValue(loweredCasedValue);
 
     setTimeout(() => {
       if (!value) {
@@ -174,11 +175,11 @@ const PostCreator = ({ backFromCreator }) => {
       }
       setIsLoading(false);
       const filteredOptions = options
-        .filter((entry) => entry.title.startsWith(value))
+        .filter((entry) => entry.title.startsWith(loweredCasedValue))
         .slice(0, 20);
 
       setResults(
-        filteredOptions.length ? filteredOptions : [{ id: 0, title: value }]
+        filteredOptions.length ? filteredOptions : [{ id: 0, title: loweredCasedValue }]
       );
     }, 300);
   };
