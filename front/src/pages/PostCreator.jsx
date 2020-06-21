@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPost, getNames, getALL } from "../services";
-import { Button, Segment, Header, Icon, Input } from "semantic-ui-react";
+import { Button, Segment, Header, Icon, Input, Label } from "semantic-ui-react";
 import bellsImage from "../res/images/bells-2.png";
 import Compressor from 'compressorjs';
-import { Search } from 'semantic-ui-react'
+import { Search, Divider } from 'semantic-ui-react'
 const initialState = { isLoading: false, results: [], value: '' }
 var _ = require('lodash');
 
@@ -12,6 +12,7 @@ const PostCreator = ({ backFromCreator }) => {
   const [items, setItems] = useState([]);
   const [itemName, setItemName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
+  const [itemImage, setItemImage] = useState("");
   const [nameError, setNameError] = useState("");
   const [publishError, setPublishError] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
@@ -32,6 +33,7 @@ const PostCreator = ({ backFromCreator }) => {
     if (!digitRegex.test(value) && value !== "") return;
 
     setItemPrice(value);
+    addItemToList();
   };
 
   const addItemToList = () => {
@@ -44,11 +46,11 @@ const PostCreator = ({ backFromCreator }) => {
       return;
     }
 
-    setItems([...items, { name: itemName, price: itemPrice && parseInt(itemPrice) }]);
+    setItems([...items, { name: itemName, price: itemPrice && parseInt(itemPrice) , img: itemImage}]);
     setItemName("");
     setItemPrice("");
     setNameError("");
-    nameInputRef.current.focus();
+    /* nameInputRef.current.focus(); */
   };
 
   const publish = async () => {
@@ -92,8 +94,7 @@ const PostCreator = ({ backFromCreator }) => {
     });
   };
 
-  const onNameEntered = async () => {
-    console.log(itemName);
+  const setSearchOptions = async () => {
     const formattedList = [];
     // Ask to server autocompleting datas
     getALL().then((data) => {
@@ -112,10 +113,14 @@ const PostCreator = ({ backFromCreator }) => {
   }
 
   useEffect(() => {
-    onNameEntered()
+    setSearchOptions()
   }, []);
 
-  const handleResultSelect = (e, { result }) => this.setState({ value: result.title })
+  const handleResultSelect = (e, { result }) => {
+    setItemName(result.title);
+    setItemImage(result.image);
+    addItemPrice(result.price);
+  };
 
   const handleSearchChange = (e, { value }) => {
     setIsLoading(true);
@@ -168,22 +173,15 @@ const PostCreator = ({ backFromCreator }) => {
         </Segment>
       )}
 
-        <Search
-            loading={isLoading}
-            onResultSelect={handleResultSelect}
-            onSearchChange={_.debounce(handleSearchChange, 500, {
-              leading: true,
-            })}
-            results={results}
-            value={value}
-        />
+
       <div className="market-items--creator">
         <Header as="h3">Ajoute tes items</Header>
         
         
-        {items.map(({ name, price }) => (
+        {items.map(({ name, price, img }) => (
           <div className="market-items--input">
             <div className="market-items--creator--item">
+              <span><img src={img}className='market-items--bell-image'/></span>
               <span className="market-items--creator--item-name">{name}</span>
               {price && (
                 <>
@@ -209,37 +207,42 @@ const PostCreator = ({ backFromCreator }) => {
 
         <div className="market-items--input-with-error">
           <div className="market-items--input">
-            <Input
+
+            <Label
               icon="tag"
               iconPosition="left"
               placeholder="Nom item"
-              value={itemName}
-              error={nameError}
-              onFocus={() => setNameError("")}
-              onKeyDown={(e) =>
-                e.key === "Enter" && priceInputRef.current.focus()
-              }
-              ref={nameInputRef}
-              onChange={(_, { value }) => {
-                setItemName(value);
-              }}
-            />
-            <Input
+            ><Icon name="tag"></Icon>{itemName}</Label>
+            
+            <Label
               icon="dollar"
               iconPosition="left"
               placeholder="Prix"
               className="market-items--price-input"
-              value={itemPrice}
-              onKeyDown={(e) => e.key === "Enter" && addItemToList()}
-              ref={priceInputRef}
-              onChange={(_, { value }) => addItemPrice(value)}
-            />
+            ><Icon name= "dollar"></Icon>{itemPrice}</Label>
+
             <Button icon color="olive" onClick={addItemToList}>
               <Icon name="plus" />
             </Button>
           </div>
           {nameError && <span>{nameError}</span>}
         </div>
+
+        <Divider />
+
+        <Search
+          loading={isLoading}
+          fluid
+          placeholder= {`Cherche ton item ici`}
+          minCharacters={3}
+          size={"massive"}
+          onResultSelect={handleResultSelect}
+          onSearchChange={_.debounce(handleSearchChange, 500, {
+            leading: true,
+          })}
+          results={results}
+          value={value}
+      />
 
         <Button
           icon={isPublished}
