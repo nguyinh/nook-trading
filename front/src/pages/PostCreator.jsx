@@ -117,9 +117,10 @@ const PostCreator = ({ backFromCreator }) => {
   }, []);
 
   const handleResultSelect = (e, { result }) => {
-    setItemName(result.title);
-    setItemImage(result.image);
-    addItemPrice(result.price);
+    // setItemName(result.title);
+    // setItemImage(result.image);
+    // addItemPrice(result.price);
+    setItems([...items, { name: result.title, price: result.price && parseInt(result.price) , img: result.image}]);
   };
 
   const handleSearchChange = (e, { value }) => {
@@ -134,7 +135,7 @@ const PostCreator = ({ backFromCreator }) => {
         return;
       }
       setIsLoading(false);
-      setResults(options.filter((entry) => entry.title.startsWith(value)));
+      setResults(options.filter((entry) => entry.title.startsWith(value)).slice(0, 20));
     }, 300)
   }
 
