@@ -1,12 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPost, getNames, getALL } from "../services";
-import { Button, Segment, Header, Icon, Input, Label } from "semantic-ui-react";
+import { Button, Segment, Header, Icon, Input, Label, Grid, GridColumn } from "semantic-ui-react";
 import bellsImage from "../res/images/bells-2.png";
 import { ReactComponent as LeafIcon } from "../res/images/leaf-icon.svg";
 import Compressor from "compressorjs";
 import { Search, Divider } from "semantic-ui-react";
 const initialState = { isLoading: false, results: [], value: "" };
 var _ = require("lodash");
+const resultRenderer = ({ price, image, title }) =>
+  <>
+    <Grid verticalAlign='middle' relaxed columns={3}>
+      <GridColumn><img src={image} /> </GridColumn>
+      <GridColumn><Label size={"massive"} content={title} /></GridColumn>
+      <GridColumn><Label size={"massive"} color={"green"}><Icon name='dollar' />{price}</Label></GridColumn>
+    </Grid>
+  </>;
 
 const PostCreator = ({ backFromCreator }) => {
   const [shopPicture, setShopPicture] = useState(null);
@@ -282,6 +290,7 @@ const PostCreator = ({ backFromCreator }) => {
           })}
           results={results}
           value={value}
+          resultRenderer={resultRenderer}
         />
 
         <Button
