@@ -23,6 +23,6 @@
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.1.2",
     "mongoose": "^5.9.7",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.1"
   }
 }
