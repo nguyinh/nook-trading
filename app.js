@@ -34,12 +34,15 @@ const whitelist = [
   "https://www.nook-trading.store",
   "http://nook-trading.herokuapp.com",
   "https://nook-trading.herokuapp.com",
+  "http://54.76.228.181",
+  "https://54.76.228.181",
 ];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
+      logger.error(`[CORS] ${origin} not allowed`);
       callback(new Error("Not allowed by CORS"));
     }
   },
