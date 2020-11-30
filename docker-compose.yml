@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  mongo:
+    container_name: mongo
+    restart: always
+    image: webhippie/mongodb
+    volumes:
+      - ./data:/data/db
+      - ./.docker/mongodb/mongod.conf:/etc/mongod.conf
+    ports:
+      - "27017:27017"
+
+  # front:
+  #   container_name: front
+  #   restart: always
+  #   build: ./front
+  #   ports:
+  #     - "80:80"
+
+  back:
+    container_name: back
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/nook-trading
+    restart: always
+    depends_on:
+      - mongo
+    build: ./
+    ports:
+      - "2020:2020"
+    links:
+      - mongo
+
+volumes:
+  data:
