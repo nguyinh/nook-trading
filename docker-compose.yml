@@ -1,15 +1,15 @@
 version: "3"
 
 services:
-  mongo:
-    container_name: mongo
-    restart: always
-    image: webhippie/mongodb
-    volumes:
-      - ./data:/data/db
-      - ./.docker/mongodb/mongod.conf:/etc/mongod.conf
-    ports:
-      - "27017:27017"
+  # mongo:
+  #   container_name: mongo
+  #   restart: always
+  #   image: webhippie/mongodb
+  #   volumes:
+  #     - ./data:/data/db
+  #     - ./.docker/mongodb/mongod.conf:/etc/mongod.conf
+  #   ports:
+  #     - "27017:27017"
 
   # front:
   #   container_name: front
@@ -20,16 +20,22 @@ services:
 
   back:
     container_name: back
-    environment:
-      - MONGODB_URI=mongodb://mongo:27017/nook-trading
     restart: always
-    depends_on:
-      - mongo
+    # depends_on:
+    #   - mongo
     build: ./
     ports:
       - "2020:2020"
-    links:
-      - mongo
+    # links:
+    #   - mongo
+    deploy:
+      resources:
+        limits:
+          # cpus: '0.50'
+          memory: 500M
+        # reservations:
+        #   cpus: '0.25'
+        #   memory: 20M
 
-volumes:
-  data:
+# volumes:
+#   data:
