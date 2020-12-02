@@ -36,6 +36,11 @@ const whitelist = [
   "https://nook-trading.herokuapp.com",
   "http://54.76.228.181",
   "https://54.76.228.181",
+  "http://nguyinh-server:2020",
+  "http://197.168.1.71:2020",
+  "http://nook.pi.nguyinh.tech:2020",
+  "http://nook.pi.nguyinh.tech",
+  "https://nook.pi.nguyinh.tech"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
